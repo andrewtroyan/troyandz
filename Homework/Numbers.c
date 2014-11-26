@@ -12,6 +12,6 @@ int main()
     printf("%d-%d = %d\n", a, b, a-b);
     printf("%d*%d = %d\n", a, b, a*b);
     printf("%d/%d = %d\n", a, b, a/b);
-    printf("%d%%d = %d\n", a, b, a%b); //надо исправить
+    printf("%d%%d = %d\n", a, b, a%b); //have to change
     return 0;
 }
