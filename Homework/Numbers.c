@@ -8,10 +8,10 @@ int main()
     scanf("%d", &a);
     printf("Enter the second number: ");
     scanf("%d", &b);
-    printf("%d+%d = %d\n", a, b, a+b);
-    printf("%d-%d = %d\n", a, b, a-b);
-    printf("%d*%d = %d\n", a, b, a*b);
-    printf("%d/%d = %d\n", a, b, a/b);
-    printf("%d%%d = %d\n", a, b, a%b); //have to change
+    printf("%d + %d = %d\n", a, b, a+b);
+    printf("%d - %d = %d\n", a, b, a-b);
+    printf("%d * %d = %d\n", a, b, a*b);
+    printf("%d / %d = %d\n", a, b, a/b);
+    printf("%d % %d = %d\n", a, b, a%b); //have to change
     return 0;
 }
