@@ -3,9 +3,12 @@
 
 int main()
 {
-    for (int i=0; i<137; ++i)
+    int i =0;
+    while (i<137)
     {
         printf("Hello, world!\n");
+        ++i;
     }
+    printf("Total amount is %d", i);
     return 0;
 }
