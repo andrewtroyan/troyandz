@@ -7,23 +7,23 @@ int main()
     {
         for (int k=0; k<100; ++k)
         {
-            printf(">---- %d%%\r", i);
+            printf(">---->---->---- %d%%\r", i);
         }
         for (int k=0; k<100; ++k)
         {
-            printf("->--- %d%%\r", i);
+            printf("->---->---->--- %d%%\r", i);
         }
         for (int k=0; k<100; ++k)
         {
-            printf("-->-- %d%%\r", i);
+            printf("-->---->---->-- %d%%\r", i);
         }
         for (int k=0; k<100; ++k)
         {
-            printf("--->- %d%%\r", i);
+            printf("--->---->---->- %d%%\r", i);
         }
         for (int k=0; k<100; ++k)
         {
-            printf("----> %d%%\r", i);
+            printf("---->---->----> %d%%\r", i);
         }
     }
     return 0;
