@@ -3,12 +3,12 @@
 
 int main()
 {
-    int i =0;
-    while (i<137)
+    int amount =0;
+    while (amount<137)
     {
         printf("Hello, world!\n");
-        ++i;
+        ++amount;
     }
-    printf("Total amount is %d", i);
+    printf("Total amount is %d", amount);
     return 0;
 }
