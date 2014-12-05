@@ -8,22 +8,25 @@ int main()
     scanf("%d", &number);
     printf("Enter the exponent: ");
     scanf("%d", &exponent);
-    int result=number;
-    for (int i=0; i==exponent; ++i) /* Изначально проверяем. Если степень равна 0, то результатом будет 1.
-                                      ++i пишем для того, чтобы цикл завершился. */
+    int result = 1;
+    for(int i = 1; i <= exponent; ++i)
     {
-        result=1;
+        result *= number;
     }
-    for (int i=1; i<exponent; ++i) /* Грубо говоря, этот цикл работает при степени >= 2. Для степени 1 изначально
-                                    выполняется действие int result=number; */
-    {
-        int squared = 0;
-        for (int k=0; k<number; ++k)
-            {
-                squared+=result;
-            }
-        result=squared;
-    }
-    printf("The result is %d", result);
+    printf("%d ^ %d = %d\n", number, exponent, result);
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
