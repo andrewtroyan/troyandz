@@ -13,10 +13,10 @@ int main()
     //---
     printf("Your score is:\n%d\n", humanScore);
     char answer = 'y';
-    if (humanScore > 11) {
-        printf("Would you like take another card? (y/n):\n");
+    if (humanScore < 21) {
+        printf("Would you like to take another card? (y/n):\n");
         scanf("%c", &answer);
-        if ('y' == answer) {
+        if (answer == 'y') {
             humanScore+=rand()%11+1;
         }
     }
@@ -30,18 +30,15 @@ int main()
     }
     //---
     while (answer == 'y' && computerWillTake && humanScore < 21 && computerScore < 21) {
-        // повторяем (лучше использовать do while)
-        printf("Your score is:\n%d\n", humanScore);
-        char answer = 'y';
         if (humanScore > 11) {
             printf("Would you like take another card? (y/n):\n");
+            answer = 'y';
             scanf("%c", &answer);
             if ('y' == answer) {
                 humanScore+=rand()%11+1;
             }
         }
-    //---
-        int computerWillTake=1;
+        computerWillTake=1;
         if (computerScore > 11) {
             computerWillTake = 21 - computerScore > rand()%21;
         }
@@ -49,10 +46,10 @@ int main()
             computerScore += rand()%11+1;
         }
     }
+    //---
     while (answer == 'y' && humanScore < 21) {
-        printf("Your score is:\n%d\n", humanScore);
         answer = 'y';
-        if (humanScore > 11) {
+        if (humanScore < 21) {
             printf("Would you like take another card? (y/n):\n");
             scanf("%c", &answer);
             if ('y' == answer) {
@@ -60,6 +57,7 @@ int main()
             }
         }
     }
+    //---
     while (computerWillTake && computerScore < 21) {
         computerWillTake=1;
         if (computerScore > 11) {
@@ -71,19 +69,19 @@ int main()
     }
     //---
     if (humanScore == 21) {
-        printf("You win!\nYour score %d", humanScore);
+        printf("You win!\nYour score is %d", humanScore);
     }
     else if (humanScore > 21) {
-        printf("Game over!\n");
+        printf("Game over!\nYour score is %d\nComputer's score is %d", humanScore, computerScore);
     }
     else if (computerScore <= 21 && humanScore < computerScore) {
-        printf("Game over!\n");
+        printf("Game over!\nYour score is %d\nComputer's score is %d", humanScore, computerScore);
     }
     else if (computerScore == humanScore) {
-        printf("Draw!\n");
+        printf("Draw!\nYour score is %d", humanScore);
     }
     else {
-        printf("You win!\n");
+        printf("You win!\nYour score is %d", humanScore);
     }
 
 }
