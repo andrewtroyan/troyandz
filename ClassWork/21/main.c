@@ -84,4 +84,5 @@ int main()
         printf("You win!\nYour score is %d", humanScore);
     }
 
+    return 0;
 }
