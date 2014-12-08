@@ -4,17 +4,14 @@
 int main()
 {
     printf("%s%6s\n", "Number", "Cubed");
-    int number = 1;
-
-    while (number <= 17)
+    for (int i = 1, number = 1; i <= 17; ++i, number += 2)
     {
         int result = 1;
-        for (int i = 1; i <=3; ++i)
+        for (int k = 1; k <= 3; ++k)
         {
             result *= number;
         }
         printf("%-7d%d\n", number, result);
-        number += 2;
     }
     return 0;
 }
