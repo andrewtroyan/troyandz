@@ -23,7 +23,7 @@ int main()
     //---
     int computerWillTake=1;
     if (computerScore > 11) {
-        computerWillTake = 21 - computerScore < rand()%21;
+        computerWillTake = 21 - computerScore > rand()%21;
     }
     if (computerWillTake) {
         computerScore = rand()%11+1;
@@ -43,7 +43,7 @@ int main()
     //---
         int computerWillTake=1;
         if (computerScore > 11) {
-            computerWillTake = 21 - computerScore < rand()%21;
+            computerWillTake = 21 - computerScore > rand()%21;
         }
         if (computerWillTake) {
             computerScore += rand()%11+1;
@@ -63,7 +63,7 @@ int main()
     while (computerWillTake && computerScore < 21) {
         computerWillTake=1;
         if (computerScore > 11) {
-            computerWillTake = 21 - computerScore < rand()%21;
+            computerWillTake = 21 - computerScore > rand()%21;
         }
         if (computerWillTake) {
             computerScore += rand()%11+1;
