@@ -4,15 +4,15 @@
 int main()
 {
     printf("ASCII symbols for codes in [0; 127]:\n");
-    for (int number = 0, i = 1; number <= 127; ++number, ++i)
+    for (int number = 1; number <= 128; ++number)
     {
-        if (i%16 != 0)
+        if (number%16 != 0)
         {
-            printf("%c ", number);
+            printf("%c ", number - 1);
         }
         else
         {
-            printf("%c\n", number);
+            printf("%c\n", number - 1);
         }
     }
     return 0;
