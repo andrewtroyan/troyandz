@@ -29,7 +29,7 @@ int main()
         }
         ++shot;
         printf("You won! You tried for %d time(s). Do you want to play again? (y/n):\n", shot);
-        scanf("%c", &answer);
+        scanf(" %c", &answer);
     } while(answer == 'y');
     printf("Goodbye!");
     return 0;
