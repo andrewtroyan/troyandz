@@ -19,15 +19,13 @@ int main()
             if(userNumber > computerNumber)
             {
                 printf("Too big!\n");
-                ++shot;
             }
             else if(userNumber < computerNumber)
             {
                 printf("Too little!\n");
-                ++shot;
             }
+            ++shot;
         }
-        ++shot;
         printf("You won! You tried for %d time(s). Do you want to play again? (y/n):\n", shot);
         scanf(" %c", &answer);
     } while(answer == 'y');
