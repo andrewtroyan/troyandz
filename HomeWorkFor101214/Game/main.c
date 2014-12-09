@@ -12,7 +12,7 @@ int main()
         srand(time(NULL));
         computerNumber = rand()%99+1;
         int userNumber = 0, shot = 0;                      //shot - попытка
-        printf("Enter the number from 1 to 99:\n");
+        printf("\nEnter the number from 1 to 99:\n");
         while (userNumber != computerNumber)
         {
             scanf("%d", &userNumber);
@@ -29,7 +29,7 @@ int main()
         printf("You won! You tried for %d time(s). Do you want to play again? (y/n):\n", shot);
         scanf(" %c", &answer);
     } while(answer == 'y');
-    printf("Goodbye!");
+    printf("\nGoodbye!");
     return 0;
 }
 
