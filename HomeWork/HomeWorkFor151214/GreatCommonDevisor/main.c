@@ -6,7 +6,7 @@ int main()
     int num1, num2, max, min, minNew;
     printf("Enter the first number: ");
     scanf("%d", &num1);
-    printf("Enter the first number: ");
+    printf("Enter the second number: ");
     scanf("%d", &num2);
     max = num1 > num2? num1 : num2;
     min = num2 > num1? num1 : num2;
@@ -16,7 +16,7 @@ int main()
         max = min;
         min = minNew;
     } while (minNew != 0);
-    printf("%d", max);
+    printf("The great common devisor of these number is %d.", max);
     return 0;
 }
 
