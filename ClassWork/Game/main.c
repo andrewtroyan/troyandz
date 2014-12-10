@@ -10,13 +10,12 @@ int main()
     do
     {
         printf("\nImagine the number between 1 and 99.\n");
-        getchar();
         int computerNumber, startNumber = 1, endNumber = 99;
         srand(time(NULL));
         do
         {
             computerNumber = rand()%(endNumber - startNumber + 1) + startNumber;
-            printf("%d\n", computerNumber);
+            printf("\n%d\n", computerNumber);
             printf("Am I right? (-1/0/1)\n");
             scanf("%d", &answerInt);
             if(answerInt == -1)
