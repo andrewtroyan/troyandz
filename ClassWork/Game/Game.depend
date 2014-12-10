@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1418211712 source:d:\andrewtroyan\troyandz\classwork\game\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+
