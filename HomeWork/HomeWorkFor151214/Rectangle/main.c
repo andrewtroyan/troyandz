@@ -8,6 +8,7 @@ int main()
     scanf("%d", &width);
     printf("Enter the height (>= 1): ");
     scanf("%d", &height);
+    system("cls");
     for(int i = 1; i <= height; ++i)
     {
         for(int k = 1; k <= width; ++k)
