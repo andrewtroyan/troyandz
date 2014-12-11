@@ -29,6 +29,7 @@ int main()
             printf("%d\n", computerNumber);
             printf("Am I right? (-1/0/1)\n");
             scanf("%d", &answerInt);
+            computerNumber = computerNumber;
         }
         printf("Congratulations!\nWanna play again with me? (y/n):\n");
         scanf(" %c", &answerChar);
