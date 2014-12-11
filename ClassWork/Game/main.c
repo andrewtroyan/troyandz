@@ -26,17 +26,9 @@ int main()
             {
                 endNumber = computerNumber - 1;
             }
-<<<<<<< HEAD
-            printf("%d\n", computerNumber);
-            printf("Am I right? (-1/0/1)\n");
-            scanf("%d", &answerInt);
-            computerNumber = computerNumber;
-        }
-        printf("Congratulations!\nWanna play again with me? (y/n):\n");
-=======
+
         } while(answerInt != 0);
         printf("\nCongratulations!\nWanna play again with me? (y/n):\n");
->>>>>>> 0659b01d4ad0c005d66c75e5df23bc381ff25f4e
         scanf(" %c", &answerChar);
     } while(answerChar == 'y');
     printf("\nIt was pleasant to play with you! Goodbye!\n");
