@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1385316878 source:d:\andrewtroyan\troyandz\homeworkfor031214\weight\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1417543894 source:d:\andrewtroyan\troyandz\homeworkfor031214\weight\weight.c
+	<stdio.h>
+	<stdlib.h>
+
