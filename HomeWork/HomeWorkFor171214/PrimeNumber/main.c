@@ -4,7 +4,7 @@
 int main()
 {
     int number, indicator = 0;
-    printf("Enter the number: ");
+    printf("Enter the number >= 2: ");
     scanf("%d", &number);
     for (int i = 2; i < number; ++i)
     {
