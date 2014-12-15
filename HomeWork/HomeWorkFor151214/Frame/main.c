@@ -9,40 +9,20 @@ int main()
     printf("Enter the height (>= 1): ");
     scanf("%d", &height);
     system("cls");
-    for(int i = 1; i<= height; ++i)
+    for(int i = 1; i <= height; ++i)
     {
-        if (i == 1 || i == height)
+        for(int k = 1; k <= width; ++k)
         {
-            for(int k = 1; k <= width; ++k)
+            if(i == 1 || i == height || k == 1 || k == width)
             {
-                if (k == width)
-                {
-                    printf("%c\n", '#');
-                }
-                else
-                {
-                    printf("%c", '#');
-                }
+                printf("*");
+            }
+            else
+            {
+                printf(" ");
             }
         }
-        else
-        {
-            for(int k = 1; k <= width; ++k)
-            {
-                if(k == 1)
-                {
-                    printf("%c", '#');
-                }
-                else if(k == width)
-                {
-                    printf("%c\n", '#');
-                }
-                else
-                {
-                    printf("%c", ' ');
-                }
-            }
-        }
+        printf("\n");
     }
     return 0;
 }

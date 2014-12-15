@@ -13,15 +13,9 @@ int main()
     {
         for(int k = 1; k <= width; ++k)
         {
-            if(k == width)
-            {
-                printf("%c\n", '*');
-            }
-            else
-            {
-                printf("%c", '*');
-            }
+            printf("*");
         }
+        printf("\n");
     }
     return 0;
 }
