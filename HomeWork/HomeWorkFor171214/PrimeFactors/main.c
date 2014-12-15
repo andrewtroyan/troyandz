@@ -3,19 +3,20 @@
 
 int main()
 {
-    int number;
+    int number, exponent;
     printf("Enter the number >= 2: ");
     scanf("%d", &number);
     printf("%d = ", number);
-    int i = 2;
-    while(i <= number)
+    for(int i = 2; i <= number; ++i)
     {
-        while(number%i == 0)
+        if (number%i == 0)
         {
-            printf("%d*", i);
-            number /= i;
+            for(exponent = 0; number%i == 0; ++exponent)
+            {
+                number /= i;
+            }
+            printf("(%d^%d)*", i, exponent);
         }
-        ++i;
     }
     printf("\b.");
     return 0;
