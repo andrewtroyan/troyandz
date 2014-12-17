@@ -17,12 +17,8 @@ int main()
         if(bit & exponentAbs)
         {
             r *= q;
-            q *= q;
         }
-        else
-        {
-            q *= q;
-        }
+        q *= q;
         bit <<= 1;
     }
     r = exponent < 0? 1.0/r : r;
