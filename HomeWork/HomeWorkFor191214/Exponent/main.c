@@ -9,7 +9,7 @@ int main()
     scanf("%lf", &eps);
     system("cls");
     printf("%3s%12s%8s%14s\n\n", "x", "Your exp", "Exp", "Different");
-    while (x <= 2.1)
+    while (x < 2.1)
     {
         int i = 1;
         double result = 0.0, adding = 1.0;
