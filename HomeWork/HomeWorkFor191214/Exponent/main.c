@@ -8,7 +8,7 @@ int main()
     printf("Enter the eps accuracy (for example, 0.0001 or 1e-4): ");
     scanf("%lf", &eps);
     system("cls");
-    printf("%3s%12s%8s%14s\n\n", "x", "Your exp", "Exp", "Different");
+    printf("%s%17s%11s%12s\n\n", "x:", "Your exp(x):", "My exp(x):", "Difference:");
     while (x < 2.1)
     {
         int i = 1;
@@ -19,7 +19,7 @@ int main()
             adding *= x / i;
             ++i;
         }
-        printf("% .1f%11f%11f% 11f\n", x, result, exp(x), result - exp(x));
+        printf("% .1f%11f%13f% 12f\n", x, result, exp(x), result - exp(x));
         x += 0.1;
     }
     return 0;
