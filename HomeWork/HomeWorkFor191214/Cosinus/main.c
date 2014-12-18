@@ -16,10 +16,10 @@ int main()
         while (fabs(adding) >= eps)
         {
             result += adding;
-            adding *= (-1.0)*(x*x/i*(i+2));
+            adding *= -x * x / (i * (i+1));
             i += 2;
         }
-        printf("% .1f%11f%11f% 11f\n", x, result, cos(x), result - cos(x));
+        printf("% .1f%11f%11f%11f\n", x, result, cos(x), result - cos(x));
         x += 0.1;
     }
     return 0;

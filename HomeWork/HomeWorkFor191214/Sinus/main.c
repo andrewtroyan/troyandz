@@ -12,14 +12,14 @@ int main()
     while (x < 2.1)
     {
         int i = 1;
-        double result = 0.0, adding = x/i;
+        double result = 0.0, adding = x / i;
         while (fabs(adding) >= eps)
         {
             result += adding;
-            adding *= (-1.0)*x*x/(i+1)*(i+2);
+            adding *= -x * x / ((i+1) * (i+2));
             i += 2;
         }
-        printf("% .1f%11f%11f% 11f\n", x, result, sin(x), result - sin(x));
+        printf("% .1f%11f%11f%11f\n", x, result, sin(x), result - sin(x));
         x += 0.1;
     }
     return 0;
