@@ -22,7 +22,7 @@ int main()
             ++time;
             if (N == 0)
             {
-                printf("Ivan Vasilyevich thrown out all the flies in %d minutes!", time);
+                printf("Ivan Vasilyevich thrown out all the flies in %d minute(s)!", time);
                 return 0;
             }
         }
