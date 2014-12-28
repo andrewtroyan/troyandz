@@ -6,6 +6,7 @@ int main()
     int amountOfLayers;
     printf("Enter the amount of layers: ");
     scanf("%d", &amountOfLayers);
+    system("cls");
     for (int i = 1, k = 1; i <= amountOfLayers; ++i, ++k)
     {
         printf ("%*s%c\n", amountOfLayers, "", '*');
