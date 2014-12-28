@@ -12,6 +12,7 @@ int main()
         indicator *= 12;
     }
     indicator /= 12;
+    printf("Your number in the duodecimal number system: ");
     while (indicator != 0)
     {
         duoDecimalNumber = decimalNumber / indicator;
@@ -29,5 +30,6 @@ int main()
         decimalNumber %= indicator;
         indicator /= 12;
     }
+    printf(".");
     return 0;
 }
