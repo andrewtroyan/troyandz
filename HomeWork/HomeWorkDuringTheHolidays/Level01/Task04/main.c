@@ -3,7 +3,7 @@
 
 int main()
 {
-    int N, exorcismSpeed, fatigueTime, flyReturnSpeed;
+    int N, fatigueTime, flyReturnSpeed, exorcismSpeed;
     printf("Enter the amount of flies: ");
     scanf("%d", &N);
     printf("Enter the amount of flies thrown out per minute: ");
@@ -14,20 +14,24 @@ int main()
     scanf("%d", &flyReturnSpeed);
     system("cls");
     int time = 0;
-    for (int k = 1; k <= 5; ++k)
+    while (exorcismSpeed != 0 && N > 0)
     {
-        for (int i = 1; i <= fatigueTime; ++i)
+        for (int i = 1; i <= fatigueTime && N > 0; ++i)
         {
             N -= exorcismSpeed - flyReturnSpeed;
             ++time;
-            if (N == 0)
-            {
-                printf("Ivan Vasilyevich thrown out all the flies in %d minute(s)!", time);
-                return 0;
-            }
         }
-        exorcismSpeed /= 5;
+        exorcismSpeed = (double)exorcismSpeed * 0.8;
     }
-    printf("Ivan Vasilyevich got tired :( It's impossible to throw all the flies out :(");
+    if (N <= 0)
+    {
+        printf("Ivan Vasilyevich thrown out all the flies in %d minute(s)!", time);
+    }
+    else
+    {
+        printf("Ivan Vasilyevich got tired :( It's impossible to throw all the flies out :(");
+    }
     return 0;
 }
+
+
