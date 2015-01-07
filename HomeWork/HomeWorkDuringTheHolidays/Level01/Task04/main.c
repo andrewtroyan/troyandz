@@ -14,7 +14,7 @@ int main()
     scanf("%d", &flyReturnSpeed);
     system("cls");
     int time = 0;
-    while (exorcismSpeed != 0 || N > 0)
+    while (exorcismSpeed != 0 && N > 0)
     {
         for (int i = 1; i <= fatigueTime && N > 0; ++i)
         {
