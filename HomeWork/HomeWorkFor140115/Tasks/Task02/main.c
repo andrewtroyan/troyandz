@@ -18,7 +18,7 @@ int main()
 double binaryExponantiation(double number, int exponent)
 {
     double r = 1.0, q = number;
-    int bit = 1, exponentAbs = exponent < 0? -exponent : exponent;
+    int bit = 1, exponentAbs = abs(exponent);
     while (bit <= exponentAbs)
     {
         if(bit & exponentAbs)
