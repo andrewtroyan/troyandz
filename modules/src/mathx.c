@@ -2,7 +2,9 @@
 int gcd(int a, int b)
 {
     if (b == 0)
+    {
         return a;
+    }
     while (a % b != 0)
     {
         int c = a % b;
