@@ -9,8 +9,15 @@ int main()
     scanf("%d", &decimalNumber);
     printf("Enter the number system (from 2 to 36):  ");
     scanf("%d", &numberSystem);
-    printf("Your number in this number system (%d): ", numberSystem);
-    toAnotherNumberSystem(decimalNumber, numberSystem);
-    printf(".");
+    if (numberSystem >= 2 && numberSystem <= 36)
+    {
+        printf("Your number in this number system (%d): ", numberSystem);
+        toAnotherNumberSystem(decimalNumber, numberSystem);
+        printf(".");
+    }
+    else
+    {
+        printf("ERROR!");
+    }
     return 0;
 }
