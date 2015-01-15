@@ -26,7 +26,7 @@ int main()
             printf("\n");
             computerScore = bonesScore();
             humanScore > computerScore? printf("You won!\n") : (humanScore < computerScore? printf("Computer won!\n") : printf("No sides!\n"));
-            printf("Do you want to pay again? (y/n) ");
+            printf("Do you want to play again? (y/n) ");
             scanf(" %c", &answer);
         } while (answer == 'y');
     }
