@@ -31,8 +31,8 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="../../../modules/include/bones.h" />
-		<Unit filename="../../../modules/src/bones.c">
+		<Unit filename="../../../modules/include/dices.h" />
+		<Unit filename="../../../modules/src/dices.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="main.c">

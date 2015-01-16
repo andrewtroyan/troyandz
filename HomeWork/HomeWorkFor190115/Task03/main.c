@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../../modules/include/bones.h"
+#include "../../../modules/include/dices.h"
 
 int main()
 {
     int humanScore, computerScore;
     char answer;
-    printf("Hello! Do you want to play bones? (y/n) ");
+    printf("Hello! Do you want to play dices? (y/n) ");
     scanf(" %c", &answer);
     if(answer == 'y')
     {
@@ -15,16 +15,16 @@ int main()
             system("cls");
             for(int i = 0; i < 1000; ++i)
             {
-                printf("You roll the dice...\r");
+                printf("You roll the dices...\r");
             }
             printf("\n");
-            humanScore = bonesScore();
+            humanScore = dicesScore();
             for(int i = 0; i < 1000; ++i)
             {
-                printf("Computer rolls the dice...\r");
+                printf("Computer rolls the dices...\r");
             }
             printf("\n");
-            computerScore = bonesScore();
+            computerScore = dicesScore();
             humanScore > computerScore? printf("You won!\n") : (humanScore < computerScore? printf("Computer won!\n") : printf("No sides!\n"));
             printf("Do you want to play again? (y/n) ");
             scanf(" %c", &answer);

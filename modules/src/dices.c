@@ -1,6 +1,6 @@
 #include <time.h>
 
-int bonesScore()
+int dicesScore()
 {
     srand(time(NULL));
     int score;
