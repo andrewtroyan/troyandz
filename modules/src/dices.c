@@ -31,4 +31,18 @@ void dicesDraw(int a)
     printf("+---+\n");
 }
 
+int playDices()
+{
+    int generalScore = 0, currentScore = 0;
+    for(int i = 0; i < 2; ++i)
+    {
+        currentScore = dicesScore();
+        dicesDraw(currentScore);
+        generalScore += currentScore;
+    }
+    return generalScore;
+}
+
+
+
 
