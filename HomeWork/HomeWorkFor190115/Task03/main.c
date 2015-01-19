@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "../../../modules/include/dices.h"
 
 int main()
 {
-    int humanScore, computerScore;
+    srand(time(NULL));
+    int humanCurrentScore, computerCurrentScore, humanGeneralScore = 0, computerGeneralScore = 0;
     char answer;
     printf("Hello! Do you want to play dices? (y/n) ");
     scanf(" %c", &answer);
@@ -18,14 +20,24 @@ int main()
                 printf("You roll the dices...\r");
             }
             printf("\n");
-            humanScore = dicesScore();
+            for(int i = 0; i < 2; ++i)
+            {
+                humanCurrentScore = dicesScore();
+                dicesDraw(humanCurrentScore);
+                humanGeneralScore += humanCurrentScore;
+            }
             for(int i = 0; i < 1000; ++i)
             {
                 printf("Computer rolls the dices...\r");
             }
             printf("\n");
-            computerScore = dicesScore();
-            humanScore > computerScore? printf("You won!\n") : (humanScore < computerScore? printf("Computer won!\n") : printf("No sides!\n"));
+            for(int i = 0; i < 2; ++i)
+            {
+                computerCurrentScore = dicesScore();
+                dicesDraw(computerCurrentScore);
+                computerGeneralScore += computerCurrentScore;
+            }
+            humanGeneralScore > computerGeneralScore? printf("You won!\n") : (humanGeneralScore < computerGeneralScore? printf("Computer won!\n") : printf("No sides!\n"));
             printf("Do you want to play again? (y/n) ");
             scanf(" %c", &answer);
         } while (answer == 'y');
