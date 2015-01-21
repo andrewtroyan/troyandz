@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "../../../modules/include/dices.h"
+#include "dices.h"
+#include "../../../modules/include/compatibility.h"
 
 int main()
 {
@@ -14,17 +15,13 @@ int main()
     {
         do
         {
-            system("cls");
-            for(int i = 0; i < 1000; ++i)
-            {
-                printf("You roll the dices...\r");
-            }
+            universalClear();
+            printf("You roll the dices...\r");
+            universalSleep(3);
             printf("\n");
             humanScore = playDices();
-            for(int i = 0; i < 1000; ++i)
-            {
-                printf("Computer rolls the dices...\r");
-            }
+            printf("Computer rolls the dices...\r");
+            universalSleep(3);
             printf("\n");
             computerScore = playDices();
             humanScore > computerScore? printf("You won!\n") : (humanScore < computerScore? printf("Computer won!\n") : printf("No sides!\n"));

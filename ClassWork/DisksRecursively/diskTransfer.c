@@ -1,13 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
-
-void diskTransfer(int disks, char from, char to, char helper);
-
-int main()
-{
-    diskTransfer(8, 'A', 'B', 'C');
-    return 0;
-}
 
 void diskTransfer(int disks, char from, char to, char helper)
 {
