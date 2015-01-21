@@ -2,11 +2,7 @@
 
 void diskTransfer(int disks, char from, char to, char helper)
 {
-    if(disks == 1)
-    {
-        printf("%c -> %c\n", from, to);
-    }
-    else
+    if(disks > 0)
     {
         diskTransfer(disks - 1, from, helper, to);
         printf("%c -> %c\n", from, to);
