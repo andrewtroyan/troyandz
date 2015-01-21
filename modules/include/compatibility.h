@@ -2,5 +2,6 @@
 #define COMPATIBILITY_H_INCLUDED
 
 void universalClear();
+void universalSleep(double time);
 
 #endif // COMPATIBILITY_H_INCLUDED
