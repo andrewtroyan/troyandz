@@ -4,7 +4,7 @@
 
 int main()
 {
-    diskTransfer(3, 'A', 'B', 'C');
+    diskTransfer(6, 'A', 'B', 'C');
     return 0;
 }
 
