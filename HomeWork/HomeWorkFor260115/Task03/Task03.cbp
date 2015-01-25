@@ -35,6 +35,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../Task01/numberFunctions.h" />
+		<Unit filename="combinate.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="combinate.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
