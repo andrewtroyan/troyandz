@@ -7,7 +7,7 @@ int main()
     int number;
     printf("Enter the number: ");
     scanf("%d", &number);
-    combinateNumber(number);
+    permute(number);
     return 0;
 }
 

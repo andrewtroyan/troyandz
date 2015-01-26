@@ -1,6 +1,8 @@
 #include "../Task01/numberFunctions.h"
 
-void combinateNumber(int number)
+void permuteWithPrefix(int prefix, int number);
+
+void permute(int number)
 {
     if(amountOfDigitsInNumber(number) == 1)
     {
@@ -10,9 +12,26 @@ void combinateNumber(int number)
     {
         for(int i = 0; i < amountOfDigitsInNumber(number); ++i)
         {
+            permuteWithPrefix(firstDigitInNmuber(number), allDigitsExceptFirst(number));
             number = cycleShift(number);
-            printf("%d", firstDigitInNmuber(number));
-            combinateNumber(allDigitsExceptFirst(number));
         }
     }
 }
+
+void permuteWithPrefix(int prefix, int number)
+{
+    if(amountOfDigitsInNumber(number) == 1)
+    {
+        printf("%d%d\n", prefix, number);
+    }
+    else
+    {
+        for(int i = 0; i < amountOfDigitsInNumber(number); ++i)
+        {
+            permuteWithPrefix(compoundDigit(prefix, firstDigitInNmuber(number)), allDigitsExceptFirst(number));
+            number = cycleShift(number);
+        }
+    }
+}
+
+
