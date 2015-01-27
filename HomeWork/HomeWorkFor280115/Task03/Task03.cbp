@@ -31,9 +31,21 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="../../../modules/include/array.h" />
+		<Unit filename="../../../modules/src/array.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Task01/myRandom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Task01/myRandom.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="randonElementOfArray.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="randonElementOfArray.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
