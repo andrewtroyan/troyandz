@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void output(const int array[], int size)
+void outputArrray(const int array[], int size)
 {
     for(int i = 0; i < size; ++i)
     {
@@ -9,7 +9,7 @@ void output(const int array[], int size)
     printf("\n");
 }
 
-void input(int array[], int size)
+void inputArray(int array[], int size)
 {
     for(int i = 0; i < size; ++i)
     {
