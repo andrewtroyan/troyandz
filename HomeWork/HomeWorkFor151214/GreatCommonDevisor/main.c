@@ -16,7 +16,7 @@ int main()
         max = min;
         min = excess;
     } while (excess != 0);
-    printf("The great common devisor of these numbers is %d.", max);
+    printf("The great common divisor of these numbers is %d.", max);
     return 0;
 }
 

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../../modules/include/numsyst.h"
+#include "numsyst.h"
 
 int main()
 {
