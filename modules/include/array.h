@@ -3,5 +3,6 @@
 
 void outputArrray(const int array[], int size);
 void inputArray(int array[], int size);
+int arraySearch(int number, int array[], int size);
 
 #endif // ARRAY_H_INCLUDED

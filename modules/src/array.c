@@ -17,3 +17,15 @@ void inputArray(int array[], int size)
         scanf("%d", &array[i]);
     }
 }
+
+int arraySearch(int number, int array[], int size)
+{
+    for(int i = 0; i < size; ++i)
+    {
+        if(array[i] == number)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
