@@ -13,7 +13,7 @@ void randomElementsOfArray(int array[], int sizeOfArray, int sizeOfPart)
     }
     else
     {
-        printf("ERROR!");
+        printf("ERROR!\a");
         exit(1);
     }
 }

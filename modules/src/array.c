@@ -43,7 +43,7 @@ int minOfArray(const int array[], int sizeOfArray, int sizeOfPart)
     }
     else
     {
-        printf("ERROR!");
+        printf("ERROR!\a");
         exit(1);
     }
 }
@@ -61,7 +61,7 @@ int maxOfArray(const int array[], int sizeOfArray, int sizeOfPart)
     }
     else
     {
-        printf("ERROR!");
+        printf("ERROR!\a");
         exit(1);
     }
 }
