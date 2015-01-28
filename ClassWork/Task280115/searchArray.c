@@ -2,7 +2,7 @@
 #include <assert.h>
 #include "../../modules/include/array.h"
 
-int searchLastNegativeInArray(const int array[], int sizeOfArray, int sizeOfPart)
+int searchLastNegativeInArray(const int array[], int sizeOfPart)
 {
     assert(sizeOfPart > 0 && sizeOfPart <= SIZE);
     for(int i = sizeOfPart - 1; i >= 0; --i)
@@ -16,22 +16,15 @@ int searchLastNegativeInArray(const int array[], int sizeOfArray, int sizeOfPart
 
 }
 
-int searchFirstPositiveInArray(const int array[], int sizeOfArray, int sizeOfPart)
+int searchFirstPositiveInArray(const int array[], int sizeOfPart)
 {
-    if(sizeOfPart > 0 && sizeOfPart <= sizeOfArray)
+    assert(sizeOfPart > 0 && sizeOfPart <= SIZE);
+    for(int i = 0; i < sizeOfPart; ++i)
     {
-        for(int i = 0; i < sizeOfPart; ++i)
+        if(array[i] > 0)
         {
-            if(array[i] > 0)
-            {
-                return i;
-            }
+            return i;
         }
-        return -1;
     }
-    else
-    {
-        printf("ERROR!");
-        exit(1);
-    }
+    return -1;
 }

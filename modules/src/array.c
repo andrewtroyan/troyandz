@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <time.h>
+#include <assert.h>
+#define SIZE 1000
 
 void outputArrray(const int array[], int size)
 {
@@ -31,56 +33,35 @@ int arraySearch(int number, const int array[], int size)
     return -1;
 }
 
-int minOfArray(const int array[], int sizeOfArray, int sizeOfPart)
+int minOfArray(const int array[], int sizeOfPart)
 {
-    if(sizeOfPart > 0 && sizeOfPart <= sizeOfArray)
+    assert(sizeOfPart > 0 && sizeOfPart <= SIZE);
+    int min = array[0];
+    for(int i = 1; i < sizeOfPart; ++i)
     {
-        int min = array[0];
-        for(int i = 1; i < sizeOfPart; ++i)
-        {
-            min = array[i] < min? array[i] : min;
-        }
-        return min;
+        min = array[i] < min? array[i] : min;
     }
-    else
-    {
-        printf("ERROR!\a");
-        exit(1);
-    }
+    return min;
 }
 
-int maxOfArray(const int array[], int sizeOfArray, int sizeOfPart)
+int maxOfArray(const int array[], int sizeOfPart)
 {
-    if(sizeOfPart > 0 && sizeOfPart <= sizeOfArray)
+    assert(sizeOfPart > 0 && sizeOfPart <= SIZE);
+    int max = array[0];
+    for(int i = 1; i < sizeOfPart; ++i)
     {
-        int max = array[0];
-        for(int i = 1; i < sizeOfPart; ++i)
-        {
-            max = array[i] > max? array[i] : max;
-        }
-        return max;
+        max = array[i] > max? array[i] : max;
     }
-    else
-    {
-        printf("ERROR!\a");
-        exit(1);
-    }
+    return max;
 }
 
-void generateRandomNumbersInArray(int array [], int sizeOfArray, int sizeOfPart)
+void generateRandomNumbersInArray(int array [], int sizeOfPart)
 {
     srand(time(NULL));
-    if(sizeOfPart > 0 && sizeOfPart <= sizeOfArray)
+    assert(sizeOfPart > 0 && sizeOfPart <= SIZE);
+    for(int i = 0; i < sizeOfPart; ++i)
     {
-        for(int i = 0; i < sizeOfPart; ++i)
-        {
-            array[i] = rand()%1001 - 500;
-        }
-    }
-    else
-    {
-        printf("ERROR!\a");
-        exit(1);
+        array[i] = rand()%1001 - 500;
     }
 }
 

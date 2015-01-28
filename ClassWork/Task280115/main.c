@@ -3,7 +3,6 @@
 #include "../../modules/include/array.h"
 #include "searchArray.h"
 
-
 int main()
 {
     int array[SIZE], sizeOfPart, n;
@@ -17,7 +16,7 @@ int main()
         switch (answer)
         {
         case 'g':
-            generateRandomNumbersInArray(array, SIZE, sizeOfPart);
+            generateRandomNumbersInArray(array, sizeOfPart);
             break;
         case 'w':
             inputArray(array, sizeOfPart);
@@ -29,7 +28,7 @@ int main()
         printf("Your array: ");
         outputArrray(array, sizeOfPart);
 
-        n = searchLastNegativeInArray(array, SIZE, sizeOfPart);
+        n = searchLastNegativeInArray(array, sizeOfPart);
         if(n >= 0)
         {
             printf("The last negative number of array is %d. Its index is %d.\n", array[n], n);
@@ -39,7 +38,7 @@ int main()
             printf("There's no negative numbers in your array.\n");
         }
 
-        n = searchFirstPositiveInArray(array, SIZE, sizeOfPart);
+        n = searchFirstPositiveInArray(array, sizeOfPart);
         if(n >= 0)
         {
             printf("The first positive number of array is %d. Its index is %d.\n", array[n], n);
