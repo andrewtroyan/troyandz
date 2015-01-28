@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 
 void outputArrray(const int array[], int size)
 {
@@ -58,6 +59,23 @@ int maxOfArray(const int array[], int sizeOfArray, int sizeOfPart)
             max = array[i] > max? array[i] : max;
         }
         return max;
+    }
+    else
+    {
+        printf("ERROR!\a");
+        exit(1);
+    }
+}
+
+void generateRandomNumbersInArray(int array [], int sizeOfArray, int sizeOfPart)
+{
+    srand(time(NULL));
+    if(sizeOfPart > 0 && sizeOfPart <= sizeOfArray)
+    {
+        for(int i = 0; i < sizeOfPart; ++i)
+        {
+            array[i] = rand()%1001 - 500;
+        }
     }
     else
     {
