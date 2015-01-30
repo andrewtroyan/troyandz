@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../../../modules/include/array.h"
-#include "../../../../ClassWork/Task280115/searchArray.h"
-#include "../askForGenerateOrWriting.h"
-#include "interchangeFirstPositiveAndLastNegative.h"
 #include "../../../../modules/include/compatibility.h"
+#include "../askForGenerateOrWriting.h"
+#include "evenAndOddNumbers.h"
 
 int main()
 {
@@ -15,6 +14,7 @@ int main()
     universalClear();
     printf("Your array:\n");
     outputArrray(array, sizeOfPart);
-    interchangeFirstPositiveAndLastNegative(array, sizeOfPart);
+    showMaxEvenNumber(array, sizeOfPart);
+    showMinOddNumber(array, sizeOfPart);
     return 0;
 }
