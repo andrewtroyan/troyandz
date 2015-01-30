@@ -1,6 +1,6 @@
 #include <assert.h>
-#include "../../../../modules/include/array.h"
-#include "../../../../ClassWork/Task280115/searchArray.h"
+#include "../../../modules/include/array.h"
+#include "../../../ClassWork/Task280115/searchArray.h"
 
 void interchangeFirstPositiveAndLastNegative(int array[], int sizeOfPart)
 {

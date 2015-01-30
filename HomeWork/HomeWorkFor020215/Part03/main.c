@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../../../modules/include/array.h"
-#include "../../../../ClassWork/Task280115/searchArray.h"
+#include "../../../modules/include/array.h"
+#include "../../../modules/include/compatibility.h"
 #include "../askForGenerateOrWriting.h"
-#include "interchangeFirstPositiveAndLastNegative.h"
-#include "../../../../modules/include/compatibility.h"
 
 int main()
 {
@@ -15,6 +13,6 @@ int main()
     universalClear();
     printf("Your array:\n");
     outputArrray(array, sizeOfPart);
-    interchangeFirstPositiveAndLastNegative(array, sizeOfPart);
+
     return 0;
 }

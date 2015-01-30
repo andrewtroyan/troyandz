@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../../../modules/include/array.h"
-#include "../../../../modules/include/compatibility.h"
+#include "../../../modules/include/array.h"
+#include "../../../modules/include/compatibility.h"
 #include "../askForGenerateOrWriting.h"
 
 int main()

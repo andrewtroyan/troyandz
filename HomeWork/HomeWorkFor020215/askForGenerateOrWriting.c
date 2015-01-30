@@ -1,5 +1,5 @@
 #include <assert.h>
-#include "../../../modules/include/array.h"
+#include "../../modules/include/array.h"
 
 void askForGenerateOrWriting(int array[], int sizeOfPart)
 {
