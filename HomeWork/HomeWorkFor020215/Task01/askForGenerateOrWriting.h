@@ -1,0 +1,6 @@
+#ifndef ASKFORGENERATEORWRITING_H_INCLUDED
+#define ASKFORGENERATEORWRITING_H_INCLUDED
+
+void askForGenerateOrWriting(int array[], int sizeOfPart);
+
+#endif // ASKFORGENERATEORWRITING_H_INCLUDED

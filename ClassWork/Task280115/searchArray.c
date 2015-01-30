@@ -13,7 +13,6 @@ int searchLastNegativeInArray(const int array[], int sizeOfPart)
         }
     }
     return -1;
-
 }
 
 int searchFirstPositiveInArray(const int array[], int sizeOfPart)
