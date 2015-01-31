@@ -6,13 +6,19 @@
 
 int main()
 {
-    int array[SIZE], sizeOfPart;
+    int array[SIZE], sizeOfPart, maxElement;
     printf("Enter the size of array (0 < size <= %d): ", SIZE);
     scanf("%d", &sizeOfPart);
     askForGenerateOrWriting(array, sizeOfPart);
     universalClear();
     printf("Your array:\n");
     outputArrray(array, sizeOfPart);
-
+    maxElement = maxOfArray(array, sizeOfPart);
+    for(int i = 0; i < sizeOfPart; ++i)
+    {
+        array[i] == maxElement && array[i] % 2 == 0? array[i] = i : 0;
+    }
+    printf("New array:\n");
+    outputArrray(array, sizeOfPart);
     return 0;
 }
