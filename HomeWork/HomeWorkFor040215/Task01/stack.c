@@ -5,9 +5,11 @@ void push(char stack[], char symbol)
     stack[++top] = symbol;
 }
 
-void pop(char stack[])
+char pop(char stack[])
 {
+    int result = stack[top];
     stack[top--] = 0;
+    return result;
 }
 
 int checkStack(char stack[])
