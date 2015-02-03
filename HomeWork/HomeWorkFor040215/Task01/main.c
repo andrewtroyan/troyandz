@@ -1,31 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "stack.h"
 #define SIZE 1000
 
 int main()
 {
     char stack[SIZE], symbol;
-    int top = -1;
     do
     {
         symbol = getchar();
         if(symbol == '(' || symbol == '[' || symbol == '{')
         {
-            stack[++top] = symbol;
+            push(stack, symbol);
         }
         else if(symbol == ')' || symbol == ']' || symbol == '}')
         {
-            stack[top--] = 0;
+            pop(stack);
         }
     }while(symbol != '\n');
-    if(stack[top] == 0)
-    {
-        printf("Correctly.");
-    }
-    else
-    {
-        printf("Incorrectly.");
-    }
+    showCheckedStack(stack);
     return 0;
 }
 
