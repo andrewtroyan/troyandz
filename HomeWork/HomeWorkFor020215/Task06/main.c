@@ -15,5 +15,9 @@ int main()
     universalClear();
     printf("Your array:\n");
     outputArrray(array, sizeOfPart);
+    for(int i = 0; i < sizeOfPart; ++i)
+    {
+
+    }
     return 0;
 }
