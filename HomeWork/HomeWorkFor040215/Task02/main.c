@@ -4,7 +4,7 @@
 
 int main()
 {
-    char stack[SIZE], symbol;
+    int stack[SIZE], symbol;
     do
     {
         symbol = getchar();

@@ -1,45 +1,45 @@
 static int top = -1;
 int result;
 
-void push(char stack[], char symbol)
+void push(int stack[], int symbol)
 {
     stack[++top] = symbol;
 }
 
-int pop(char stack[])
+int pop(int stack[])
 {
     int result = stack[top] - '0';
     stack[top--] = 0;
     return result;
 }
 
-void add(char stack[])
+void add(int stack[])
 {
     result = pop(stack) + pop(stack);
     stack[++top] = result;
 }
 
-void deduct(char stack[])
+void deduct(int stack[])
 {
     result = -1 * pop(stack);
     result += pop(stack);
     stack[++top] = result;
 }
 
-void multiply(char stack[])
+void multiply(int stack[])
 {
     result = pop(stack) * pop(stack);
     stack[++top] = result;
 }
 
-void divide(char stack[])
+void divide(int stack[])
 {
     result = pop(stack);
     result = pop(stack) / result;
     stack[++top] = result;
 }
 
-void printResult(char stack[])
+void printResult(int stack[])
 {
     printf("%d", result);
 }
