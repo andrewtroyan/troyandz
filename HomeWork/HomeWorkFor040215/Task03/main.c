@@ -25,7 +25,8 @@ int main()
             --direction;
             break;
         case '.':
-            printf("%c", string[direction]);
+            putchar(string[direction]);
+            break;
         }
     }
     return 0;
