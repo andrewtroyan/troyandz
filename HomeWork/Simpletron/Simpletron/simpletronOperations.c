@@ -13,7 +13,7 @@ int entryMemory(int memory[])
         {
             printf("*** Loading the program is done. ***\n"
                    "*** Starting to run the program. ***");
-            universalSleep(2.5);
+            //universalSleep(2.5);
             universalClear();
             return 0;
         }
@@ -42,7 +42,7 @@ void runProgram(int memory[])
             ++instructionCounter;
             break;
         case 11:
-            printf("%d\n", memory[operand]);
+            printf("%+05d\n", memory[operand]);
             ++instructionCounter;
             break;
         case 20:
@@ -77,18 +77,27 @@ void runProgram(int memory[])
             {
                 instructionCounter = operand;
             }
+            else
+            {
+                ++instructionCounter;
+            }
             break;
         case 42:
             if(accumulator == 0)
             {
                 instructionCounter = operand;
             }
+            else
+            {
+                ++instructionCounter;
+            }
             break;
         case 43:
             printf("*** Simpletron is stopped. ***\n");
             break;
         }
-    }while(operationCode != 43);
+    }
+    while(operationCode != 43);
 }
 
 
