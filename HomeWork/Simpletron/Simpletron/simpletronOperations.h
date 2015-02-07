@@ -5,5 +5,6 @@
 
 int entryMemory(int memory[]);
 void runProgram(int memory[]);
+void memoryDump(int memory[]);
 
 #endif // SIMPLETRONOPERATIONS_H_INCLUDED

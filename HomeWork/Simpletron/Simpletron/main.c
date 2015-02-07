@@ -15,5 +15,6 @@ int main()
     int memory[SIZEOFMEMORY] = {0};
     entryMemory(memory);
     runProgram(memory);
+    memoryDump(memory);
     return 0;
 }
