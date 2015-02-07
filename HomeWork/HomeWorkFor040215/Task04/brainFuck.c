@@ -1,14 +1,16 @@
+#include <assert.h>
 #define SIZE 1000
 
-static int pair[SIZE] = {0};
+static int pair[SIZE] = {0}, stack[SIZE] = {0}, top = -1;
 
 int fillArrayWithSymbols(char symbols[], int size)
 {
     char symbol;
-    int stack[SIZE] = {0}, top = -1;
     for(int i = 0; i < size; ++i)
     {
         symbol = getchar();
+        assert(symbol == '+' || symbol == '-' || symbol == '<' || symbol == '>' || symbol == '.' || symbol == ','
+                || symbol == '[' || symbol == ']' || symbol == '\n');
         if(symbol == '\n')
         {
             symbols[i] = symbol;
@@ -88,5 +90,5 @@ void runTheProgram(char symbols[])
             break;
         }
     }
-
+    assert(top == -1 && stack[top + 1] == 0);
 }

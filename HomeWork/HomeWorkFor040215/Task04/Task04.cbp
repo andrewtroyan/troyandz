@@ -31,6 +31,14 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="../../../modules/include/compatibility.h" />
+		<Unit filename="../../../modules/src/compatibility.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="brainFuck.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="brainFuck.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
