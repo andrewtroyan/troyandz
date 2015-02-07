@@ -14,7 +14,7 @@ int entryMemory(int memory[])
             {
                 printf("*** Loading the program is done. ***\n"
                        "*** Starting to run the program. ***");
-                //universalSleep(2.5);
+                universalSleep(2.5);
                 universalClear();
                 return 0;
             }

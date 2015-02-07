@@ -2,7 +2,7 @@
 #define STACK_H_INCLUDED
 #define SIZE 1000
 
-void push(int stack[], int symbol);
+void push(int stack[], char symbol);
 int pop(int stack[]);
 void add(int stack[]);
 void deduct(int stack[]);

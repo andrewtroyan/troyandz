@@ -4,33 +4,31 @@
 
 int main()
 {
-    int stack[SIZE], symbol;
-    do
+    int stack[SIZE];
+    char symbol;
+    while(symbol != '=')
     {
         symbol = getchar();
-        if(symbol == '+' || symbol == '-' || symbol == '*' || symbol == '/')
+        switch (symbol)
         {
-            switch (symbol)
-            {
-            case '+':
-                add(stack);
-                break;
-            case '-':
-                deduct(stack);
-                break;
-            case '*':
-                multiply(stack);
-                break;
-            case '/':
-                divide(stack);
-                break;
-            }
-        }
-        else
-        {
+        case '+':
+            add(stack);
+            break;
+        case '-':
+            deduct(stack);
+            break;
+        case '*':
+            multiply(stack);
+            break;
+        case '/':
+            divide(stack);
+            break;
+        case '=':
+            break;
+        default:
             push(stack, symbol);
         }
-    }while(symbol != '=');
+    }
     printResult(stack);
     return 0;
 }
