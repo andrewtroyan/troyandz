@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../../modules/include/compatibility.h"
+#include "../../../../modules/include/compatibility.h"
 #include "simpletronOperations.h"
 
 int main()
