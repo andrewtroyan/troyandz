@@ -36,7 +36,7 @@ void fillTable(char array[][MAXCOLS])
         printf("Enter symbol, row and column to fill: ");
         scanf(" %c %d %d", &symbol, &row, &column);
         assert(row > 0 && row <= MAXROWS && column > 0 && column <= MAXCOLS);
-        if(array[row - 1][column - 1] == 'X' || array[row - 1][column - 1] == 'O')
+        if(array[row - 1][column - 1] == 'X' || array[row - 1][column - 1] == 'O'  || array[row - 1][column - 1] == 'x' || array[row - 1][column - 1] == 'o')
         {
             printf("You can't fill! Try again!\n");
         }
@@ -45,7 +45,7 @@ void fillTable(char array[][MAXCOLS])
             array[row - 1][column - 1] = symbol;
             return 0;
         }
-    }while(array[row - 1][column - 1] == 'X' || array[row - 1][column - 1] == 'O');
+    }while(array[row - 1][column - 1] == 'X' || array[row - 1][column - 1] == 'O'  || array[row - 1][column - 1] == 'x' || array[row - 1][column - 1] == 'o');
 }
 
 
@@ -112,7 +112,7 @@ void playTheGame(char array[][MAXCOLS], int rows, int cols)
         indicator = checkFinish(array);
     }while(indicator == ' ');
     showTable(array, rows, cols);
-    if(indicator == 'X' || indicator == 'O')
+    if(indicator == 'X' || indicator == 'O' || indicator == 'x' || indicator == 'o')
     {
         printf("Player that played with '%c' symbol won!", indicator);
     }
