@@ -61,7 +61,7 @@ void generateRandomNumbersInArray(int array [], int sizeOfPart)
     assert(sizeOfPart > 0 && sizeOfPart <= SIZE);
     for(int i = 0; i < sizeOfPart; ++i)
     {
-        array[i] = rand()%1001 - 500;
+        array[i] = rand()% 10;
     }
 }
 
