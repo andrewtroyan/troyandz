@@ -16,7 +16,6 @@ int main()
     printf("\nTo sort it press any key...");
     getchar();
     getchar();
-    //universalClear();
     sortMultiArray(array, rows, cols);
     printf("\nThis is your sorted array:\n\n");
     outputMultiArray(array, rows, cols);
