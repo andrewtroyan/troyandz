@@ -15,7 +15,7 @@ int main()
     outputMultiArray(array, rows, cols);
     printf("Enter the direction (u - up, d - down, l - left, r - right) and amount of steps: ");
     scanf(" %c%d", &symbol, &amountOfSteps);
-    arrayShift(array, rows, cols, symbol, amountOfSteps);
+    shiftMultiArray(array, rows, cols, symbol, amountOfSteps);
     printf("This is your new array:\n");
     outputMultiArray(array, rows, cols);
     return 0;
