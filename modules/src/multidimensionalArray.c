@@ -68,7 +68,7 @@ void shiftMultiArray(int array[][MAXCOLS], int rows, int cols, char symbol, int 
     switch(symbol)
     {
     case 'r':
-        amountOfSteps = amountOfSteps % cols;
+        amountOfSteps %= cols;
         for(int i = 0; i < rows; ++i)
         {
             for(int k = 0, j = cols - amountOfSteps; k < amountOfSteps; ++k, ++j)
@@ -86,7 +86,7 @@ void shiftMultiArray(int array[][MAXCOLS], int rows, int cols, char symbol, int 
         }
         break;
     case 'l':
-        amountOfSteps = amountOfSteps % cols;
+        amountOfSteps %= cols;
         for(int i = 0; i < rows; ++i)
         {
             for(int k = 0, j = 0; k < amountOfSteps; ++k, ++j)
@@ -104,7 +104,7 @@ void shiftMultiArray(int array[][MAXCOLS], int rows, int cols, char symbol, int 
         }
         break;
     case 'u':
-        amountOfSteps = amountOfSteps % rows;
+        amountOfSteps %= rows;
         for(int j = 0; j < cols; ++j)
         {
             for(int k = 0, i = 0; k < amountOfSteps; ++k, ++i)
@@ -122,7 +122,7 @@ void shiftMultiArray(int array[][MAXCOLS], int rows, int cols, char symbol, int 
         }
         break;
     case 'd':
-        amountOfSteps = amountOfSteps % rows;
+        amountOfSteps %= rows;
         for(int j = 0; j < cols; ++j)
         {
             for(int k = 0, i = rows - amountOfSteps; k < amountOfSteps; ++k, ++i)
