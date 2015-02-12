@@ -3,7 +3,7 @@
 #include "../../../modules/include/array.h"
 #include "../askForGenerateOrWriting.h"
 #include "../../../modules/include/compatibility.h"
-#include "maximalSingleElementOfArray.h"
+#include "minimalOfElementsAppearingSeveralTimes.h"
 
 int main()
 {
@@ -14,6 +14,6 @@ int main()
     universalClear();
     printf("Your array:\n");
     outputArrray(array, sizeOfPart);
-    printf("The maximal element that appears only one time is %d.", maximalSingleElementOfArray(array, sizeOfPart));
+    printf("The minimal element that appears more than one time is %d.", minimalElementAppearingSeveralTimes(array, sizeOfPart));
     return 0;
 }
