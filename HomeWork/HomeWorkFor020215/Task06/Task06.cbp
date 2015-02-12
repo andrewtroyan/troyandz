@@ -46,6 +46,10 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="zerosInArray.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="zerosInArray.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

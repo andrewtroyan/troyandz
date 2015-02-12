@@ -4,10 +4,11 @@
 #include "../../../modules/include/array.h"
 #include "../askForGenerateOrWriting.h"
 #include "../../../modules/include/compatibility.h"
+#include "zerosInArray.h"
 
 int main()
 {
-    int array[SIZE], sizeOfPart, number;
+    int array[SIZE], sizeOfPart;
     printf("Enter the size of array (0 < size <= %d): ", SIZE);
     scanf("%d", &sizeOfPart);
     assert(sizeOfPart > 0 && sizeOfPart < SIZE);
@@ -15,9 +16,6 @@ int main()
     universalClear();
     printf("Your array:\n");
     outputArrray(array, sizeOfPart);
-    for(int i = 0; i < sizeOfPart; ++i)
-    {
-
-    }
+    showLongestZerosPart(array, sizeOfPart);
     return 0;
 }
