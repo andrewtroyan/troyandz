@@ -17,7 +17,19 @@ int amountOfElementsAppearingSeveralTimes(int array[], int sizeOfPart)
         }
         if(indicator > 1)
         {
-            ++k;
+            int secondIndicator = 0;
+            for(int l = 0; l < k; ++l)
+            {
+                if(array[i] == elementsAppearingSeveralTimes[l])
+                {
+                    ++secondIndicator;
+                }
+            }
+            if(secondIndicator == 0)
+            {
+                elementsAppearingSeveralTimes[k] = array[i];
+                ++k;
+            }
         }
     }
     if(k)
