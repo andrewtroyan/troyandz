@@ -1,7 +1,7 @@
 #include <assert.h>
 #include "../../../modules/include/array.h"
 
-int minimalElementAppearingSeveralTimes(int array[], int sizeOfPart)
+int amountOfElementsAppearingSeveralTimes(int array[], int sizeOfPart)
 {
     int  elementsAppearingSeveralTimes[sizeOfPart], k = 0;
     assert(sizeOfPart > 0 && sizeOfPart <= SIZE);
@@ -17,17 +17,15 @@ int minimalElementAppearingSeveralTimes(int array[], int sizeOfPart)
         }
         if(indicator > 1)
         {
-            elementsAppearingSeveralTimes[k] = array[i];
             ++k;
         }
     }
     if(k)
     {
-        return minOfArray(elementsAppearingSeveralTimes, k);
+        return k;
     }
     else
     {
         exit(1);
     }
 }
-
