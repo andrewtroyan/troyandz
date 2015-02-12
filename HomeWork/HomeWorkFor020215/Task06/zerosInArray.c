@@ -5,7 +5,7 @@ void showLongestZerosPart(int array[], int sizeOfPart)
 {
     assert(sizeOfPart > 0 && sizeOfPart <= SIZE);
     int lengthOfZerosPart = 0, startOfZerosPart = 0, endOfZerosPart = 0, indicator = 0;
-    for(int i = 0; i < sizeOfPart;)
+    for(int i = 0; i < sizeOfPart; ++i)
     {
         indicator = 0;
         if(array[i] == 0)
@@ -22,7 +22,6 @@ void showLongestZerosPart(int array[], int sizeOfPart)
                 startOfZerosPart = endOfZerosPart - lengthOfZerosPart + 1;
             }
         }
-        ++i;
     }
     printf("The first longest part with zeros takes %d elements. The index of the start: %d. The index of the end: %d.\n", lengthOfZerosPart, startOfZerosPart, endOfZerosPart);
 }
