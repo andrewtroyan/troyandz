@@ -23,5 +23,12 @@ void showLongestZerosPart(int array[], int sizeOfPart)
             }
         }
     }
-    printf("The first longest part with zeros takes %d elements. The index of the start: %d. The index of the end: %d.\n", lengthOfZerosPart, startOfZerosPart, endOfZerosPart);
+    if(lengthOfZerosPart == 0)
+    {
+        printf("There's no parts with zeros in this array.\n");
+    }
+    else
+    {
+        printf("The first longest part with zeros takes %d element(s). The index of the start: %d. The index of the end: %d.\n", lengthOfZerosPart, startOfZerosPart, endOfZerosPart);
+    }
 }
