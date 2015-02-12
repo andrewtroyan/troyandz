@@ -4,7 +4,7 @@
 void showLongestZerosPart(int array[], int sizeOfPart)
 {
     assert(sizeOfPart > 0 && sizeOfPart <= SIZE);
-    int lengthOfZerosPart = 0, startOfZerosPart = 0, endOfZerosPart = 0, indicator = 0;
+    int lengthOfZerosPart = 0, startOfZerosPart = 0, endOfZerosPart = 0, indicator;
     for(int i = 0; i < sizeOfPart; ++i)
     {
         indicator = 0;
