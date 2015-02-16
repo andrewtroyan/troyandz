@@ -16,14 +16,22 @@ int main()
 {
     initialiseProgram();
 
-    attron(COLOR_PAIR(1)); //attribute on, активируем цветовую пару
+    attron(COLOR_PAIR(normal)); //attribute on, активируем цветовую пару
     printw("Hello world!");
-    attroff(COLOR_PAIR(1));
+    attroff(COLOR_PAIR(normal));
     refresh();
     getch();
     attron(A_BLINK|A_BOLD);
     move(0, 0);
+    attron(COLOR_PAIR(red));
     printw("Hello");
+    attroff(COLOR_PAIR(red));
+    attroff(A_BLINK|A_BOLD);
+    attron(A_BLINK|A_BOLD);
+    move(0, 6);
+    attron(COLOR_PAIR(green));
+    printw("world!");
+    attroff(COLOR_PAIR(green));
     attroff(A_BLINK|A_BOLD);
     refresh();
     getch();
@@ -46,10 +54,10 @@ void initialiseProgram()
     noecho();
     curs_set(0);
     start_color(); //"начинаем" цвета
-    init_pair(1, COLOR_GREEN, COLOR_BLACK); //зеленый шрифт, черный фон
-    //init_pair(normal, COLOR_WHITE, COLOR_BLACK);
-    //init_pair(green, COLOR_GREEN, COLOR_BLACK);
-    //init_pair(red, COLOR_RED, COLOR_BLACK);
+    //init_pair(1, COLOR_GREEN, COLOR_BLACK); //зеленый шрифт, черный фон
+    init_pair(normal, COLOR_WHITE, COLOR_BLACK);
+    init_pair(green, COLOR_GREEN, COLOR_BLACK);
+    init_pair(red, COLOR_RED, COLOR_BLACK);
 }
 
 void treatSigWinch(int signo)
