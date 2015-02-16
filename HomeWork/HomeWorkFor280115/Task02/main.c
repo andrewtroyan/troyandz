@@ -8,7 +8,7 @@ int main()
 {
     int array[SIZE];
     int number;
-    printf("Hello! Fill in the array with %d or less elements.\n", SIZE);
+    printf("Hello! Fill in the array with %d elements.\n", SIZE);
     inputArray(array, SIZE);
     universalClear();
     printf("Your array: ");
