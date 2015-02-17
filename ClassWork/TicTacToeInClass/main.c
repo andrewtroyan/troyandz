@@ -26,15 +26,21 @@ int main()
             comp = !comp;
             break;
         case 2:
+            system("clear");
+            display(table, 3, 3);
             printf("Draw!\n");
             game = false;
             break;
         case 3:
-            printf("Computer!\n");
+            system("clear");
+            display(table, 3, 3);
+            printf("Computer won!\n");
             game = false;
             break;
         case 4:
-            printf("Man!\n");
+            system("clear");
+            display(table, 3, 3);
+            printf("You won!\n");
             game = false;
             break;
         }
