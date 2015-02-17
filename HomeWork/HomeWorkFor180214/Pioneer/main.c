@@ -312,7 +312,7 @@ void openRecursively(int fogOfWar[][COLS], int field[][COLS], int rows, int cols
         fogOfWar[cellI][cellJ] = opened;
         for(int i = cellI - 1; i < cellI + 2; ++i)
         {
-            for(int j = cellI - 1; i < cellJ + 2; ++j)
+            for(int j = cellI - 1; j < cellJ + 2; ++j)
             {
                 if(i >= 0 && j >= 0 && i < rows && j < cols)
                 {
