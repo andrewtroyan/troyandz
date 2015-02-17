@@ -188,8 +188,8 @@ void drawField(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int 
 void openRecursively(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ);
 static int indicatorOfOpenedCells = 0;
 
-int playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ)
-{
+int playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ) //функция возвращает 1, если игрок проиграл
+{                                                                                                  //и 2, если он выиграл
     drawField(fogOfWar, field, rows, cols, cellI, cellJ);
     char symbol = getch();
     static int indicatorOfFlags = 0, amountOfOpenCells;
@@ -307,7 +307,7 @@ int playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int
 
 void openRecursively(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ)
 {
-    if(field[cellI][cellJ] == 0)
+    if(field[cellI][cellJ] == 0 && fogOfWar[cellI][cellJ] == hidden)
     {
         fogOfWar[cellI][cellJ] = opened;
         for(int i = cellI - 1; i < cellI + 2; ++i)
@@ -316,13 +316,13 @@ void openRecursively(int fogOfWar[][COLS], int field[][COLS], int rows, int cols
             {
                 if(i >= 0 && j >= 0 && i < rows && j < cols)
                 {
-                    openRecursively(fogOfWar, field, ROWS, COLS, i, j);
+                    openRecursively(fogOfWar, field, rows, cols, i, j);
                 }
             }
         }
         ++indicatorOfOpenedCells;
     }
-    else if(field[cellI][cellJ] != 0)
+    else
     {
         return 0;
     }
