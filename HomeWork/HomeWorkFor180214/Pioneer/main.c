@@ -11,52 +11,60 @@
 #include <time.h>
 #include <assert.h>
 
+#define ROWS 30
+#define COLS 50
+
 void treatSigWinch(int signo);
 void initialiseProgram();
-enum Colors {normal, green, red};
+enum Colors {normal, green, red, blue, yellow};
 char closeCell[4] = "\342\227\206";
-char flaggedCell[4] = "\342\227\204";
-static int upDown = 0, leftRight = 0;
+//char flaggedCell[4] = "\342\227\204";
+static int upDown = 0, leftRight = 0, rowsOfField, colsOfField, amountOfBombs;
 
 enum State {opened, hidden, flagged}; //состояния fogOfWar
-
-#define ROWS 15
-#define COLS 17
 
 void initFields(int fogOfWar[][COLS], int field[][COLS], int rows, int cols);
 void drawField(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ);
 void playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ);
-int checkTheStep(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ);
+int checkTheStep(int fogOfWar[][COLS], int field[][COLS], int rows, int cols);
 
 int main()
 {
-    initialiseProgram();
     int fogOfWar[ROWS][COLS];
     int field[ROWS][COLS]; //0 - empty, 1-8 - amount of bombs, 9 - bomb
-    bool game = true;
     int resultOfGame = 0;
-    char symbol;
 
-    initFields(fogOfWar, field, ROWS, COLS);
+    printf("Enter the amount of rows (less or equal %d): ", ROWS);
+    scanf("%d", &rowsOfField);
+    printf("Enter the amount of cols (less or equal %d): ", COLS);
+    scanf("%d", &colsOfField);
+    printf("Enter the amount of bombs (less or equal %d): ", rowsOfField * (colsOfField * 40 / 100));
+    scanf("%d", &amountOfBombs);
+    assert(rowsOfField > 0 && rowsOfField <= ROWS && colsOfField > 0 && colsOfField <= COLS && amountOfBombs > 0 && amountOfBombs <= rowsOfField * (colsOfField * 40 / 100));
+    system("clear");
+
+    initialiseProgram();
+
+    initFields(fogOfWar, field, rowsOfField, colsOfField);
 
     while(resultOfGame == 0)
     {
-        playTheGame(fogOfWar, field, ROWS, COLS, upDown, leftRight);
-        resultOfGame = checkTheStep(fogOfWar, field, ROWS, COLS, upDown, leftRight);
+        playTheGame(fogOfWar, field, rowsOfField, colsOfField, upDown, leftRight);
+        resultOfGame = checkTheStep(fogOfWar, field, rowsOfField, colsOfField);
     }
     switch(resultOfGame)
     {
     case 1:
-        drawField(fogOfWar, field, ROWS, COLS, upDown, leftRight);
+        drawField(fogOfWar, field, rowsOfField, colsOfField, upDown, leftRight);
         attron(COLOR_PAIR(red)|A_BOLD|A_BLINK);
         printw("\nYou lose!\n");
         attroff(COLOR_PAIR(red)|A_BOLD|A_BLINK);
         break;
     case 2:
-        drawField(fogOfWar, field, ROWS, COLS, upDown, leftRight);
-        attron(COLOR_PAIR(red)|A_BOLD|A_BLINK);
+        drawField(fogOfWar, field, rowsOfField, colsOfField, upDown, leftRight);
+        attron(COLOR_PAIR(green)|A_BOLD|A_BLINK);
         printw("\nYou won!\n");
-        attroff(COLOR_PAIR(red)|A_BOLD|A_BLINK);
+        attroff(COLOR_PAIR(green)|A_BOLD|A_BLINK);
         break;
     }
     getch();
@@ -82,6 +90,8 @@ void initialiseProgram()
     init_pair(normal, COLOR_WHITE, COLOR_BLACK);
     init_pair(green, COLOR_GREEN, COLOR_BLACK);
     init_pair(red, COLOR_RED, COLOR_BLACK);
+    init_pair(blue, COLOR_BLUE, COLOR_BLACK);
+    init_pair(yellow, COLOR_YELLOW, COLOR_BLACK);
 }
 
 void treatSigWinch(int signo)
@@ -97,7 +107,7 @@ void inc(int field[][COLS], int rows, int cols, int i, int j);
 
 void initFields(int fogOfWar[][COLS], int field[][COLS], int rows, int cols)
 {
-    int amountOfCells = rows * cols, amountOfBombs = 10;
+    int amountOfCells = rows * cols;
     srand(time(NULL));
 
     for(int i = 0; i < rows; ++i)
@@ -155,9 +165,17 @@ void drawField(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int 
                 {
                     printw(" ");
                 }
-                else
+                else if(field[i][j] > 0 && field[i][j] < 9)
                 {
+                    attron(COLOR_PAIR(blue)|A_BOLD);
                     printw("%d", field[i][j]);
+                    attroff(COLOR_PAIR(blue)|A_BOLD);
+                }
+                else if(field[i][j] == 9)
+                {
+                    attron(COLOR_PAIR(red)|A_BOLD);
+                    printw("*");
+                    attroff(COLOR_PAIR(red)|A_BOLD);
                 }
             }
             else if(fogOfWar[i][j] == hidden)
@@ -166,7 +184,9 @@ void drawField(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int 
             }
             else if(fogOfWar[i][j] == flagged)
             {
-                printw("%s", flaggedCell);
+                attron(COLOR_PAIR(yellow)|A_BOLD);
+                printw("?");
+                attroff(COLOR_PAIR(yellow)|A_BOLD);
             }
             else
             {
@@ -259,7 +279,7 @@ void playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, in
     case 'f':
         if(fogOfWar[cellI][cellJ] == hidden)
         {
-            if(indicatorOfFlags < 10)
+            if(indicatorOfFlags < amountOfBombs)
             {
                 fogOfWar[cellI][cellJ] = flagged;
                 ++indicatorOfFlags;
@@ -305,16 +325,24 @@ void openRecursively(int fogOfWar[][COLS], int field[][COLS], int rows, int cols
     }
 }
 
-int checkTheStep(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ)
+int checkTheStep(int fogOfWar[][COLS], int field[][COLS], int rows, int cols)
 {
-    static int indicatorOfOpenedCells = 0;
-    int amountOfOpenedCells = rows * cols;
-    if(field[cellI][cellJ] == 9 && fogOfWar[cellI][cellJ] == opened)
+    int amountOfClosedCells = 0;
+    for(int i = 0; i < rows; ++i)
     {
-        return 1;
+        for(int j = 0; j < cols; ++j)
+        {
+            if(field[i][j] == 9 && fogOfWar[i][j] == opened)
+            {
+                return 1;
+            }
+            else if(fogOfWar[i][j] == hidden || fogOfWar[i][j] == flagged)
+            {
+                ++amountOfClosedCells;
+            }
+        }
     }
-    ++indicatorOfOpenedCells;
-    if(indicatorOfOpenedCells == amountOfOpenedCells)
+    if(amountOfClosedCells == amountOfBombs)
     {
         return 2;
     }
