@@ -288,17 +288,18 @@ void playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, in
 
 void openRecursively(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ)
 {
-    if(field[cellI][cellJ] == 0 && fogOfWar[cellI][cellJ] == hidden)
+    if(cellI >= 0 && cellJ >= 0 && cellI < rows && cellJ < cols )
     {
-        fogOfWar[cellI][cellJ] = opened;
-        for(int i = cellI - 1; i < cellI + 2; ++i)
+        if(fogOfWar[cellI][cellJ] == hidden)
         {
-            for(int j = cellI - 1; j < cellJ + 2; ++j)
+            fogOfWar[cellI][cellJ] = opened;
+
+            if(field[cellI][cellJ] == 0)
             {
-                if(i >= 0 && j >= 0 && i < rows && j < cols)
-                {
-                    openRecursively(fogOfWar, field, rows, cols, i, j);
-                }
+                openRecursively(fogOfWar, field, rows, cols, cellI - 1, cellJ);
+                openRecursively(fogOfWar, field, rows, cols, cellI + 1, cellJ);
+                openRecursively(fogOfWar, field, rows, cols, cellI, cellJ - 1);
+                openRecursively(fogOfWar, field, rows, cols, cellI, cellJ + 1);
             }
         }
     }
