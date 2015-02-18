@@ -25,7 +25,8 @@ enum State {opened, hidden, flagged}; //состояния fogOfWar
 
 void initFields(int fogOfWar[][COLS], int field[][COLS], int rows, int cols);
 void drawField(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ);
-int playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ);
+void playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ);
+int checkTheStep(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ);
 
 int main()
 {
@@ -38,26 +39,25 @@ int main()
 
     initFields(fogOfWar, field, ROWS, COLS);
 
-    while(game == true)
+    while(resultOfGame == 0)
     {
-        resultOfGame = playTheGame(fogOfWar, field, ROWS, COLS, upDown, leftRight);
-        switch(resultOfGame)
-        {
-        case 1:
-            drawField(fogOfWar, field, ROWS, COLS, upDown, leftRight);
-            attron(COLOR_PAIR(red)|A_BOLD|A_BLINK);
-            printw("\nYou lose!\n");
-            attron(COLOR_PAIR(red)|A_BOLD|A_BLINK);
-            game = false;
-            break;
-        case 2:
-            drawField(fogOfWar, field, ROWS, COLS, upDown, leftRight);
-            attron(COLOR_PAIR(green)|A_BOLD|A_BLINK);
-            printw("\nYou won!\n");
-            attroff(COLOR_PAIR(green)|A_BOLD|A_BLINK);
-            game = false;
-            break;
-        }
+        playTheGame(fogOfWar, field, ROWS, COLS, upDown, leftRight);
+        resultOfGame = checkTheStep(fogOfWar, field, ROWS, COLS, upDown, leftRight);
+    }
+    switch(resultOfGame)
+    {
+    case 1:
+        drawField(fogOfWar, field, ROWS, COLS, upDown, leftRight);
+        attron(COLOR_PAIR(red)|A_BOLD|A_BLINK);
+        printw("\nYou lose!\n");
+        attroff(COLOR_PAIR(red)|A_BOLD|A_BLINK);
+        break;
+    case 2:
+        drawField(fogOfWar, field, ROWS, COLS, upDown, leftRight);
+        attron(COLOR_PAIR(red)|A_BOLD|A_BLINK);
+        printw("\nYou won!\n");
+        attroff(COLOR_PAIR(red)|A_BOLD|A_BLINK);
+        break;
     }
     getch();
     endwin();
@@ -95,11 +95,9 @@ void runAround(int filed[][COLS], int rows, int cols, int a, int b);
 
 void inc(int field[][COLS], int rows, int cols, int i, int j);
 
-int amountOfBombs = 10;
-
 void initFields(int fogOfWar[][COLS], int field[][COLS], int rows, int cols)
 {
-    int amountOfCells = rows * cols;
+    int amountOfCells = rows * cols, amountOfBombs = 10;
     srand(time(NULL));
 
     for(int i = 0; i < rows; ++i)
@@ -185,15 +183,13 @@ void drawField(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int 
     refresh();
 }
 
-//void openRecursively(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ);
-static int indicatorOfOpenedCells = 0;
+void openRecursively(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ);
 
-int playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ) //функция возвращает 1, если игрок проиграл
-{                                                                                                  //и 2, если он выиграл
+void playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ)
+{
     drawField(fogOfWar, field, rows, cols, cellI, cellJ);
     char symbol = getch();
-    static int indicatorOfFlags = 0, amountOfOpenCells;
-    amountOfOpenCells = rows * cols - amountOfBombs;
+    static int indicatorOfFlags = 0;
     switch(symbol)
     {
     case 'w':
@@ -263,7 +259,7 @@ int playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int
     case 'f':
         if(fogOfWar[cellI][cellJ] == hidden)
         {
-            if(indicatorOfFlags < amountOfBombs)
+            if(indicatorOfFlags < 10)
             {
                 fogOfWar[cellI][cellJ] = flagged;
                 ++indicatorOfFlags;
@@ -276,28 +272,13 @@ int playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int
         }
         break;
     case ' ':
-        if(fogOfWar[cellI][cellJ] == hidden)
+        if(field[cellI][cellJ] == 0 && fogOfWar[cellI][cellJ] == hidden)
         {
-            if(field[cellI][cellJ] == 9)
-            {
-                fogOfWar[cellI][cellJ] = opened;
-                return 1;
-            }
-            else if(field[cellI][cellJ] > 0 && field[cellI][cellJ] < 9)
-            {
-                fogOfWar[cellI][cellJ] = opened;
-                ++indicatorOfOpenedCells;
-            }
-            else if(field[cellI][cellJ] == 0)
-            {
-                //openRecursively(fogOfWar, field, ROWS, COLS, cellI, cellJ);
-                fogOfWar[cellI][cellJ] = opened;
-                ++indicatorOfOpenedCells;
-            }
-            else if(indicatorOfOpenedCells == amountOfOpenCells)
-            {
-                return 2;
-            }
+            openRecursively(fogOfWar, field, rows, cols, cellI, cellJ);
+        }
+        else if(fogOfWar[cellI][cellJ] == hidden)
+        {
+            fogOfWar[cellI][cellJ] = opened;
         }
         break;
     }
@@ -305,7 +286,7 @@ int playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int
 }
 
 
-/*void openRecursively(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ)
+void openRecursively(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ)
 {
     if(field[cellI][cellJ] == 0 && fogOfWar[cellI][cellJ] == hidden)
     {
@@ -320,6 +301,21 @@ int playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int
                 }
             }
         }
-        //++indicatorOfOpenedCells;
     }
-}*/
+}
+
+int checkTheStep(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ)
+{
+    static int indicatorOfOpenedCells = 0;
+    int amountOfOpenedCells = rows * cols;
+    if(field[cellI][cellJ] == 9 && fogOfWar[cellI][cellJ] == opened)
+    {
+        return 1;
+    }
+    ++indicatorOfOpenedCells;
+    if(indicatorOfOpenedCells == amountOfOpenedCells)
+    {
+        return 2;
+    }
+    return 0;
+}
