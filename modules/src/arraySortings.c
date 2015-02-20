@@ -40,4 +40,24 @@ void bubbleSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
     }
 }
 
+void insertionShifting(int array[], int base, int indexOfTheStart, int indexOfTheEnd)
+{
+    if(indexOfTheStart >= base && indexOfTheStart <= indexOfTheEnd)
+    {
+        while(indexOfTheStart > base && array[indexOfTheStart] < array[indexOfTheStart - 1])
+        {
+            int min = array[indexOfTheStart];
+            array[indexOfTheStart] = array[indexOfTheStart - 1];
+            array[indexOfTheStart - 1] = min;
+            --indexOfTheStart;
+        }
+        insertionShifting(array, base, indexOfTheStart + 1, indexOfTheEnd);
+    }
+}
+
+void insertionSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
+{
+    int base = indexOfTheStart;
+    insertionShifting(array, base, indexOfTheStart, indexOfTheEnd);
+}
 
