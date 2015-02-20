@@ -3,7 +3,7 @@
 #include <assert.h>
 #define SIZE 1000
 
-void outputArrray(const int array[], int size)
+void outputArray(const int array[], int size)
 {
     for(int i = 0; i < size; ++i)
     {
