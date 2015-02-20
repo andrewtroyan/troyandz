@@ -55,6 +55,16 @@ int main()
     switch(resultOfGame)
     {
     case 1:
+        for(int i = 0; i < rowsOfField; ++i)
+        {
+            for(int j = 0; j < colsOfField; ++j)
+            {
+                if(field[i][j] == 9)
+                {
+                    fogOfWar[i][j] = opened;
+                }
+            }
+        }
         drawField(fogOfWar, field, rowsOfField, colsOfField, upDown, leftRight);
         attron(COLOR_PAIR(red)|A_BOLD|A_BLINK);
         printw("\nYou lose!\n");
@@ -121,9 +131,13 @@ void initFields(int fogOfWar[][COLS], int field[][COLS], int rows, int cols)
 
     for(int i = 0; i < amountOfBombs; ++i)
     {
-        int bombPosition = rand() % amountOfCells;
-        int bombI = bombPosition / cols;
-        int bombJ = bombPosition % cols;
+        int bombI, bombJ;
+        do
+        {
+            int bombPosition = rand() % amountOfCells;
+            bombI = bombPosition / cols;
+            bombJ = bombPosition % cols;
+        }while(field[bombI][bombJ] == 9);
         field[bombI][bombJ] = 9;
         runAround(field, rows, cols, bombI, bombJ);
     }
@@ -131,7 +145,7 @@ void initFields(int fogOfWar[][COLS], int field[][COLS], int rows, int cols)
 
 void runAround(int field[][COLS], int rows, int cols, int a, int b)
 {
-    for(int i = a -1; i < a + 2; ++i)
+    for(int i = a - 1; i < a + 2; ++i)
     {
         for(int j = b - 1; j < b + 2; ++j)
         {
