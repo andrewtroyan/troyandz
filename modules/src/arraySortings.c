@@ -107,3 +107,43 @@ void mergeSorting(int ar[], int l, int r)
     }
 }
 
+void repairPyramid(int array[], int index, int indexOfTheEnd)
+{
+    int leftDescendant = 2 * index + 1, rightDescendant = 2 * index + 2, ancestor = index;
+    if(leftDescendant < indexOfTheEnd && array[leftDescendant] > array[ancestor])
+    {
+        ancestor = leftDescendant;
+    }
+    if(rightDescendant < indexOfTheEnd && array[rightDescendant] > array[ancestor])
+    {
+        ancestor = rightDescendant;
+    }
+    if(ancestor != index)
+    {
+        int temporary = array[index];
+        array[index] = array[ancestor];
+        array[ancestor] = temporary;
+        repairPyramid(array, ancestor, index);
+    }
+}
+
+void buildPyramid(int array[], int indexOfTheStart, int indexOfTheEnd)
+{
+    for(int i = (indexOfTheEnd - indexOfTheStart + 1) / 2; i >= 0; --i)
+    {
+        repairPyramid(array, i, indexOfTheEnd);
+    }
+}
+
+void sortPyramid(int array[], int indexOfTheStart, int indexOfTheEnd)
+{
+    buildPyramid(array, indexOfTheStart, indexOfTheEnd);
+    for(int i = indexOfTheEnd - indexOfTheStart; i >= 1; --i)
+    {
+        int temporary = array[0];
+        array[0] = array[i];
+        array[i] = temporary;
+        --indexOfTheEnd;
+        repairPyramid(array, 0, indexOfTheEnd);
+    }
+}
