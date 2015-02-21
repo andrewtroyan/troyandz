@@ -67,19 +67,19 @@ void mergeSorting(int ar[], int l, int r)
 {
     if(l < r)
     {
-        mergeSorting(ar, l, (l + r) / 2);
-        mergeSorting(ar, (l + r) / 2 + 1, r);
-        int br[SIZE], cr[SIZE];
-        for(int j = 0, i = l; i <= (l + r) / 2; ++j, ++i)
+        mergeSorting(ar, l, (r + l) / 2);
+        mergeSorting(ar, (r + l) / 2 + 1, r);
+        int br[SIZE], cr[SIZE], sizeOfBr = (r + l) / 2 - l + 1, sizeOfCr = r - (r + l) / 2;
+        for(int j = 0, i = l; i <= (r + l) / 2; ++j, ++i)
         {
             br[j] = ar[i];
         }
-        for(int k = 0, i = (l + r) / 2 + 1; i <= r; ++k, ++i)
+        for(int k = 0, i = (r + l) / 2 + 1; i <= r; ++k, ++i)
         {
             cr[k] = ar[i];
         }
         int i = l, j = 0, k = 0;
-        while(j <= ((l + r) / 2) - l && k <= r - ((l + r) / 2 + 1))
+        while(j < sizeOfBr && k < sizeOfCr)
         {
             if(br[j] < cr[k])
             {
@@ -93,17 +93,20 @@ void mergeSorting(int ar[], int l, int r)
             }
             ++i;
         }
-        while(j <= (l + r) / 2 - l)
+        while(j < sizeOfBr || k < sizeOfCr)
         {
-            ar[i] = br[j];
-            ++j;
-            ++i;
-        }
-        while(k <= r - ((l + r) / 2 + 1))
-        {
-            ar[i] = br[k];
-            ++k;
-            ++i;
+            while(j < sizeOfBr)
+            {
+                ar[i] = br[j];
+                ++j;
+                ++i;
+            }
+            while(k < sizeOfCr)
+            {
+                ar[i] = cr[k];
+                ++k;
+                ++i;
+            }
         }
     }
 }
