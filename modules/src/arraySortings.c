@@ -63,47 +63,47 @@ void insertionSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
     insertionShifting(array, base, indexOfTheStart, indexOfTheEnd);
 }
 
-void mergeSorting(int ar[], int l, int r)
+void mergeSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
 {
-    if(l < r)
+    if(indexOfTheStart < indexOfTheEnd)
     {
-        mergeSorting(ar, l, (r + l) / 2);
-        mergeSorting(ar, (r + l) / 2 + 1, r);
-        int br[SIZE], cr[SIZE], sizeOfBr = (r + l) / 2 - l + 1, sizeOfCr = r - (r + l) / 2;
-        for(int j = 0, i = l; i <= (r + l) / 2; ++j, ++i)
+        mergeSorting(array, indexOfTheStart, (indexOfTheEnd + indexOfTheStart) / 2);
+        mergeSorting(array, (indexOfTheEnd + indexOfTheStart) / 2 + 1, indexOfTheEnd);
+        int secondArray[SIZE], thirdArray[SIZE], sizeOfSecondArray = (indexOfTheEnd + indexOfTheStart) / 2 - indexOfTheStart + 1, sizeOfThirdArray = indexOfTheEnd - (indexOfTheEnd + indexOfTheStart) / 2;
+        for(int j = 0, i = indexOfTheStart; i <= (indexOfTheEnd + indexOfTheStart) / 2; ++j, ++i)
         {
-            br[j] = ar[i];
+            secondArray[j] = array[i];
         }
-        for(int k = 0, i = (r + l) / 2 + 1; i <= r; ++k, ++i)
+        for(int k = 0, i = (indexOfTheEnd + indexOfTheStart) / 2 + 1; i <= indexOfTheEnd; ++k, ++i)
         {
-            cr[k] = ar[i];
+            thirdArray[k] = array[i];
         }
-        int i = l, j = 0, k = 0;
-        while(j < sizeOfBr && k < sizeOfCr)
+        int i = indexOfTheStart, j = 0, k = 0;
+        while(j < sizeOfSecondArray && k < sizeOfThirdArray)
         {
-            if(br[j] < cr[k])
+            if(secondArray[j] < thirdArray[k])
             {
-                ar[i] = br[j];
+                array[i] = secondArray[j];
                 ++j;
             }
             else
             {
-                ar[i] = cr[k];
+                array[i] = thirdArray[k];
                 ++k;
             }
             ++i;
         }
-        while(j < sizeOfBr || k < sizeOfCr)
+        while(j < sizeOfSecondArray || k < sizeOfThirdArray)
         {
-            while(j < sizeOfBr)
+            while(j < sizeOfSecondArray)
             {
-                ar[i] = br[j];
+                array[i] = secondArray[j];
                 ++j;
                 ++i;
             }
-            while(k < sizeOfCr)
+            while(k < sizeOfThirdArray)
             {
-                ar[i] = cr[k];
+                array[i] = thirdArray[k];
                 ++k;
                 ++i;
             }
@@ -111,7 +111,7 @@ void mergeSorting(int ar[], int l, int r)
     }
 }
 
-void sortQuick(int array[], int indexOfTheStart, int indexOfTheEnd)
+void quickSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
 {
     srand(time(NULL));
     if(indexOfTheStart < indexOfTheEnd)
@@ -137,12 +137,12 @@ void sortQuick(int array[], int indexOfTheStart, int indexOfTheEnd)
         int temporary = array[i];
         array[i] = array[indexOfTheEnd];
         array[indexOfTheEnd] = temporary;
-        sortQuick(array, indexOfTheStart, i - 1);
-        sortQuick(array, i + 1, indexOfTheEnd);
+        quickSorting(array, indexOfTheStart, i - 1);
+        quickSorting(array, i + 1, indexOfTheEnd);
     }
 }
 
-void repairPyramid(int array[], int index, int sizeOfPyramid)
+void pyramidicRepairing(int array[], int index, int sizeOfPyramid)
 {
     int leftDescendant = 2 * index + 1, rightDescendant = 2 * index + 2, ancestor = index;
     if(leftDescendant < sizeOfPyramid && array[leftDescendant] > array[ancestor])
@@ -158,28 +158,28 @@ void repairPyramid(int array[], int index, int sizeOfPyramid)
         int temporary = array[index];
         array[index] = array[ancestor];
         array[ancestor] = temporary;
-        repairPyramid(array, ancestor, sizeOfPyramid);
+        pyramidicRepairing(array, ancestor, sizeOfPyramid);
     }
 }
 
-void buildPyramid(int array[], int sizeOfPyramid)
+void pyramidicBuilding(int array[], int sizeOfPyramid)
 {
     for(int i = sizeOfPyramid / 2; i >= 0; --i)
     {
-        repairPyramid(array, i, sizeOfPyramid);
+        pyramidicRepairing(array, i, sizeOfPyramid);
     }
 }
 
-void sortPyramid(int array[], int indexOfTheStart, int indexOfTheEnd)
+void pyramidicSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
 {
     int sizeOfPyramid = indexOfTheEnd - indexOfTheStart + 1;
-    buildPyramid(array, sizeOfPyramid);
+    pyramidicBuilding(array, sizeOfPyramid);
     for(int i = sizeOfPyramid - 1; i >= 1; --i)
     {
         int temporary = array[0];
         array[0] = array[i];
         array[i] = temporary;
         --sizeOfPyramid;
-        repairPyramid(array, 0, sizeOfPyramid);
+        pyramidicRepairing(array, 0, sizeOfPyramid);
     }
 }
