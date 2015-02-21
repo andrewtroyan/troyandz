@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/arraySortings.h"
+#include <time.h>
 
 int indexOfMinInArray(int array[], int indexOfTheStart, int indexOfTheEnd)
 {
@@ -107,14 +108,45 @@ void mergeSorting(int ar[], int l, int r)
     }
 }
 
-void repairPyramid(int array[], int index, int indexOfTheEnd)
+void sortQuick(int array[], int indexOfTheStart, int indexOfTheEnd)
+{
+    srand(time(NULL));
+    if(indexOfTheStart < indexOfTheEnd)
+    {
+        int temporaryIndex = rand() % (indexOfTheEnd - indexOfTheStart + 1) + indexOfTheStart, temporaryElement = array[temporaryIndex];
+        array[temporaryIndex] = array[indexOfTheEnd];
+        array[indexOfTheEnd] = temporaryElement;
+        int i = indexOfTheStart;
+        while(array[i] < array[indexOfTheEnd])
+        {
+            ++i;
+        }
+        for(int j = i; j < indexOfTheEnd; ++j)
+        {
+            if(array[j] < array[indexOfTheEnd])
+            {
+                int temporary = array[j];
+                array[j] = array[i];
+                array[i] = temporary;
+                ++i;
+            }
+        }
+        int temporary = array[i];
+        array[i] = array[indexOfTheEnd];
+        array[indexOfTheEnd] = temporary;
+        sortQuick(array, indexOfTheStart, i - 1);
+        sortQuick(array, i + 1, indexOfTheEnd);
+    }
+}
+
+void repairPyramid(int array[], int index, int sizeOfPyramid)
 {
     int leftDescendant = 2 * index + 1, rightDescendant = 2 * index + 2, ancestor = index;
-    if(leftDescendant < indexOfTheEnd && array[leftDescendant] > array[ancestor])
+    if(leftDescendant < sizeOfPyramid && array[leftDescendant] > array[ancestor])
     {
         ancestor = leftDescendant;
     }
-    if(rightDescendant < indexOfTheEnd && array[rightDescendant] > array[ancestor])
+    if(rightDescendant < sizeOfPyramid && array[rightDescendant] > array[ancestor])
     {
         ancestor = rightDescendant;
     }
@@ -123,27 +155,28 @@ void repairPyramid(int array[], int index, int indexOfTheEnd)
         int temporary = array[index];
         array[index] = array[ancestor];
         array[ancestor] = temporary;
-        repairPyramid(array, ancestor, index);
+        repairPyramid(array, ancestor, sizeOfPyramid);
     }
 }
 
-void buildPyramid(int array[], int indexOfTheStart, int indexOfTheEnd)
+void buildPyramid(int array[], int sizeOfPyramid)
 {
-    for(int i = (indexOfTheEnd - indexOfTheStart + 1) / 2; i >= 0; --i)
+    for(int i = sizeOfPyramid / 2; i >= 0; --i)
     {
-        repairPyramid(array, i, indexOfTheEnd);
+        repairPyramid(array, i, sizeOfPyramid);
     }
 }
 
 void sortPyramid(int array[], int indexOfTheStart, int indexOfTheEnd)
 {
-    buildPyramid(array, indexOfTheStart, indexOfTheEnd);
-    for(int i = indexOfTheEnd - indexOfTheStart; i >= 1; --i)
+    int sizeOfPyramid = indexOfTheEnd - indexOfTheStart + 1;
+    buildPyramid(array, sizeOfPyramid);
+    for(int i = sizeOfPyramid - 1; i >= 1; --i)
     {
         int temporary = array[0];
         array[0] = array[i];
         array[i] = temporary;
-        --indexOfTheEnd;
-        repairPyramid(array, 0, indexOfTheEnd);
+        --sizeOfPyramid;
+        repairPyramid(array, 0, sizeOfPyramid);
     }
 }
