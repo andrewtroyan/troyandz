@@ -273,11 +273,11 @@ int getMinRun(int amountOfElements)
 void timSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
 {
     int minRun = getMinRun(indexOfTheEnd - indexOfTheStart + 1);
-    int i, sizeOfRun = 0, startOfRun = 0;
+    int i = indexOfTheStart - 1, sizeOfRun, startOfRun;
     do
     {
-        i = startOfRun + sizeOfRun;
-        startOfRun = i;
+        ++i;
+        startOfRun = i, sizeOfRun = 1;
         if(i == startOfRun && array[i] <= array[i + 1])
         {
             while(i < indexOfTheEnd && array[i] <= array[i + 1])
@@ -293,11 +293,11 @@ void timSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
                 ++sizeOfRun;
                 ++i;
             }
-            for(int k = 0; k <= sizeOfRun / 2; ++k)
+            for(int k = 0; k < (i - startOfRun + 1) / 2; ++k)
             {
-                int temporary = array[k];
-                array[k] = array[sizeOfRun - k];
-                array[sizeOfRun - k] = temporary;
+                int temporary = array[startOfRun + k];
+                array[startOfRun + k] = array[i - k];
+                array[i - k] = temporary;
             }
         }
         while(i < indexOfTheEnd && sizeOfRun < minRun)
@@ -305,7 +305,7 @@ void timSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
             ++i;
             ++sizeOfRun;
         }
-        mergeSorting(array, startOfRun, startOfRun + sizeOfRun - 1);
+        //insertionSorting(array, startOfRun, i);
     }
     while(i < indexOfTheEnd);
 }
