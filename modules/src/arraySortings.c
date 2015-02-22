@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/arraySortings.h"
-#include <time.h>
 
 int indexOfMinInArray(int array[], int indexOfTheStart, int indexOfTheEnd)
 {
@@ -113,11 +112,23 @@ void mergeSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
 
 void quickSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
 {
-    srand(time(NULL));
     if(indexOfTheStart < indexOfTheEnd)
     {
-        int temporaryIndex = rand() % (indexOfTheEnd - indexOfTheStart + 1) + indexOfTheStart, temporaryElement = array[temporaryIndex];
-        array[temporaryIndex] = array[indexOfTheEnd];
+        int a = indexOfTheStart, b = (indexOfTheStart + indexOfTheEnd) / 2, c = indexOfTheEnd, indexOfMedian = b;
+        if((array[a] > array[c] && array[a] < array[b]) || (array[a] > array[b] && array[a] < array[c]))
+        {
+            indexOfMedian = a;
+        }
+        else if((array[b] > array[c] && array[b] < array[a]) || (array[b] > array[a] && array[b] < array[c]))
+        {
+            indexOfMedian = b;
+        }
+        else if((array[c] > array[b] && array[c] < array[a]) || (array[c] > array[a] && array[c] < array[b]))
+        {
+            indexOfMedian = c;
+        }
+        int temporaryElement = array[indexOfMedian];
+        array[indexOfMedian] = array[indexOfTheEnd];
         array[indexOfTheEnd] = temporaryElement;
         int i = indexOfTheStart;
         while(array[i] < array[indexOfTheEnd])
