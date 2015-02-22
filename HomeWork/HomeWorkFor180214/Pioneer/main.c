@@ -222,11 +222,12 @@ void openRecursively(int fogOfWar[][COLS], int field[][COLS], int rows, int cols
 void playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ)
 {
     drawField(fogOfWar, field, rows, cols, cellI, cellJ);
-    char symbol = getch();
+    keypad(stdscr, true);
+    int symbol = getch();
     static int indicatorOfFlags = 0;
     switch(symbol)
     {
-    case 'w':
+    case KEY_UP:
         if(upDown == 0 && leftRight == 0)
         {
             upDown = rows - 1;
@@ -242,7 +243,7 @@ void playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, in
             --upDown;
         }
         break;
-    case 's':
+    case KEY_DOWN:
         if(upDown == rows - 1 && leftRight == cols - 1)
         {
             upDown = 0;
@@ -258,7 +259,7 @@ void playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, in
             ++upDown;
         }
         break;
-    case 'a':
+    case KEY_LEFT:
         if(upDown == 0 && leftRight == 0)
         {
             upDown = rows - 1;
@@ -274,7 +275,7 @@ void playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, in
             --leftRight;
         }
         break;
-    case 'd':
+    case KEY_RIGHT:
         if(upDown == rows - 1 && leftRight == cols - 1)
         {
             upDown = 0;
@@ -290,7 +291,7 @@ void playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, in
             ++leftRight;
         }
         break;
-    case 'f':
+    case 102:
         if(fogOfWar[cellI][cellJ] == hidden)
         {
             if(indicatorOfFlags < amountOfBombs)
@@ -305,7 +306,7 @@ void playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, in
             --indicatorOfFlags;
         }
         break;
-    case ' ':
+    case 32:
         if(field[cellI][cellJ] == 0 && fogOfWar[cellI][cellJ] == hidden)
         {
             openRecursively(fogOfWar, field, rows, cols, cellI, cellJ);
