@@ -10,5 +10,6 @@ void mergeSorting(int array[], int indexOfTheStart, int indexOfTheEnd);
 void quickSorting(int array[], int indexOfTheStart, int indexOfTheEnd);
 void pyramidicSorting(int array[], int indexOfTheStart, int indexOfTheEnd);
 void introSorting(int array[], int indexOfTheStart, int indexOfTheEnd);
+void timSorting(int array[], int indexOfTheStart, int indexOfTheEnd);
 
 #endif // ARRAYSORTINGS_H_INCLUDED

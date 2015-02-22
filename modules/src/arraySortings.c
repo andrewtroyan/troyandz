@@ -305,7 +305,7 @@ void timSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
             ++i;
             ++sizeOfRun;
         }
-        //insertionSorting(array, startOfRun, i);
+        insertionSorting(array, startOfRun, i);
     }
     while(i < indexOfTheEnd);
 }
