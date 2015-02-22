@@ -249,6 +249,13 @@ void introLoop(int array[], int indexOfTheStart, int indexOfTheEnd, int depthOfR
 void introSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
 {
     int depthOfRecurse = 2 * log10(indexOfTheEnd - indexOfTheStart + 1);
-    introLoop(array, indexOfTheStart, indexOfTheEnd, depthOfRecurse);
+    if(indexOfTheEnd - indexOfTheStart + 1 < 16)
+    {
+        insertionSorting(array, indexOfTheStart, indexOfTheEnd);
+    }
+    else
+    {
+        introLoop(array, indexOfTheStart, indexOfTheEnd, depthOfRecurse);
+    }
 }
 
