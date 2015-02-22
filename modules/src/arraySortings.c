@@ -259,3 +259,56 @@ void introSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
     }
 }
 
+int getMinRun(int amountOfElements)
+{
+    int flag = 0;
+    while (amountOfElements >= 64)
+    {
+        flag |= amountOfElements & 1;
+        amountOfElements >>= 1;
+    }
+    return amountOfElements + flag;
+}
+
+void timSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
+{
+    int minRun = getMinRun(indexOfTheEnd - indexOfTheStart + 1);
+    int i, sizeOfRun = 0, startOfRun = 0;
+    do
+    {
+        i = startOfRun + sizeOfRun;
+        startOfRun = i;
+        if(i == startOfRun && array[i] <= array[i + 1])
+        {
+            while(i < indexOfTheEnd && array[i] <= array[i + 1])
+            {
+                ++sizeOfRun;
+                ++i;
+            }
+        }
+        else if(i == startOfRun && array[i] > array[i + 1])
+        {
+            while(i < indexOfTheEnd && array[i] > array[i + 1])
+            {
+                ++sizeOfRun;
+                ++i;
+            }
+            for(int k = 0; k <= sizeOfRun / 2; ++k)
+            {
+                int temporary = array[k];
+                array[k] = array[sizeOfRun - k];
+                array[sizeOfRun - k] = temporary;
+            }
+        }
+        while(i < indexOfTheEnd && sizeOfRun < minRun)
+        {
+            ++i;
+            ++sizeOfRun;
+        }
+        mergeSorting(array, startOfRun, startOfRun + sizeOfRun - 1);
+    }
+    while(i < indexOfTheEnd);
+}
+
+
+
