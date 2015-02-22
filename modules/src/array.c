@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <assert.h>
-#define SIZE 1000
+#include "../include/array.h"
 
 void outputArray(const int array[], int size)
 {
