@@ -1,5 +1,4 @@
 #include "TicTacToe3D.h"
-#include <stdbool.h>
 
 static char unusedCell[4] = "\342\227\206";
 static int currentLayer = 0, currentI = 0, currentJ = 0, upDown = 0, leftRight = 0;
