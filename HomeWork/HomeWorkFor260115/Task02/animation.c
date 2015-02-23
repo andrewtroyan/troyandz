@@ -1,3 +1,5 @@
+// TODO include <stdio.h>
+
 void paragraphs(int amount)
 {
     if(amount > 0)

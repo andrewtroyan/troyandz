@@ -11,3 +11,5 @@ int main()
     animation(sizeOfSquare);
     return 0;
 }
+
+// almost all is correct

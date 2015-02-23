@@ -12,3 +12,5 @@ int main()
     printf("The compound of the number and the digit is %d.\nThe cycle shift: %d.", compoundDigit(number, digit), cycleShift(number));
     return 0;
 }
+
+// ok
