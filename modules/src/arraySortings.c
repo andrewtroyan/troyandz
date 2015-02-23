@@ -21,7 +21,7 @@ void selectionSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
         int indexOfMinElement = indexOfMinInArray(array, indexOfTheStart, indexOfTheEnd), minElement = array[indexOfMinElement];
         array[indexOfMinElement] = array[indexOfTheStart];
         array[indexOfTheStart] = minElement;
-        selectionSorting(array, indexOfTheStart + 1, indexOfTheEnd);
+        selectionSorting(array, indexOfTheStart + 1, indexOfTheEnd);//тут усё ж лепей зрабіць ітератыўна, а не рэкурсіўна
     }
 }
 
@@ -29,7 +29,7 @@ void bubbleSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
 {
     if(indexOfTheStart < indexOfTheEnd)
     {
-        for(int i = indexOfTheStart; i < indexOfTheEnd; ++i)
+        for(int i = indexOfTheStart; i < indexOfTheEnd; ++i)// мне падаецца вы выходзіце за межы масіва
         {
             if(array[i] > array[i + 1])
             {
@@ -93,7 +93,7 @@ void mergeSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
             }
             ++i;
         }
-        while(j < sizeOfSecondArray || k < sizeOfThirdArray)
+        while(j < sizeOfSecondArray || k < sizeOfThirdArray)//гэта цыкл умова не патрэбны, яго ролю цалкам бяруць два ніжэйшых цыкла
         {
             while(j < sizeOfSecondArray)
             {
@@ -206,6 +206,8 @@ void introLoop(int array[], int indexOfTheStart, int indexOfTheEnd, int depthOfR
         }
         else if(depthOfRecurse > 0)
         {
+
+					// магчыма варта было аб'яднаць агульную функцыянальнасць хуткай і інтраспектыўнай сартыроўкі у адну функцыю (напрыклад функцыю partition)
             int a = indexOfTheStart, b = (indexOfTheStart + indexOfTheEnd) / 2, c = indexOfTheEnd, indexOfMedian = b;
             if((array[a] > array[c] && array[a] < array[b]) || (array[a] > array[b] && array[a] < array[c]))
             {
@@ -248,7 +250,7 @@ void introLoop(int array[], int indexOfTheStart, int indexOfTheEnd, int depthOfR
 
 void introSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
 {
-    int depthOfRecurse = 2 * log10(indexOfTheEnd - indexOfTheStart + 1);
+    int depthOfRecurse = 2 * log10(indexOfTheEnd - indexOfTheStart + 1);//зіўна чаму там 10-тковы лагарыфм
     if(indexOfTheEnd - indexOfTheStart + 1 < 16)
     {
         insertionSorting(array, indexOfTheStart, indexOfTheEnd);
