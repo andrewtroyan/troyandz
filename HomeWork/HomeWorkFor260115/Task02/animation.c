@@ -1,4 +1,4 @@
-// TODO include <stdio.h>
+#include <stdio.h>
 
 void paragraphs(int amount)
 {
