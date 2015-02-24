@@ -18,14 +18,13 @@ void treatSigWinch(int signo);
 void initialiseProgram();
 enum Colors {normal, green, red, blue, yellow};
 char closeCell[4] = "\342\227\206";
-//char flaggedCell[4] = "\342\227\204";
 static int upDown = 0, leftRight = 0, rowsOfField, colsOfField, amountOfBombs;
 
 enum State {opened, hidden, flagged}; //состояния fogOfWar
 
 void initFields(int fogOfWar[][COLS], int field[][COLS], int rows, int cols);
 void drawField(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ);
-void playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ);
+void playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols);
 int checkTheStep(int fogOfWar[][COLS], int field[][COLS], int rows, int cols);
 
 int main()
@@ -33,50 +32,56 @@ int main()
     int fogOfWar[ROWS][COLS];
     int field[ROWS][COLS]; //0 - empty, 1-8 - amount of bombs, 9 - bomb
     int resultOfGame = 0;
-
-    printf("Enter the amount of rows (less or equal %d): ", ROWS);
-    scanf("%d", &rowsOfField);
-    printf("Enter the amount of cols (less or equal %d): ", COLS);
-    scanf("%d", &colsOfField);
-    printf("Enter the amount of bombs (less or equal %d): ", rowsOfField * (colsOfField * 40 / 100));
-    scanf("%d", &amountOfBombs);
-    assert(rowsOfField > 0 && rowsOfField <= ROWS && colsOfField > 0 && colsOfField <= COLS && amountOfBombs > 0 && amountOfBombs <= rowsOfField * (colsOfField * 40 / 100));
-    system("clear");
-
-    initialiseProgram();
-
-    initFields(fogOfWar, field, rowsOfField, colsOfField);
-
-    while(resultOfGame == 0)
+    do
     {
-        playTheGame(fogOfWar, field, rowsOfField, colsOfField, upDown, leftRight);
-        resultOfGame = checkTheStep(fogOfWar, field, rowsOfField, colsOfField);
-    }
-    switch(resultOfGame)
-    {
-    case 1:
-        for(int i = 0; i < rowsOfField; ++i)
+        system("clear");
+        printf("Enter the amount of rows (less or equal %d): ", ROWS);
+        scanf("%d", &rowsOfField);
+        printf("Enter the amount of cols (less or equal %d): ", COLS);
+        scanf("%d", &colsOfField);
+        printf("Enter the amount of bombs (less or equal %d): ", rowsOfField * (colsOfField * 40 / 100));
+        scanf("%d", &amountOfBombs);
+        if(rowsOfField > 0 && rowsOfField <= ROWS && colsOfField > 0 && colsOfField <= COLS && amountOfBombs > 0 && amountOfBombs <= rowsOfField * (colsOfField * 40 / 100))
         {
-            for(int j = 0; j < colsOfField; ++j)
+            system("clear");
+
+            initialiseProgram();
+
+            initFields(fogOfWar, field, rowsOfField, colsOfField);
+
+            while(resultOfGame == 0)
             {
-                if(field[i][j] == 9)
+                playTheGame(fogOfWar, field, rowsOfField, colsOfField);
+                resultOfGame = checkTheStep(fogOfWar, field, rowsOfField, colsOfField);
+            }
+            switch(resultOfGame)
+            {
+            case 1:
+                for(int i = 0; i < rowsOfField; ++i)
                 {
-                    fogOfWar[i][j] = opened;
+                    for(int j = 0; j < colsOfField; ++j)
+                    {
+                        if(field[i][j] == 9)
+                        {
+                            fogOfWar[i][j] = opened;
+                        }
+                    }
                 }
+                drawField(fogOfWar, field, rowsOfField, colsOfField, upDown, leftRight);
+                attron(COLOR_PAIR(red)|A_BOLD|A_BLINK);
+                printw("\nYou lose!\n");
+                attroff(COLOR_PAIR(red)|A_BOLD|A_BLINK);
+                break;
+            case 2:
+                drawField(fogOfWar, field, rowsOfField, colsOfField, upDown, leftRight);
+                attron(COLOR_PAIR(green)|A_BOLD|A_BLINK);
+                printw("\nYou won!\n");
+                attroff(COLOR_PAIR(green)|A_BOLD|A_BLINK);
+                break;
             }
         }
-        drawField(fogOfWar, field, rowsOfField, colsOfField, upDown, leftRight);
-        attron(COLOR_PAIR(red)|A_BOLD|A_BLINK);
-        printw("\nYou lose!\n");
-        attroff(COLOR_PAIR(red)|A_BOLD|A_BLINK);
-        break;
-    case 2:
-        drawField(fogOfWar, field, rowsOfField, colsOfField, upDown, leftRight);
-        attron(COLOR_PAIR(green)|A_BOLD|A_BLINK);
-        printw("\nYou won!\n");
-        attroff(COLOR_PAIR(green)|A_BOLD|A_BLINK);
-        break;
     }
+    while(rowsOfField <= 0 || rowsOfField > ROWS || colsOfField <= 0 || colsOfField > COLS || amountOfBombs <= 0 || amountOfBombs > rowsOfField * (colsOfField * 40 / 100));
     getch();
     endwin();
     return 0;
@@ -137,7 +142,8 @@ void initFields(int fogOfWar[][COLS], int field[][COLS], int rows, int cols)
             int bombPosition = rand() % amountOfCells;
             bombI = bombPosition / cols;
             bombJ = bombPosition % cols;
-        }while(field[bombI][bombJ] == 9);
+        }
+        while(field[bombI][bombJ] == 9);
         field[bombI][bombJ] = 9;
         runAround(field, rows, cols, bombI, bombJ);
     }
@@ -219,14 +225,47 @@ void drawField(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int 
 
 void openRecursively(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ);
 
-void playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ)
+void playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols)
 {
-    drawField(fogOfWar, field, rows, cols, cellI, cellJ);
+    drawField(fogOfWar, field, rows, cols, upDown, leftRight);
     keypad(stdscr, true);
-    int symbol = getch();
+    MEVENT event;
+    mousemask(ALL_MOUSE_EVENTS, NULL);
+    int symbol = wgetch(stdscr);
     static int indicatorOfFlags = 0;
     switch(symbol)
     {
+    case KEY_MOUSE:
+        getmouse(&event);
+        upDown = event.y, leftRight = event.x;
+        if(event.bstate & BUTTON1_CLICKED || event.bstate & BUTTON1_DOUBLE_CLICKED || event.bstate & BUTTON1_PRESSED || event.bstate & BUTTON1_RELEASED || event.bstate & BUTTON1_RESERVED_EVENT || event.bstate & BUTTON1_TRIPLE_CLICKED)
+        {
+            if(field[upDown][leftRight] == 0 && fogOfWar[upDown][leftRight] == hidden)
+            {
+                openRecursively(fogOfWar, field, rows, cols, upDown, leftRight);
+            }
+            else if(fogOfWar[upDown][leftRight] == hidden)
+            {
+                fogOfWar[upDown][leftRight] = opened;
+            }
+        }
+        else
+        {
+            if(fogOfWar[upDown][leftRight] == hidden)
+            {
+                if(indicatorOfFlags < amountOfBombs)
+                {
+                    fogOfWar[upDown][leftRight] = flagged;
+                    ++indicatorOfFlags;
+                }
+            }
+            else if(fogOfWar[upDown][leftRight] == flagged)
+            {
+                fogOfWar[upDown][leftRight] = hidden;
+                --indicatorOfFlags;
+            }
+        }
+        break;
     case KEY_UP:
         if(upDown == 0 && leftRight == 0)
         {
@@ -292,28 +331,28 @@ void playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, in
         }
         break;
     case 102:
-        if(fogOfWar[cellI][cellJ] == hidden)
+        if(fogOfWar[upDown][leftRight] == hidden)
         {
             if(indicatorOfFlags < amountOfBombs)
             {
-                fogOfWar[cellI][cellJ] = flagged;
+                fogOfWar[upDown][leftRight] = flagged;
                 ++indicatorOfFlags;
             }
         }
-        else if(fogOfWar[cellI][cellJ] == flagged)
+        else if(fogOfWar[upDown][leftRight] == flagged)
         {
-            fogOfWar[cellI][cellJ] = hidden;
+            fogOfWar[upDown][leftRight] = hidden;
             --indicatorOfFlags;
         }
         break;
     case 32:
-        if(field[cellI][cellJ] == 0 && fogOfWar[cellI][cellJ] == hidden)
+        if(field[upDown][leftRight] == 0 && fogOfWar[upDown][leftRight] == hidden)
         {
-            openRecursively(fogOfWar, field, rows, cols, cellI, cellJ);
+            openRecursively(fogOfWar, field, rows, cols, upDown, leftRight);
         }
-        else if(fogOfWar[cellI][cellJ] == hidden)
+        else if(fogOfWar[upDown][leftRight] == hidden)
         {
-            fogOfWar[cellI][cellJ] = opened;
+            fogOfWar[upDown][leftRight] = opened;
         }
         break;
     }
