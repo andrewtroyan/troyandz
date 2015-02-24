@@ -27,7 +27,7 @@ int main()
     switch(answer)
     {
     case 'y':
-        quickSorting(array, 0, size - 1);
+        mergeSorting(array, 0, size - 1);
         outputArray(array, size);
     case 'n':
         free(array);

@@ -61,49 +61,55 @@ void insertionSorting(int *array, int indexOfTheStart, int indexOfTheEnd)
     insertionShifting(array, base, indexOfTheStart, indexOfTheEnd);
 }
 
-void mergeSorting(int *array, int indexOfTheStart, int indexOfTheEnd)
+void mergeImplementation(int *array, int *temporaryArray, int indexOfTheStart, int indexOfTheEnd)
 {
     if(indexOfTheStart < indexOfTheEnd)
     {
         mergeSorting(array, indexOfTheStart, (indexOfTheEnd + indexOfTheStart) / 2);
         mergeSorting(array, (indexOfTheEnd + indexOfTheStart) / 2 + 1, indexOfTheEnd);
-        int secondArray[SIZE], thirdArray[SIZE], sizeOfSecondArray = (indexOfTheEnd + indexOfTheStart) / 2 - indexOfTheStart + 1, sizeOfThirdArray = indexOfTheEnd - (indexOfTheEnd + indexOfTheStart) / 2;
-        for(int j = 0, i = indexOfTheStart; i <= (indexOfTheEnd + indexOfTheStart) / 2; ++j, ++i)
+        int i, j, k;
+        for(i = indexOfTheStart; i <= (indexOfTheEnd + indexOfTheStart) / 2; ++i)
         {
-            secondArray[j] = array[i];
+            temporaryArray[i] = array[i];
         }
-        for(int k = 0, i = (indexOfTheEnd + indexOfTheStart) / 2 + 1; i <= indexOfTheEnd; ++k, ++i)
+        for(i = (indexOfTheEnd + indexOfTheStart) / 2 + 1; i <= indexOfTheEnd; ++i)
         {
-            thirdArray[k] = array[i];
+            temporaryArray[i] = array[i];
         }
-        int i = indexOfTheStart, j = 0, k = 0;
-        while(j < sizeOfSecondArray && k < sizeOfThirdArray)
+        i = indexOfTheStart, j = indexOfTheStart, k = (indexOfTheEnd + indexOfTheStart) / 2 + 1;
+        while(j <= (indexOfTheEnd + indexOfTheStart) / 2 && k <= indexOfTheEnd)
         {
-            if(secondArray[j] < thirdArray[k])
+            if(temporaryArray[j] < temporaryArray[k])
             {
-                array[i] = secondArray[j];
+                array[i] = temporaryArray[j];
                 ++j;
             }
             else
             {
-                array[i] = thirdArray[k];
+                array[i] = temporaryArray[k];
                 ++k;
             }
             ++i;
         }
-        while(j < sizeOfSecondArray)
+        while(j <= (indexOfTheEnd + indexOfTheStart) / 2)
         {
-            array[i] = secondArray[j];
+            array[i] = temporaryArray[j];
             ++j;
             ++i;
         }
-        while(k < sizeOfThirdArray)
+        while(k <= indexOfTheEnd)
         {
-            array[i] = thirdArray[k];
+            array[i] = temporaryArray[k];
             ++k;
             ++i;
         }
     }
+}
+
+void mergeSorting(int *array, int indexOfTheStart, int indexOfTheEnd)
+{
+    int *temporaryArray = (int *)malloc((indexOfTheEnd - indexOfTheStart + 1) * sizeof(int));
+    mergeImplementation(array, temporaryArray, indexOfTheStart, indexOfTheEnd);
 }
 
 void quickSorting(int *array, int indexOfTheStart, int indexOfTheEnd)
