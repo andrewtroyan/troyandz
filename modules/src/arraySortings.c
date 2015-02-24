@@ -91,20 +91,17 @@ void mergeSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
             }
             ++i;
         }
-        while(j < sizeOfSecondArray || k < sizeOfThirdArray)//гэта цыкл умова не патрэбны, яго ролю цалкам бяруць два ніжэйшых цыкла
+        while(j < sizeOfSecondArray)
         {
-            while(j < sizeOfSecondArray)
-            {
-                array[i] = secondArray[j];
-                ++j;
-                ++i;
-            }
-            while(k < sizeOfThirdArray)
-            {
-                array[i] = thirdArray[k];
-                ++k;
-                ++i;
-            }
+            array[i] = secondArray[j];
+            ++j;
+            ++i;
+        }
+        while(k < sizeOfThirdArray)
+        {
+            array[i] = thirdArray[k];
+            ++k;
+            ++i;
         }
     }
 }

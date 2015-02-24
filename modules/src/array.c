@@ -4,7 +4,7 @@
 #include <assert.h>
 #include "../include/array.h"
 
-void outputArray(const int array[], int size)
+void outputArray(const int *array, int size)
 {
     for(int i = 0; i < size; ++i)
     {
@@ -13,7 +13,7 @@ void outputArray(const int array[], int size)
     printf("\n");
 }
 
-void inputArray(int array[], int size)
+void inputArray(int *array, int size)
 {
     for(int i = 0; i < size; ++i)
     {
@@ -22,7 +22,7 @@ void inputArray(int array[], int size)
     }
 }
 
-int arraySearch(int number, const int array[], int size)
+int arraySearch(int number, const int *array, int size)
 {
     for(int i = 0; i < size; ++i)
     {
@@ -34,7 +34,7 @@ int arraySearch(int number, const int array[], int size)
     return -1;
 }
 
-int minOfArray(const int array[], int sizeOfPart)
+int minOfArray(const int *array, int sizeOfPart)
 {
     assert(sizeOfPart > 0 && sizeOfPart <= SIZE);
     int min = array[0];
@@ -45,7 +45,7 @@ int minOfArray(const int array[], int sizeOfPart)
     return min;
 }
 
-int maxOfArray(const int array[], int sizeOfPart)
+int maxOfArray(const int *array, int sizeOfPart)
 {
     assert(sizeOfPart > 0 && sizeOfPart <= SIZE);
     int max = array[0];
@@ -56,7 +56,7 @@ int maxOfArray(const int array[], int sizeOfPart)
     return max;
 }
 
-void generateRandomNumbersInArray(int array[], int sizeOfPart)
+void generateRandomNumbersInArray(int *array, int sizeOfPart)
 {
     srand(time(NULL));
     assert(sizeOfPart > 0 && sizeOfPart <= SIZE);
