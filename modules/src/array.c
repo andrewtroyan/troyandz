@@ -36,7 +36,6 @@ int arraySearch(int number, const int *array, int size)
 
 int minOfArray(const int *array, int sizeOfPart)
 {
-    assert(sizeOfPart > 0 && sizeOfPart <= SIZE);
     int min = array[0];
     for(int i = 1; i < sizeOfPart; ++i)
     {
@@ -47,7 +46,6 @@ int minOfArray(const int *array, int sizeOfPart)
 
 int maxOfArray(const int *array, int sizeOfPart)
 {
-    assert(sizeOfPart > 0 && sizeOfPart <= SIZE);
     int max = array[0];
     for(int i = 1; i < sizeOfPart; ++i)
     {
@@ -59,7 +57,6 @@ int maxOfArray(const int *array, int sizeOfPart)
 void generateRandomNumbersInArray(int *array, int sizeOfPart)
 {
     srand(time(NULL));
-    assert(sizeOfPart > 0 && sizeOfPart <= SIZE);
     for(int i = 0; i < sizeOfPart; ++i)
     {
         array[i] = rand()% 10;

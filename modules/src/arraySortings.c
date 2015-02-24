@@ -251,7 +251,7 @@ void introLoop(int *array, int indexOfTheStart, int indexOfTheEnd, int depthOfRe
 
 void introSorting(int *array, int indexOfTheStart, int indexOfTheEnd)
 {
-    int depthOfRecurse = 2 * log10(indexOfTheEnd - indexOfTheStart + 1);//зіўна чаму там 10-тковы лагарыфм
+    int depthOfRecurse = 2 * log2(indexOfTheEnd - indexOfTheStart + 1);
     if(indexOfTheEnd - indexOfTheStart + 1 < 16)
     {
         insertionSorting(array, indexOfTheStart, indexOfTheEnd);
