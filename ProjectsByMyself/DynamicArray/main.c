@@ -27,10 +27,12 @@ int main()
     switch(answer)
     {
     case 'y':
-        mergeSorting(array, 0, size - 1);
+        quickSorting(array, 0, size - 1);
         outputArray(array, size);
     case 'n':
+        free(array);
         return 0;
     }
+    free(array);
     return 0;
 }
