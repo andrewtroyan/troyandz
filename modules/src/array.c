@@ -56,7 +56,7 @@ int maxOfArray(const int array[], int sizeOfPart)
     return max;
 }
 
-void generateRandomNumbersInArray(int array [], int sizeOfPart)
+void generateRandomNumbersInArray(int array[], int sizeOfPart)
 {
     srand(time(NULL));
     assert(sizeOfPart > 0 && sizeOfPart <= SIZE);
