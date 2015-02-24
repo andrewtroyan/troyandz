@@ -16,12 +16,11 @@ int indexOfMinInArray(int array[], int indexOfTheStart, int indexOfTheEnd)
 
 void selectionSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
 {
-    if(indexOfTheStart < indexOfTheEnd)
+    for(int i = indexOfTheStart; i < indexOfTheEnd; ++i)
     {
-        int indexOfMinElement = indexOfMinInArray(array, indexOfTheStart, indexOfTheEnd), minElement = array[indexOfMinElement];
-        array[indexOfMinElement] = array[indexOfTheStart];
-        array[indexOfTheStart] = minElement;
-        selectionSorting(array, indexOfTheStart + 1, indexOfTheEnd);//тут усё ж лепей зрабіць ітератыўна, а не рэкурсіўна
+        int indexOfMinElement = indexOfMinInArray(array, i, indexOfTheEnd), minElement = array[indexOfMinElement];
+        array[indexOfMinElement] = array[i];
+        array[i] = minElement;
     }
 }
 
