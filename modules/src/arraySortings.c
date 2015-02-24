@@ -27,18 +27,15 @@ void selectionSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
 
 void bubbleSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
 {
-    if(indexOfTheStart < indexOfTheEnd)
+    for(int i = indexOfTheStart; i < indexOfTheEnd; ++i)
     {
-        for(int i = indexOfTheStart; i < indexOfTheEnd; ++i)
+        for(int j = 0; j < indexOfTheEnd - i; ++j)
         {
-            for(int j = 0; j < indexOfTheEnd - i; ++j)
+            if(array[j] > array[j + 1])
             {
-                if(array[j] > array[j + 1])
-                {
-                    int max = array[j];
-                    array[j] = array[j + 1];
-                    array[j + 1] = max;
-                }
+                int max = array[j];
+                array[j] = array[j + 1];
+                array[j + 1] = max;
             }
         }
     }
