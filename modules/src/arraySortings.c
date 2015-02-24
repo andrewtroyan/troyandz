@@ -3,7 +3,7 @@
 #include <math.h>
 #include "../include/arraySortings.h"
 
-int indexOfMinInArray(int array[], int indexOfTheStart, int indexOfTheEnd)
+int indexOfMinInArray(int *array, int indexOfTheStart, int indexOfTheEnd)
 {
     int indexOfMin = indexOfTheStart;
     while(indexOfTheStart < indexOfTheEnd)
@@ -14,7 +14,7 @@ int indexOfMinInArray(int array[], int indexOfTheStart, int indexOfTheEnd)
     return indexOfMin;
 }
 
-void selectionSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
+void selectionSorting(int *array, int indexOfTheStart, int indexOfTheEnd)
 {
     for(int i = indexOfTheStart; i < indexOfTheEnd; ++i)
     {
@@ -24,7 +24,7 @@ void selectionSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
     }
 }
 
-void bubbleSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
+void bubbleSorting(int *array, int indexOfTheStart, int indexOfTheEnd)
 {
     for(int i = indexOfTheStart; i < indexOfTheEnd; ++i)
     {
@@ -40,7 +40,7 @@ void bubbleSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
     }
 }
 
-void insertionShifting(int array[], int base, int indexOfTheStart, int indexOfTheEnd)
+void insertionShifting(int *array, int base, int indexOfTheStart, int indexOfTheEnd)
 {
     if(indexOfTheStart >= base && indexOfTheStart <= indexOfTheEnd)
     {
@@ -55,13 +55,13 @@ void insertionShifting(int array[], int base, int indexOfTheStart, int indexOfTh
     }
 }
 
-void insertionSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
+void insertionSorting(int *array, int indexOfTheStart, int indexOfTheEnd)
 {
     int base = indexOfTheStart;
     insertionShifting(array, base, indexOfTheStart, indexOfTheEnd);
 }
 
-void mergeSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
+void mergeSorting(int *array, int indexOfTheStart, int indexOfTheEnd)
 {
     if(indexOfTheStart < indexOfTheEnd)
     {
@@ -106,7 +106,7 @@ void mergeSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
     }
 }
 
-void quickSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
+void quickSorting(int *array, int indexOfTheStart, int indexOfTheEnd)
 {
     if(indexOfTheStart < indexOfTheEnd)
     {
@@ -149,7 +149,7 @@ void quickSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
     }
 }
 
-void pyramidicRepairing(int array[], int index, int sizeOfPyramid)
+void pyramidicRepairing(int *array, int index, int sizeOfPyramid)
 {
     int leftDescendant = 2 * index + 1, rightDescendant = 2 * index + 2, ancestor = index;
     if(leftDescendant < sizeOfPyramid && array[leftDescendant] > array[ancestor])
@@ -169,7 +169,7 @@ void pyramidicRepairing(int array[], int index, int sizeOfPyramid)
     }
 }
 
-void pyramidicBuilding(int array[], int sizeOfPyramid)
+void pyramidicBuilding(int *array, int sizeOfPyramid)
 {
     for(int i = sizeOfPyramid / 2; i >= 0; --i)
     {
@@ -177,7 +177,7 @@ void pyramidicBuilding(int array[], int sizeOfPyramid)
     }
 }
 
-void pyramidicSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
+void pyramidicSorting(int *array, int indexOfTheStart, int indexOfTheEnd)
 {
     int sizeOfPyramid = indexOfTheEnd - indexOfTheStart + 1;
     pyramidicBuilding(array, sizeOfPyramid);
@@ -191,7 +191,7 @@ void pyramidicSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
     }
 }
 
-void introLoop(int array[], int indexOfTheStart, int indexOfTheEnd, int depthOfRecurse)
+void introLoop(int *array, int indexOfTheStart, int indexOfTheEnd, int depthOfRecurse)
 {
     if(indexOfTheStart < indexOfTheEnd)
     {
@@ -243,7 +243,7 @@ void introLoop(int array[], int indexOfTheStart, int indexOfTheEnd, int depthOfR
     }
 }
 
-void introSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
+void introSorting(int *array, int indexOfTheStart, int indexOfTheEnd)
 {
     int depthOfRecurse = 2 * log10(indexOfTheEnd - indexOfTheStart + 1);//зіўна чаму там 10-тковы лагарыфм
     if(indexOfTheEnd - indexOfTheStart + 1 < 16)
@@ -267,7 +267,7 @@ int getMinRun(int amountOfElements)
     return amountOfElements + flag;
 }
 
-void timSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
+void timSorting(int *array, int indexOfTheStart, int indexOfTheEnd)
 {
     int minRun = getMinRun(indexOfTheEnd - indexOfTheStart + 1);
     int i = indexOfTheStart - 1, sizeOfRun, startOfRun;
