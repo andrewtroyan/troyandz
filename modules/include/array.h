@@ -3,7 +3,7 @@
 
 #define SIZE 1000
 
-void outputArrray(const int array[], int size);
+void outputArray(const int array[], int size);
 void inputArray(int array[], int size);
 int arraySearch(int number, const int array[], int size);
 int minOfArray(const int array[], int sizeOfPart);

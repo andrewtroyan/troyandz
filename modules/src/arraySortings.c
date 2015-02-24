@@ -29,16 +29,18 @@ void bubbleSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
 {
     if(indexOfTheStart < indexOfTheEnd)
     {
-        for(int i = indexOfTheStart; i < indexOfTheEnd; ++i)// мне падаецца вы выходзіце за межы масіва
+        for(int i = indexOfTheStart; i < indexOfTheEnd; ++i)
         {
-            if(array[i] > array[i + 1])
+            for(int j = 0; j < indexOfTheEnd - i; ++j)
             {
-                int max = array[i];
-                array[i] = array[i + 1];
-                array[i + 1] = max;
+                if(array[j] > array[j + 1])
+                {
+                    int max = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = max;
+                }
             }
         }
-        bubbleSorting(array, indexOfTheStart, indexOfTheEnd - 1);
     }
 }
 
@@ -207,7 +209,7 @@ void introLoop(int array[], int indexOfTheStart, int indexOfTheEnd, int depthOfR
         else if(depthOfRecurse > 0)
         {
 
-					// магчыма варта было аб'яднаць агульную функцыянальнасць хуткай і інтраспектыўнай сартыроўкі у адну функцыю (напрыклад функцыю partition)
+            // магчыма варта было аб'яднаць агульную функцыянальнасць хуткай і інтраспектыўнай сартыроўкі у адну функцыю (напрыклад функцыю partition)
             int a = indexOfTheStart, b = (indexOfTheStart + indexOfTheEnd) / 2, c = indexOfTheEnd, indexOfMedian = b;
             if((array[a] > array[c] && array[a] < array[b]) || (array[a] > array[b] && array[a] < array[c]))
             {
@@ -308,7 +310,8 @@ void timSorting(int array[], int indexOfTheStart, int indexOfTheEnd)
             ++sizeOfRun;
         }
         insertionSorting(array, startOfRun, i);
-    }while(i < indexOfTheEnd);
+    }
+    while(i < indexOfTheEnd);
 }
 
 
