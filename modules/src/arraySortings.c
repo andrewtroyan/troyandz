@@ -65,8 +65,8 @@ void mergeImplementation(int *array, int *temporaryArray, int indexOfTheStart, i
 {
     if(indexOfTheStart < indexOfTheEnd)
     {
-        mergeSorting(array, indexOfTheStart, (indexOfTheEnd + indexOfTheStart) / 2);
-        mergeSorting(array, (indexOfTheEnd + indexOfTheStart) / 2 + 1, indexOfTheEnd);
+        mergeImplementation(array, temporaryArray, indexOfTheStart, (indexOfTheEnd + indexOfTheStart) / 2);
+        mergeImplementation(array, temporaryArray, (indexOfTheEnd + indexOfTheStart) / 2 + 1, indexOfTheEnd);
         int i, j, k;
         for(i = indexOfTheStart; i <= (indexOfTheEnd + indexOfTheStart) / 2; ++i)
         {
@@ -110,6 +110,7 @@ void mergeSorting(int *array, int indexOfTheStart, int indexOfTheEnd)
 {
     int *temporaryArray = (int *)malloc((indexOfTheEnd - indexOfTheStart + 1) * sizeof(int));
     mergeImplementation(array, temporaryArray, indexOfTheStart, indexOfTheEnd);
+    free(temporaryArray);
 }
 
 void quickSorting(int *array, int indexOfTheStart, int indexOfTheEnd)
@@ -207,7 +208,6 @@ void introLoop(int *array, int indexOfTheStart, int indexOfTheEnd, int depthOfRe
         }
         else if(depthOfRecurse > 0)
         {
-
             // магчыма варта было аб'яднаць агульную функцыянальнасць хуткай і інтраспектыўнай сартыроўкі у адну функцыю (напрыклад функцыю partition)
             int a = indexOfTheStart, b = (indexOfTheStart + indexOfTheEnd) / 2, c = indexOfTheEnd, indexOfMedian = b;
             if((array[a] > array[c] && array[a] < array[b]) || (array[a] > array[b] && array[a] < array[c]))

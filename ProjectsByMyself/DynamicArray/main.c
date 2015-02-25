@@ -24,14 +24,10 @@ int main()
     outputArray(array, size);
     printf("Do you want to sort your array? (y/n) ");
     scanf(" %c", &answer);
-    switch(answer)
+    if(answer == 'y')
     {
-    case 'y':
         mergeSorting(array, 0, size - 1);
         outputArray(array, size);
-    case 'n':
-        free(array);
-        return 0;
     }
     free(array);
     return 0;
