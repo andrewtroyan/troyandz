@@ -5,11 +5,16 @@
 
 int main()
 {
-    int *array, size;
+    int *array = NULL, size;
     char answer;
     printf("Enter the size of array: ");
     scanf("%d", &size);
     array = (int *)malloc(size * sizeof(int));
+    if(array == NULL)
+    {
+        fprintf(stderr, "No free memory.\n");
+        exit(1);
+    }
     printf("Do you want to fill array or generate with random numbers? (f/g) ");
     scanf(" %c", &answer);
     switch(answer)
@@ -30,5 +35,6 @@ int main()
         outputArray(array, size);
     }
     free(array);
+    array = NULL;
     return 0;
 }
