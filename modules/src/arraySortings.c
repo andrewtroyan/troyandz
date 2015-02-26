@@ -197,6 +197,45 @@ void pyramidicSorting(int *array, int indexOfTheStart, int indexOfTheEnd)
     }
 }
 
+int partition(int *array, int indexOfTheStart, int indexOfTheEnd)
+{
+    int a = indexOfTheStart, b = (indexOfTheStart + indexOfTheEnd) / 2, c = indexOfTheEnd, indexOfMedian = b;
+    if((array[a] > array[c] && array[a] < array[b]) || (array[a] > array[b] && array[a] < array[c]))
+    {
+        indexOfMedian = a;
+    }
+    else if((array[b] > array[c] && array[b] < array[a]) || (array[b] > array[a] && array[b] < array[c]))
+    {
+        indexOfMedian = b;
+    }
+    else if((array[c] > array[b] && array[c] < array[a]) || (array[c] > array[a] && array[c] < array[b]))
+    {
+        indexOfMedian = c;
+    }
+    int temporaryElement = array[indexOfMedian];
+    array[indexOfMedian] = array[indexOfTheEnd];
+    array[indexOfTheEnd] = temporaryElement;
+    int i = indexOfTheStart;
+    while(array[i] < array[indexOfTheEnd])
+    {
+        ++i;
+    }
+    for(int j = i; j < indexOfTheEnd; ++j)
+    {
+        if(array[j] < array[indexOfTheEnd])
+        {
+            int temporary = array[j];
+            array[j] = array[i];
+            array[i] = temporary;
+            ++i;
+        }
+    }
+    int temporary = array[i];
+    array[i] = array[indexOfTheEnd];
+    array[indexOfTheEnd] = temporary;
+    return i;
+}
+
 void introLoop(int *array, int indexOfTheStart, int indexOfTheEnd, int depthOfRecurse)
 {
     if(indexOfTheStart < indexOfTheEnd)
@@ -207,43 +246,9 @@ void introLoop(int *array, int indexOfTheStart, int indexOfTheEnd, int depthOfRe
         }
         else if(depthOfRecurse > 0)
         {
-            // магчыма варта было аб'яднаць агульную функцыянальнасць хуткай і інтраспектыўнай сартыроўкі у адну функцыю (напрыклад функцыю partition)
-            int a = indexOfTheStart, b = (indexOfTheStart + indexOfTheEnd) / 2, c = indexOfTheEnd, indexOfMedian = b;
-            if((array[a] > array[c] && array[a] < array[b]) || (array[a] > array[b] && array[a] < array[c]))
-            {
-                indexOfMedian = a;
-            }
-            else if((array[b] > array[c] && array[b] < array[a]) || (array[b] > array[a] && array[b] < array[c]))
-            {
-                indexOfMedian = b;
-            }
-            else if((array[c] > array[b] && array[c] < array[a]) || (array[c] > array[a] && array[c] < array[b]))
-            {
-                indexOfMedian = c;
-            }
-            int temporaryElement = array[indexOfMedian];
-            array[indexOfMedian] = array[indexOfTheEnd];
-            array[indexOfTheEnd] = temporaryElement;
-            int i = indexOfTheStart;
-            while(array[i] < array[indexOfTheEnd])
-            {
-                ++i;
-            }
-            for(int j = i; j < indexOfTheEnd; ++j)
-            {
-                if(array[j] < array[indexOfTheEnd])
-                {
-                    int temporary = array[j];
-                    array[j] = array[i];
-                    array[i] = temporary;
-                    ++i;
-                }
-            }
-            int temporary = array[i];
-            array[i] = array[indexOfTheEnd];
-            array[indexOfTheEnd] = temporary;
-            introLoop(array, indexOfTheStart, i - 1, depthOfRecurse - 1);
-            introLoop(array, i + 1, indexOfTheEnd, depthOfRecurse - 1);
+            int index = partition(array, indexOfTheStart, indexOfTheEnd);
+            introLoop(array, indexOfTheStart, index - 1, depthOfRecurse - 1);
+            introLoop(array, index + 1, indexOfTheEnd, depthOfRecurse - 1);
         }
     }
 }
