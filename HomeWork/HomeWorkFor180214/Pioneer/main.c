@@ -9,10 +9,6 @@
 #include <locale.h>
 #include <stdbool.h>
 #include <time.h>
-#include <assert.h>
-
-#define ROWS 30
-#define COLS 50
 
 void treatSigWinch(int signo);
 void initialiseProgram();
@@ -22,68 +18,75 @@ static int upDown = 0, leftRight = 0, rowsOfField, colsOfField, amountOfBombs;
 
 enum State {opened, hidden, flagged}; //состояния fogOfWar
 
-void initFields(int fogOfWar[][COLS], int field[][COLS], int rows, int cols);
-void drawField(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ);
-void playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols);
-int checkTheStep(int fogOfWar[][COLS], int field[][COLS], int rows, int cols);
+void initFields(int **fogOfWar, int **field, int rows, int cols);
+void drawField(int **fogOfWar, int **field, int rows, int cols, int cellI, int cellJ);
+void playTheGame(int **fogOfWar, int **field, int rows, int cols);
+int checkTheStep(int **fogOfWar, int **field, int rows, int cols);
 
 int main()
 {
-    int fogOfWar[ROWS][COLS];
-    int field[ROWS][COLS]; //0 - empty, 1-8 - amount of bombs, 9 - bomb
+    int **fogOfWar = NULL;
+    int **field = NULL; //0 - empty, 1-8 - amount of bombs, 9 - bomb
     int resultOfGame = 0;
-    do
+    system("clear");
+    printf("Enter the amount of rows (less or equal %d): ", ROWS);
+    scanf("%d", &rowsOfField);
+    printf("Enter the amount of cols (less or equal %d): ", COLS);
+    scanf("%d", &colsOfField);
+    printf("Enter the amount of bombs (less or equal %d): ", rowsOfField * (colsOfField * 40 / 100));
+    scanf("%d", &amountOfBombs);
+    system("clear");
+
+    initialiseProgram();
+
+    initFields(fogOfWar, field, rowsOfField, colsOfField);
+
+    while(resultOfGame == 0)
     {
-        system("clear");
-        printf("Enter the amount of rows (less or equal %d): ", ROWS);
-        scanf("%d", &rowsOfField);
-        printf("Enter the amount of cols (less or equal %d): ", COLS);
-        scanf("%d", &colsOfField);
-        printf("Enter the amount of bombs (less or equal %d): ", rowsOfField * (colsOfField * 40 / 100));
-        scanf("%d", &amountOfBombs);
-        if(rowsOfField > 0 && rowsOfField <= ROWS && colsOfField > 0 && colsOfField <= COLS && amountOfBombs > 0 && amountOfBombs <= rowsOfField * (colsOfField * 40 / 100))
+        playTheGame(fogOfWar, field, rowsOfField, colsOfField);
+        resultOfGame = checkTheStep(fogOfWar, field, rowsOfField, colsOfField);
+    }
+    switch(resultOfGame)
+    {
+    case 1:
+        for(int i = 0; i < rowsOfField; ++i)
         {
-            system("clear");
-
-            initialiseProgram();
-
-            initFields(fogOfWar, field, rowsOfField, colsOfField);
-
-            while(resultOfGame == 0)
+            for(int j = 0; j < colsOfField; ++j)
             {
-                playTheGame(fogOfWar, field, rowsOfField, colsOfField);
-                resultOfGame = checkTheStep(fogOfWar, field, rowsOfField, colsOfField);
-            }
-            switch(resultOfGame)
-            {
-            case 1:
-                for(int i = 0; i < rowsOfField; ++i)
+                if(field[i][j] == 9)
                 {
-                    for(int j = 0; j < colsOfField; ++j)
-                    {
-                        if(field[i][j] == 9)
-                        {
-                            fogOfWar[i][j] = opened;
-                        }
-                    }
+                    fogOfWar[i][j] = opened;
                 }
-                drawField(fogOfWar, field, rowsOfField, colsOfField, upDown, leftRight);
-                attron(COLOR_PAIR(red)|A_BOLD|A_BLINK);
-                printw("\nYou lose!\n");
-                attroff(COLOR_PAIR(red)|A_BOLD|A_BLINK);
-                break;
-            case 2:
-                drawField(fogOfWar, field, rowsOfField, colsOfField, upDown, leftRight);
-                attron(COLOR_PAIR(green)|A_BOLD|A_BLINK);
-                printw("\nYou won!\n");
-                attroff(COLOR_PAIR(green)|A_BOLD|A_BLINK);
-                break;
             }
         }
+        drawField(fogOfWar, field, rowsOfField, colsOfField, upDown, leftRight);
+        attron(COLOR_PAIR(red)|A_BOLD|A_BLINK);
+        printw("\nYou lose!\n");
+        attroff(COLOR_PAIR(red)|A_BOLD|A_BLINK);
+        break;
+    case 2:
+        drawField(fogOfWar, field, rowsOfField, colsOfField, upDown, leftRight);
+        attron(COLOR_PAIR(green)|A_BOLD|A_BLINK);
+        printw("\nYou won!\n");
+        attroff(COLOR_PAIR(green)|A_BOLD|A_BLINK);
+        break;
     }
-    while(rowsOfField <= 0 || rowsOfField > ROWS || colsOfField <= 0 || colsOfField > COLS || amountOfBombs <= 0 || amountOfBombs > rowsOfField * (colsOfField * 40 / 100));
     getch();
     endwin();
+
+    for(int i = 0; i < rows; ++i)
+    {
+        free(fogOfWar[i]);
+        free(field[i]);
+        fogOfWar[i] = NULL;
+        field[i] = NULL;
+    }
+
+    free(fogOfWar);
+    free(field);
+    fogOfWar = NULL;
+    field = NULL;
+
     return 0;
 }
 
@@ -116,21 +119,46 @@ void treatSigWinch(int signo)
     resizeterm(size.ws_row, size.ws_col);
 }
 
-void runAround(int filed[][COLS], int rows, int cols, int a, int b);
+void runAround(int **field, int rows, int cols, int a, int b);
 
-void inc(int field[][COLS], int rows, int cols, int i, int j);
+void inc(int **field, int rows, int cols, int i, int j);
 
-void initFields(int fogOfWar[][COLS], int field[][COLS], int rows, int cols)
+void initFields(int **fogOfWar, int **field, int rows, int cols)
 {
     int amountOfCells = rows * cols;
     srand(time(NULL));
 
-    for(int i = 0; i < rows; ++i)
+    fogOfWar = (int **)malloc(rows * sizeof(int *));
+    field = (int **)malloc(rows * sizeof(int *));
+
+    if(fogOfWar == NULL)
     {
-        for(int j = 0; j < cols; ++j)
+        fprintf(stderr, "No free memory.\n");
+        exit(1);
+    }
+    else if(field == NULL)
+    {
+        free(fogOfWar);
+        fogOfWar = NULL;
+        fprintf(stderr, "No free memory.\n");
+        exit(1);
+    }
+
+    for(int i = 0; i < cols; ++i)
+    {
+        fogOfWar[i] = (int *)malloc(cols * sizeof(int));
+        field[i] = (int *)malloc(cols * sizeof(int));
+        if(fogOfWar[i] == NULL || field[i] == NULL)
         {
-            fogOfWar[i][j] = hidden;
-            field[i][j] = 0;
+            for(int index = i; index >= 0; --index)
+            {
+                free(fogOfWar[index]);
+                free(field[index]);
+                fogOfWar[index] = NULL;
+                field[index] = NULL;
+            }
+            fprintf(stderr, "No free memory.\n");
+            exit(1);
         }
     }
 
@@ -149,7 +177,7 @@ void initFields(int fogOfWar[][COLS], int field[][COLS], int rows, int cols)
     }
 }
 
-void runAround(int field[][COLS], int rows, int cols, int a, int b)
+void runAround(int **field, int rows, int cols, int a, int b)
 {
     for(int i = a - 1; i < a + 2; ++i)
     {
@@ -160,7 +188,7 @@ void runAround(int field[][COLS], int rows, int cols, int a, int b)
     }
 }
 
-void inc(int field[][COLS], int rows, int cols, int i, int j)
+void inc(int **field, int rows, int cols, int i, int j)
 {
     if(i >= 0 && j >= 0 && i < rows && j < cols && field[i][j] < 9)
     {
@@ -168,7 +196,7 @@ void inc(int field[][COLS], int rows, int cols, int i, int j)
     }
 }
 
-void drawField(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ)
+void drawField(int **fogOfWar, int **field, int rows, int cols, int cellI, int cellJ)
 {
     for(int i = 0; i < rows; ++i)
     {
@@ -223,9 +251,9 @@ void drawField(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int 
     refresh();
 }
 
-void openRecursively(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ);
+void openRecursively(int **fogOfWar, int **field, int rows, int cols, int cellI, int cellJ);
 
-void playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols)
+void playTheGame(int **fogOfWar, int **field, int rows, int cols)
 {
     drawField(fogOfWar, field, rows, cols, upDown, leftRight);
     keypad(stdscr, true);
@@ -360,7 +388,7 @@ void playTheGame(int fogOfWar[][COLS], int field[][COLS], int rows, int cols)
 }
 
 
-void openRecursively(int fogOfWar[][COLS], int field[][COLS], int rows, int cols, int cellI, int cellJ)
+void openRecursively(int **fogOfWar, int **field, int rows, int cols, int cellI, int cellJ)
 {
     if(cellI >= 0 && cellJ >= 0 && cellI < rows && cellJ < cols )
     {
@@ -379,7 +407,7 @@ void openRecursively(int fogOfWar[][COLS], int field[][COLS], int rows, int cols
     }
 }
 
-int checkTheStep(int fogOfWar[][COLS], int field[][COLS], int rows, int cols)
+int checkTheStep(int **fogOfWar, int **field, int rows, int cols)
 {
     int amountOfClosedCells = 0;
     for(int i = 0; i < rows; ++i)

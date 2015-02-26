@@ -22,6 +22,11 @@ int main()
         array[i] = (int *)malloc(cols * sizeof(int));
         if(array[i] == NULL)
         {
+            for(int index = i; index >= 1; --index)
+            {
+                free(array[index - 1]);
+                array[index] = NULL;
+            }
             fprintf(stderr, "No free memory.\n");
             exit(1);
         }
