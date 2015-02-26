@@ -2,9 +2,8 @@
 #include <assert.h>
 #include "../include/multidimensionalArray.h"
 
-void outputMultiArray(int array[][MAXCOLS], int rows, int cols)
+void outputMultiArray(int **array, int rows, int cols)
 {
-    assert(rows > 0 && rows <= MAXROWS && cols > 0 && cols <= MAXCOLS);
     for(int i = 0; i < rows; ++i)
     {
         for(int j = 0; j < cols; ++j)
@@ -15,9 +14,8 @@ void outputMultiArray(int array[][MAXCOLS], int rows, int cols)
     }
 }
 
-void fillMultiArrayWithRandomNumbers(int array[][MAXCOLS], int rows, int cols)
+void fillMultiArrayWithRandomNumbers(int **array, int rows, int cols)
 {
-    assert(rows > 0 && rows <= MAXROWS && cols > 0 && cols <= MAXCOLS);
     srand(time(NULL));
     for(int i = 0; i < rows; ++i)
     {
@@ -28,9 +26,8 @@ void fillMultiArrayWithRandomNumbers(int array[][MAXCOLS], int rows, int cols)
     }
 }
 
-void sortMultiArray(int array[][MAXCOLS], int rows, int cols)
+void sortMultiArray(int **array, int rows, int cols)
 {
-    assert(rows > 0 && rows <= MAXROWS && cols > 0 && cols <= MAXCOLS);
     int max, i, j;
     for(int k = 0; k < (rows * cols) - 1; ++k)
     {
@@ -62,7 +59,7 @@ void sortMultiArray(int array[][MAXCOLS], int rows, int cols)
     }
 }
 
-void shiftMultiArray(int array[][MAXCOLS], int rows, int cols, char symbol, int amountOfSteps)
+void shiftMultiArray(int **array, int rows, int cols, char symbol, int amountOfSteps)
 {
     int storage[amountOfSteps];
     switch(symbol)
