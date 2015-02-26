@@ -25,14 +25,48 @@ int checkTheStep(int **fogOfWar, int **field, int rows, int cols);
 
 int main()
 {
-    int **fogOfWar = NULL;
-    int **field = NULL; //0 - empty, 1-8 - amount of bombs, 9 - bomb
-    int resultOfGame = 0;
+    int resultOfGame = 0, **fogOfWar = NULL, **field = NULL; //для field: 0 - empty, 1-8 - amount of bombs, 9 - bomb
     system("clear");
-    printf("Enter the amount of rows (less or equal %d): ", ROWS);
+    printf("Enter the amount of rows: ");
     scanf("%d", &rowsOfField);
-    printf("Enter the amount of cols (less or equal %d): ", COLS);
+
+    fogOfWar = (int **)malloc(rowsOfField * sizeof(int *));
+    field = (int **)malloc(rowsOfField * sizeof(int *));
+
+    if(fogOfWar == NULL)
+    {
+        fprintf(stderr, "No free memory.\n");
+        exit(1);
+    }
+    else if(field == NULL)
+    {
+        free(fogOfWar);
+        fogOfWar = NULL;
+        fprintf(stderr, "No free memory.\n");
+        exit(1);
+    }
+
+    printf("Enter the amount of cols: ");
     scanf("%d", &colsOfField);
+
+    for(int i = 0; i < rowsOfField; ++i)
+    {
+        fogOfWar[i] = (int *)malloc(colsOfField * sizeof(int));
+        field[i] = (int *)malloc(colsOfField * sizeof(int));
+        if(fogOfWar[i] == NULL || field[i] == NULL)
+        {
+            for(int index = i; index >= 0; --index)
+            {
+                free(fogOfWar[index]);
+                free(field[index]);
+                fogOfWar[index] = NULL;
+                field[index] = NULL;
+            }
+            fprintf(stderr, "No free memory.\n");
+            exit(1);
+        }
+    }
+
     printf("Enter the amount of bombs (less or equal %d): ", rowsOfField * (colsOfField * 40 / 100));
     scanf("%d", &amountOfBombs);
     system("clear");
@@ -71,10 +105,8 @@ int main()
         attroff(COLOR_PAIR(green)|A_BOLD|A_BLINK);
         break;
     }
-    getch();
-    endwin();
 
-    for(int i = 0; i < rows; ++i)
+    for(int i = 0; i < rowsOfField; ++i)
     {
         free(fogOfWar[i]);
         free(field[i]);
@@ -86,6 +118,9 @@ int main()
     free(field);
     fogOfWar = NULL;
     field = NULL;
+
+    getch();
+    endwin();
 
     return 0;
 }
@@ -128,37 +163,11 @@ void initFields(int **fogOfWar, int **field, int rows, int cols)
     int amountOfCells = rows * cols;
     srand(time(NULL));
 
-    fogOfWar = (int **)malloc(rows * sizeof(int *));
-    field = (int **)malloc(rows * sizeof(int *));
-
-    if(fogOfWar == NULL)
+    for(int i = 0; i < rows; ++i)
     {
-        fprintf(stderr, "No free memory.\n");
-        exit(1);
-    }
-    else if(field == NULL)
-    {
-        free(fogOfWar);
-        fogOfWar = NULL;
-        fprintf(stderr, "No free memory.\n");
-        exit(1);
-    }
-
-    for(int i = 0; i < cols; ++i)
-    {
-        fogOfWar[i] = (int *)malloc(cols * sizeof(int));
-        field[i] = (int *)malloc(cols * sizeof(int));
-        if(fogOfWar[i] == NULL || field[i] == NULL)
+        for(int j = 0; j < cols; ++j)
         {
-            for(int index = i; index >= 0; --index)
-            {
-                free(fogOfWar[index]);
-                free(field[index]);
-                fogOfWar[index] = NULL;
-                field[index] = NULL;
-            }
-            fprintf(stderr, "No free memory.\n");
-            exit(1);
+            fogOfWar[i][j] = hidden;
         }
     }
 
@@ -384,7 +393,6 @@ void playTheGame(int **fogOfWar, int **field, int rows, int cols)
         }
         break;
     }
-    return 0;
 }
 
 
