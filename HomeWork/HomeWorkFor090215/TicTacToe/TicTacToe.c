@@ -1,25 +1,19 @@
-#include <assert.h>
-#define MAXROWS 4
-#define MAXCOLS 4
-
-void fillArrayWithEmptySymbols(char array[][MAXCOLS], int rows, int cols)
+void fillArrayWithEmptySymbols(char **array, int rows, int cols)
 {
-    assert(rows > 0 && rows <= MAXROWS && cols > 0 && cols <= MAXCOLS);
-    for(int i = 0; i < rows; ++i)
+    for(int i = 0; i < 4; ++i)
     {
-        for(int j = 0; j < cols; ++ j)
+        for(int j = 0; j < 4; ++ j)
         {
             array[i][j] = ' ';
         }
     }
 }
 
-void showTable(char array[][MAXCOLS], int rows, int cols)
+void showTable(char **array)
 {
-    assert(rows > 0 && rows <= MAXROWS && cols > 0 && cols <= MAXCOLS);
-    for(int i = 0; i < rows; ++i)
+    for(int i = 0; i < 4; ++i)
     {
-        for(int j = 0; j < cols; ++j)
+        for(int j = 0; j < 4; ++j)
         {
             printf("%c", array[i][j]);
         }
@@ -27,7 +21,7 @@ void showTable(char array[][MAXCOLS], int rows, int cols)
     }
 }
 
-void fillTable(char array[][MAXCOLS])
+void fillTable(char **array)
 {
     int row, column;
     char symbol;
@@ -35,7 +29,6 @@ void fillTable(char array[][MAXCOLS])
     {
         printf("Enter symbol, row and column to fill: ");
         scanf(" %c %d %d", &symbol, &row, &column);
-        assert(row > 0 && row <= MAXROWS && column > 0 && column <= MAXCOLS);
         if(array[row - 1][column - 1] == 'X' || array[row - 1][column - 1] == 'O'  || array[row - 1][column - 1] == 'x' || array[row - 1][column - 1] == 'o')
         {
             printf("You can't fill! Try again!\n");
@@ -49,7 +42,7 @@ void fillTable(char array[][MAXCOLS])
 }
 
 
-char checkFinish(char array[][MAXCOLS])
+char checkFinish(char **array)
 {
     char indicator = ' ';
     static int counter = 0;
@@ -100,18 +93,17 @@ char checkFinish(char array[][MAXCOLS])
     return indicator;
 }
 
-void playTheGame(char array[][MAXCOLS], int rows, int cols)
+void playTheGame(char **array)
 {
-    assert(rows > 0 && rows <= MAXROWS && cols > 0 && cols <= MAXCOLS);
     char indicator;
     do
     {
-        showTable(array, rows, cols);
+        showTable(array);
         fillTable(array);
         universalClear();
         indicator = checkFinish(array);
     }while(indicator == ' ');
-    showTable(array, rows, cols);
+    showTable(array);
     if(indicator == 'X' || indicator == 'O' || indicator == 'x' || indicator == 'o')
     {
         printf("Player that played with '%c' symbol won!", indicator);
