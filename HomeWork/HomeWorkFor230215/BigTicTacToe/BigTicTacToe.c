@@ -32,11 +32,11 @@ void initialiseProgram()
     init_pair(yellow, COLOR_YELLOW, COLOR_BLACK);
 }
 
-void drawField(int field[][20], int rows, int cols)
+void drawField(int **field)
 {
-    for(int i = 0; i < rows; ++i)
+    for(int i = 0; i < ROWS; ++i)
     {
-        for(int j = 0; j < cols; ++j)
+        for(int j = 0; j < COLS; ++j)
         {
             move(i, j);
             if(upDown == i && leftRight == j)
@@ -74,9 +74,9 @@ void drawField(int field[][20], int rows, int cols)
     refresh();
 }
 
-void playTheGame(int field[][20], int rows, int cols)
+void playTheGame(int **field)
 {
-    drawField(field, rows, cols);
+    drawField(field);
     keypad(stdscr, true);
     int symbol = getch();
     switch(symbol)
@@ -84,12 +84,12 @@ void playTheGame(int field[][20], int rows, int cols)
     case KEY_UP:
         if(upDown == 0 && leftRight == 0)
         {
-            upDown = rows - 1;
-            leftRight = cols - 1;
+            upDown = ROWS - 1;
+            leftRight = COLS - 1;
         }
         else if(upDown == 0)
         {
-            upDown = rows - 1;
+            upDown = ROWS - 1;
             --leftRight;
         }
         else
@@ -98,12 +98,12 @@ void playTheGame(int field[][20], int rows, int cols)
         }
         break;
     case KEY_DOWN:
-        if(upDown == rows - 1 && leftRight == cols - 1)
+        if(upDown == ROWS - 1 && leftRight == COLS - 1)
         {
             upDown = 0;
             leftRight = 0;
         }
-        else if(upDown == rows - 1)
+        else if(upDown == ROWS - 1)
         {
             upDown = 0;
             ++leftRight;
@@ -116,13 +116,13 @@ void playTheGame(int field[][20], int rows, int cols)
     case KEY_LEFT:
         if(upDown == 0 && leftRight == 0)
         {
-            upDown = rows - 1;
-            leftRight = cols - 1;
+            upDown = ROWS - 1;
+            leftRight = COLS - 1;
         }
         else if(leftRight == 0)
         {
             --upDown;
-            leftRight = cols - 1;
+            leftRight = COLS - 1;
         }
         else
         {
@@ -130,12 +130,12 @@ void playTheGame(int field[][20], int rows, int cols)
         }
         break;
     case KEY_RIGHT:
-        if(upDown == rows - 1 && leftRight == cols - 1)
+        if(upDown == ROWS - 1 && leftRight == COLS - 1)
         {
             upDown = 0;
             leftRight = 0;
         }
-        else if(leftRight == cols - 1)
+        else if(leftRight == COLS - 1)
         {
             ++upDown;
             leftRight = 0;
@@ -161,14 +161,14 @@ void playTheGame(int field[][20], int rows, int cols)
     return 0;
 }
 
-int checkHorizontal(int field[][20], int rows, int cols)
+int checkHorizontal(int **field)
 {
     int indicator = 0;
     for(int k = leftRight; k > 0 && field[upDown][k] == field[upDown][k - 1]; --k)
     {
         ++indicator;
     }
-    for(int k = leftRight; k < cols - 1 && field[upDown][k] == field[upDown][k + 1]; ++k)
+    for(int k = leftRight; k < COLS - 1 && field[upDown][k] == field[upDown][k + 1]; ++k)
     {
         ++indicator;
     }
@@ -186,14 +186,14 @@ int checkHorizontal(int field[][20], int rows, int cols)
     return 0;
 }
 
-int checkVertical(int field[][20], int rows, int cols)
+int checkVertical(int **field)
 {
     int indicator = 0;
     for(int k = upDown; k > 0 && field[k][leftRight] == field[k - 1][leftRight]; --k)
     {
         ++indicator;
     }
-    for(int k = upDown; k < rows - 1 && field[k][leftRight] == field[k + 1][leftRight]; ++k)
+    for(int k = upDown; k < ROWS - 1 && field[k][leftRight] == field[k + 1][leftRight]; ++k)
     {
         ++indicator;
     }
@@ -211,14 +211,14 @@ int checkVertical(int field[][20], int rows, int cols)
     return 0;
 }
 
-int checkLeftDiagonal(int field[][20], int rows, int cols)
+int checkLeftDiagonal(int **field)
 {
     int indicator = 0;
     for(int k = upDown, l = leftRight; k > 0 && l > 0 && field[k][l] == field[k - 1][l - 1]; --k, --l)
     {
         ++indicator;
     }
-    for(int k = upDown, l = leftRight; k < rows - 1 && l < cols - 1 && field[k][l] == field[k + 1][l + 1]; ++k, ++l)
+    for(int k = upDown, l = leftRight; k < ROWS - 1 && l < COLS - 1 && field[k][l] == field[k + 1][l + 1]; ++k, ++l)
     {
         ++indicator;
     }
@@ -236,14 +236,14 @@ int checkLeftDiagonal(int field[][20], int rows, int cols)
     return 0;
 }
 
-int checkRightDiagonal(int field[][20], int rows, int cols)
+int checkRightDiagonal(int **field)
 {
     int indicator = 0;
-    for(int k = upDown, l = leftRight; k < rows - 1 && l > 0 && field[k][l] == field[k + 1][l - 1]; ++k, --l)
+    for(int k = upDown, l = leftRight; k < ROWS - 1 && l > 0 && field[k][l] == field[k + 1][l - 1]; ++k, --l)
     {
         ++indicator;
     }
-    for(int k = upDown, l = leftRight; k > 0 && l < cols - 1 && field[k][l] == field[k - 1][l + 1]; --k, ++l)
+    for(int k = upDown, l = leftRight; k > 0 && l < COLS - 1 && field[k][l] == field[k - 1][l + 1]; --k, ++l)
     {
         ++indicator;
     }
@@ -261,9 +261,9 @@ int checkRightDiagonal(int field[][20], int rows, int cols)
     return 0;
 }
 
-int checkTheGame(int field[][20], int rows, int cols)
+int checkTheGame(int **field)
 {
-    int amountOfUnusedCells = 0, a = checkVertical(field, 20, 20), b = checkHorizontal(field, 20, 20), c = checkLeftDiagonal(field, 20, 20), d = checkRightDiagonal(field, 20, 20);
+    int amountOfUnusedCells = 0, a = checkVertical(field), b = checkHorizontal(field), c = checkLeftDiagonal(field), d = checkRightDiagonal(field);
     if(a != 0 || b != 0 || c != 0 || d !=  0)
     {
         if(a != 0)
@@ -283,9 +283,9 @@ int checkTheGame(int field[][20], int rows, int cols)
             return d;
         }
     }
-    for(int i = 0; i < rows; ++i)
+    for(int i = 0; i < ROWS; ++i)
     {
-        for(int j = 0; j < cols; ++j)
+        for(int j = 0; j < COLS; ++j)
         {
             if(field[i][j] == 0)
             {
