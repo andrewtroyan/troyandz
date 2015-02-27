@@ -32,14 +32,14 @@ void initialiseProgram()
     init_pair(yellow, COLOR_YELLOW, COLOR_BLACK);
 }
 
-void drawField(int field[][4][4], int layers, int rows, int cols)
+void drawField(int ***field)
 {
     int up = 0, down = 0;
-    for(int i = 0; i < layers; ++i)
+    for(int i = 0; i < LAYERS; ++i)
     {
-        for(int j = 0; j < rows; ++j)
+        for(int j = 0; j < ROWS; ++j)
         {
-            for(int k = 0; k < cols; ++k)
+            for(int k = 0; k < COLS; ++k)
             {
                 if(i == 0)
                 {
@@ -96,9 +96,9 @@ void drawField(int field[][4][4], int layers, int rows, int cols)
     refresh();
 }
 
-void playTheGame(int field[][4][4], int layers, int rows, int cols)
+void playTheGame(int ***field)
 {
-    drawField(field, layers, rows, cols);
+    drawField(field);
     keypad(stdscr, true);
     int symbol = getch();
     switch(symbol)
@@ -122,12 +122,12 @@ void playTheGame(int field[][4][4], int layers, int rows, int cols)
     case KEY_UP:
         if(upDown == 0 && currentLayer == 0)
         {
-            upDown = rows + 4;
+            upDown = ROWS + 4;
             currentLayer = 2;
         }
         else if(upDown == 0 && currentLayer == 1)
         {
-            upDown = rows + 4;
+            upDown = ROWS + 4;
             currentLayer = 3;
         }
         else if(upDown == 5 && currentLayer == 2)
@@ -146,12 +146,12 @@ void playTheGame(int field[][4][4], int layers, int rows, int cols)
         }
         break;
     case KEY_DOWN:
-        if(upDown == rows + 4 && currentLayer == 2)
+        if(upDown == ROWS + 4 && currentLayer == 2)
         {
             upDown = 0;
             currentLayer = 0;
         }
-        else if(upDown == rows + 4 && currentLayer == 3)
+        else if(upDown == ROWS + 4 && currentLayer == 3)
         {
             upDown = 0;
             currentLayer = 1;
@@ -174,20 +174,20 @@ void playTheGame(int field[][4][4], int layers, int rows, int cols)
     case KEY_LEFT:
         if(leftRight == 0 && currentLayer == 0)
         {
-            leftRight = cols + 4;
+            leftRight = COLS + 4;
             currentLayer = 1;
         }
         else if(leftRight == 0 && currentLayer == 2)
         {
-            leftRight = cols + 4;
+            leftRight = COLS + 4;
             currentLayer = 3;
         }
-        else if(leftRight == cols + 1 && currentLayer == 1)
+        else if(leftRight == COLS + 1 && currentLayer == 1)
         {
             leftRight -= 2;
             currentLayer = 0;
         }
-        else if(leftRight == cols + 1 && currentLayer == 3)
+        else if(leftRight == COLS + 1 && currentLayer == 3)
         {
             leftRight -= 2;
             currentLayer = 2;
@@ -198,22 +198,22 @@ void playTheGame(int field[][4][4], int layers, int rows, int cols)
         }
         break;
     case KEY_RIGHT:
-        if(leftRight == cols + 4 && currentLayer == 1)
+        if(leftRight == COLS + 4 && currentLayer == 1)
         {
             leftRight = 0;
             currentLayer = 0;
         }
-        else if(leftRight == cols + 4 && currentLayer == 3)
+        else if(leftRight == COLS + 4 && currentLayer == 3)
         {
             leftRight = 0;
             currentLayer = 2;
         }
-        else if(leftRight == cols - 1 && currentLayer == 0)
+        else if(leftRight == COLS - 1 && currentLayer == 0)
         {
             leftRight += 2;
             currentLayer = 1;
         }
-        else if(leftRight == cols - 1 && currentLayer == 2)
+        else if(leftRight == COLS - 1 && currentLayer == 2)
         {
             leftRight += 2;
             currentLayer = 3;
@@ -295,7 +295,7 @@ void playTheGame(int field[][4][4], int layers, int rows, int cols)
     return 0;
 }
 
-int checkLine(int field[][4][4], int length, int i, int j, int k, int vi, int vj, int vk)
+int checkLine(int ***field, int length, int i, int j, int k, int vi, int vj, int vk)
 {
     int indicator = 0;
     for(int l = 0; l < length - 1; ++l)
@@ -322,20 +322,20 @@ int checkLine(int field[][4][4], int length, int i, int j, int k, int vi, int vj
     return 0;
 }
 
-int checkTheGame(int field[][4][4], int layers, int rows, int cols)
+int checkTheGame(int ***field)
 {
     int A = 0, B = 0, C = 0, D = 0, E = 0, F = 0, G = 0, H = 0, I = 0, J = 0, K = 0, amountOfUnusedCells = 0;
     A = checkLine(field, 4, currentLayer, 0, currentJ, 0, 1, 0);
     B = checkLine(field, 4, currentLayer, currentI, 0, 0, 0, 1);
     C = checkLine(field, 4, currentLayer, 0, 0, 0, 1, 1);
-    D = checkLine(field, 4, currentLayer, rows - 1, 0, 0, -1, 1);
+    D = checkLine(field, 4, currentLayer, ROWS - 1, 0, 0, -1, 1);
     E = checkLine(field, 4, 0, currentI, currentJ, 1, 0, 0);
-    F = checkLine(field, 4, 0, rows - 1, currentJ, 1, -1, 0);
+    F = checkLine(field, 4, 0, ROWS - 1, currentJ, 1, -1, 0);
     G = checkLine(field, 4, 0, 0, currentJ, 1, 1, 0);
     H = checkLine(field, 4, 0, 0, 0, 1, 1, 1);
-    I = checkLine(field, 4, 0, 0, cols - 1, 1, 1, -1);
-    J = checkLine(field, 4, 0, rows - 1, 0, 1, -1, 1);
-    K = checkLine(field, 4, 0, rows - 1, cols - 1, 1, -1, -1);
+    I = checkLine(field, 4, 0, 0, COLS - 1, 1, 1, -1);
+    J = checkLine(field, 4, 0, ROWS - 1, 0, 1, -1, 1);
+    K = checkLine(field, 4, 0, ROWS - 1, COLS - 1, 1, -1, -1);
     if(A != 0 || B != 0 || C != 0 || D != 0 || E != 0 || F != 0 || G != 0 || H != 0 || I != 0 || J != 0 || K != 0)
     {
         if(A != 0)
@@ -383,11 +383,11 @@ int checkTheGame(int field[][4][4], int layers, int rows, int cols)
             return K;
         }
     }
-    for(int i = 0; i < layers; ++i)
+    for(int i = 0; i < LAYERS; ++i)
     {
-        for(int j = 0; j < rows; ++j)
+        for(int j = 0; j < ROWS; ++j)
         {
-            for(int k = 0; k < cols; ++k)
+            for(int k = 0; k < COLS; ++k)
             {
                 if(field[i][j][k] == 0)
                 {

@@ -14,12 +14,16 @@
 #include <time.h>
 #include <assert.h>
 
+#define LAYERS 4
+#define ROWS 4
+#define COLS 4
+
 enum Colors {normal, green, red, blue, yellow};
 
 void treatSigWinch(int signo);
 void initialiseProgram();
-void drawField(int field[][4][4], int layers, int rows, int cols);
-void playTheGame(int field[][4][4], int layers, int rows, int cols);
-int checkTheGame(int field[][4][4], int layers, int rows, int cols);
+void drawField(int ***field);
+void playTheGame(int ***field);
+int checkTheGame(int ***field);
 
 #endif // BIGTICTACTOE_H_INCLUDED
