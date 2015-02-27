@@ -1,5 +1,4 @@
 #include <time.h>
-#include <assert.h>
 #include "../include/multidimensionalArray.h"
 
 void outputMultiArray(int **array, int rows, int cols)
