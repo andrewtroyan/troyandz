@@ -1,18 +1,7 @@
-#define _XOPEN_SOURCE_EXTENDED
-#define _POSIX_C_SOURCE 199309L
-
-#include <sys/ioctl.h>
-#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <ncurses.h>
-#include <locale.h>
-#include <stdbool.h>
-#include <time.h>
+#include "../../../modules/include/ncursesDetails.h"
 
-void treatSigWinch(int signo);
-void initialiseProgram();
-enum Colors {normal, green, red, blue, yellow};
 char closeCell[4] = "\342\227\206";
 static int upDown = 0, leftRight = 0, rowsOfField, colsOfField, amountOfBombs;
 
@@ -123,35 +112,6 @@ int main()
     endwin();
 
     return 0;
-}
-
-void initialiseProgram()
-{
-    setlocale(LC_ALL, "");
-    initscr();
-    signal(SIGWINCH, treatSigWinch);
-    if(has_colors() == FALSE)
-    {
-        endwin();
-        fprintf(stderr, "no colors\n");
-        exit(1);
-    }
-    cbreak();
-    noecho();
-    curs_set(0);
-    start_color();
-    init_pair(normal, COLOR_WHITE, COLOR_BLACK);
-    init_pair(green, COLOR_GREEN, COLOR_BLACK);
-    init_pair(red, COLOR_RED, COLOR_BLACK);
-    init_pair(blue, COLOR_BLUE, COLOR_BLACK);
-    init_pair(yellow, COLOR_YELLOW, COLOR_BLACK);
-}
-
-void treatSigWinch(int signo)
-{
-    struct winsize size;
-    ioctl(fileno(stdout), TIOCGWINSZ, (char *) &size);
-    resizeterm(size.ws_row, size.ws_col);
 }
 
 void runAround(int **field, int rows, int cols, int a, int b);

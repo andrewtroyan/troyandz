@@ -34,6 +34,10 @@
 		<Linker>
 			<Add library="ncursesw" />
 		</Linker>
+		<Unit filename="../../../modules/include/ncursesDetails.h" />
+		<Unit filename="../../../modules/src/ncursesDetails.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
