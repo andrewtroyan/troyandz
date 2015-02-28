@@ -19,11 +19,11 @@ void displayXO(int i)
 }
 
 
-void display(int array[][3], int rows, int cols)
+void display(int **array)
 {
-    for(int i = 0; i < rows + 2; ++i)
+    for(int i = 0; i < 5; ++i)
     {
-        for(int j = 0; j < cols + 2; ++j)
+        for(int j = 0; j < 5; ++j)
         {
             if(j % 2 == 0 && i % 2 == 0)
             {
@@ -44,7 +44,7 @@ void display(int array[][3], int rows, int cols)
 
 //Функция хода
 //Куда и чем ходим
-bool motion(int array[][3], int where, int what)
+bool motion(int **array, int where, int what)
 {
     bool ok = false;
     switch (where)
@@ -120,7 +120,7 @@ bool motion(int array[][3], int where, int what)
 //Человек ходит крестиком
 //Человек ходит первым
 //Функция отвечает за первый и последующие хода
-void man(int array[][3])
+void man(int **array)
 {
     int x;
     do
@@ -131,7 +131,7 @@ void man(int array[][3])
 }
 
 //Ход компьютера
-void computer(int array[][3])
+void computer(int **array)
 {
     int x;
     do
@@ -145,7 +145,7 @@ void computer(int array[][3])
 //2 - если ничья
 //3 - если победил компьютер
 //4 - если победил человек
-int check(int array[][3])
+int check(int **array)
 {
     static int counter = 0;
 

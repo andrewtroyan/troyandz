@@ -5,7 +5,31 @@
 
 int main()
 {
-    int table[3][3] = {0};
+    int **table = NULL;
+
+    table = (int **)malloc(3 * sizeof(int*));
+    if(table == NULL)
+    {
+        fprintf(stderr, "No free memory.\n");
+        exit(1);
+    }
+
+    for(int i = 0; i < 3; ++i)
+    {
+        table[i] = NULL;
+        table[i] = (int *)malloc(3 * sizeof(int));
+        if(table[i] == NULL)
+        {
+            for(int index = i; index > 0; --index)
+            {
+                free(table[index - 1]);
+                table[index - 1] = NULL;
+            }
+            fprintf(stderr, "No free memory.\n");
+            exit(1);
+        }
+    }
+
     bool comp = false, game = true;
     while(game)
     {
@@ -45,5 +69,14 @@ int main()
             break;
         }
     }
+    for(int i = 0; i < 3; ++i)
+    {
+        free(table[i]);
+        table[i] = NULL;
+    }
+
+    free(table);
+    table = NULL;
+
     return 0;
 }
