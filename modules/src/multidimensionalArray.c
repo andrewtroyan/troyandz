@@ -60,7 +60,8 @@ void sortMultiArray(int **array, int rows, int cols)
 
 void shiftMultiArray(int **array, int rows, int cols, char symbol, int amountOfSteps)
 {
-    int storage[amountOfSteps];
+    int *storage = NULL;
+    storage = (int *)malloc(amountOfSteps * sizeof(int));
     switch(symbol)
     {
     case 'r':
@@ -152,5 +153,7 @@ void shiftMultiArray(int **array, int rows, int cols, char symbol, int amountOfS
         }
         break;
     }
+    free(storage);
+    storage = NULL;
 }
 
