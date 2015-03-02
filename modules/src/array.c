@@ -54,12 +54,11 @@ int maxOfArray(const int *array, int sizeOfPart)
     return max;
 }
 
-void generateRandomNumbersInArray(int *array, int sizeOfPart)
+void generateRandomNumbersInArray(int *array, int sizeOfPart, int down, int up)
 {
-    srand(time(NULL));
     for(int i = 0; i < sizeOfPart; ++i)
     {
-        array[i] = rand()% 10;
+        array[i] = rand() % (up - down + 1) + down;
     }
 }
 
