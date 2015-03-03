@@ -20,7 +20,7 @@ int main()
         exit(1);
     }
     srand(time(NULL));
-    generateRandomNumbersInArray(array, rows * cols, 0, 20);
+    generateRandomNumbersInArray(array, rows * cols, 0, 99);
     outputMatrix(array, rows, cols);
 
     bool noSaddlePoints = true;
