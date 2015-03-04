@@ -33,10 +33,10 @@ int main()
             if(array[index] == rowMin)
             {
                 colMax = maxInCol(array, rows, cols, colIndex);
-                if(array[i * cols + colIndex] == array[colMax * cols + colIndex])
+                if(array[index] == array[colMax * cols + colIndex])
                 {
                     noSaddlePoints = false;
-                    printf("The saddle point is %d [%d][%d].\n", array[colMax * cols + colIndex], colMax, colIndex);
+                    printf("The saddle point is %d [%d][%d].\n", array[index], i, colIndex);
                 }
             }
         }

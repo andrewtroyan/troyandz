@@ -38,6 +38,7 @@ int main()
         }
         generateRandomNumbersInArray(array[i], cols, 0, 99);
     }
+
     outputMultiArray(array, rows, cols);
 
     bool noSaddlePoints = true;
@@ -62,6 +63,11 @@ int main()
         printf("There's no saddle points.\n");
     }
 
+    for(int i = 0; i < rows; ++i)
+    {
+        free(array[i]);
+        array[i] = NULL;
+    }
     free(array);
     array = NULL;
     return 0;
