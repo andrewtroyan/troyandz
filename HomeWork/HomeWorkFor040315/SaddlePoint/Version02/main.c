@@ -9,7 +9,7 @@
 int main()
 {
     srand(time(NULL));
-    int **array = NULL, rows, cols;
+    int **array = NULL, rows, cols, rowMin, colMax;
     printf("Enter amount of rows: ");
     scanf("%d", &rows);
     array = (int **)malloc(rows * sizeof(int *));
@@ -43,12 +43,18 @@ int main()
     bool noSaddlePoints = true;
     for(int i = 0; i < rows; ++i)
     {
-        int min = minInRow(array, i, cols);
-        int max = maxInCol(array, rows, min);
-        if(array[i][min] == array[max][min])
+        rowMin = minOfArray(array[i], cols);
+        for(int j = 0; j < cols; ++j)
         {
-            noSaddlePoints = false;
-            printf("The saddle point is %d [%d][%d].\n", array[max][min], max, min);
+            if(array[i][j] == rowMin)
+            {
+                colMax = maxInCol(array, rows, j);
+                if(array[i][j] == array[colMax][j])
+                {
+                    noSaddlePoints = false;
+                    printf("The saddle point is %d [%d][%d].\n", array[i][j], i, j);
+                }
+            }
         }
     }
     if(noSaddlePoints == true)
