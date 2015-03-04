@@ -8,7 +8,7 @@
 
 int main()
 {
-    int *array = NULL, rows, cols;
+    int *array = NULL, rows, cols, rowMin, colMax, start;
     printf("Enter amount of rows: ");
     scanf("%d", &rows);
     printf("Enter amount of columns: ");
@@ -26,12 +26,19 @@ int main()
     bool noSaddlePoints = true;
     for(int i = 0; i < rows; ++i)
     {
-        int min = minInRow(array, i, cols);
-        int max = maxInCol(array, rows, cols, min);
-        if(array[i * cols + min] == array[max * cols + min])
+        start = i * cols;
+        rowMin = minInRow(array, start, start + cols);
+        for(int index = start, colIndex = 0; index < start + cols; ++index, ++colIndex)
         {
-            noSaddlePoints = false;
-            printf("The saddle point is %d [%d][%d].\n", array[max * cols + min], max, min);
+            if(array[index] == rowMin)
+            {
+                colMax = maxInCol(array, rows, cols, colIndex);
+                if(array[i * cols + colIndex] == array[colMax * cols + colIndex])
+                {
+                    noSaddlePoints = false;
+                    printf("The saddle point is %d [%d][%d].\n", array[colMax * cols + colIndex], colMax, colIndex);
+                }
+            }
         }
     }
     if(noSaddlePoints == true)

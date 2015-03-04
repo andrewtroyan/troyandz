@@ -10,13 +10,13 @@ void outputMatrix(int *array, int rows, int cols)
     }
 }
 
-int minInRow(int *array, int rows, int cols)
+int minInRow(int *array, int begin, int end)
 {
-    int indexOfMin = 0;
-    for(int i = 1; i < cols; ++i)
-        if(array[rows * cols + i] < array[rows * cols + indexOfMin])
-            indexOfMin = i;
-    return indexOfMin;
+    int min = array[begin];
+    for(int i = begin + 1; i < end; ++i)
+        if(array[i] < min)
+            min = array[i];
+    return min;
 }
 
 int maxInCol(int *array, int rows, int cols, int currentColumn)
