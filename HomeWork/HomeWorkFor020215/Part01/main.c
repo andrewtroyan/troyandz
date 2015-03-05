@@ -8,13 +8,21 @@
 
 int main()
 {
-    int array[SIZE], sizeOfPart;
-    printf("Enter the size of array (0 < size <= %d): ", SIZE);
+    int *array = NULL, sizeOfPart;
+    printf("Enter the size of array: ");
     scanf("%d", &sizeOfPart);
+    array = (int *)malloc(sizeOfPart * sizeof(int));
+    if(array == NULL)
+    {
+        fprintf(stderr, "No free memory.\n");
+        exit(1);
+    }
     askForGenerateOrWriting(array, sizeOfPart);
     universalClear();
     printf("Your array:\n");
-    outputArrray(array, sizeOfPart);
+    outputArray(array, sizeOfPart);
     interchangeFirstPositiveAndLastNegative(array, sizeOfPart);
+    free(array);
+    array = NULL;
     return 0;
 }
