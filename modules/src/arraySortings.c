@@ -316,6 +316,3 @@ void timSorting(int *array, int indexOfTheStart, int indexOfTheEnd)
     }
     while(i < indexOfTheEnd);
 }
-
-
-
