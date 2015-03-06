@@ -21,7 +21,7 @@ int main()
 
     /*int strlen(char *) - возвращает длину строки;
     strcpy(destination, source) - string copy (из source в destination)
-    strcat(destination, source) - к source приклеивает destination
+    strcat(destination, source) - source приклеивает к destination
     strcmp(a, b) - отрицательное число, если а < b, 0 - если равны, положительное число - если a > b
 
     strchr(haytack, needle) - ищет символ в строке
