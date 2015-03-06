@@ -7,7 +7,7 @@ void outputMultiArray(int **array, int rows, int cols)
     {
         for(int j = 0; j < cols; ++j)
         {
-            printf("%02d ", array[i][j]);
+            printf("%3d ", array[i][j]);
         }
         printf("\n");
     }
