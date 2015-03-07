@@ -42,8 +42,8 @@ int main(int argc, char **argv) //argv - массив строк, argc - кол�
     3) stderr
 
     Со строками:
-    sprintf(char *str...)
-    sscanf()
+    sprintf(char *str...);
+    sscanf();
 
     return 0;
 }
