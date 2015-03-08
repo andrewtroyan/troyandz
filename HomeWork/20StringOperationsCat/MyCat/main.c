@@ -8,12 +8,13 @@ int main(int argc, char **argv)
 {
     FILE *filePointer;
     char strTemp[SIZE];
-    int counter = 1;
 
     if(argc > 1)
     {
         if(strcmp(argv[1], "--number") == 0 || strcmp(argv[1], "-n") == 0)
         {
+            int counter = 1;
+
             for(int i = 2; argv[i] != NULL; ++i)
             {
                 filePointer = fopen(argv[i], "r");
