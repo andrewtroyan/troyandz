@@ -33,8 +33,35 @@ int main(int argc, char **argv)
                 {
                     while(fgets(strTemp, SIZE * sizeof(strTemp), filePointer))
                     {
-                        printf("%6d  %s", counter, strTemp);
-                        ++counter;
+                        printf("%6d  %s", counter++, strTemp);
+                    }
+                    fclose(filePointer);
+                }
+            }
+        }
+        else if(strcmp(argv[1], "-b") == 0 || strcmp(argv[1], "--number-nonblank") == 0 || strcmp(argv[1], "-nb") == 0 || strcmp(argv[1], "-bn") == 0)
+        {
+            int counter = 1;
+
+            for(int i = 2; argv[i] != NULL; ++i)
+            {
+                filePointer = fopen(argv[i], "r");
+                if(filePointer == NULL)
+                {
+                    fprintf(stderr, "%s: No such file or directory.\n", argv[i]);
+                }
+                else
+                {
+                    while(fgets(strTemp, SIZE * sizeof(strTemp), filePointer))
+                    {
+                        if(strlen(strTemp) > 1)
+                        {
+                            printf("%6d  %s", counter++, strTemp);
+                        }
+                        else
+                        {
+                            printf("%8s%s", "", strTemp);
+                        }
                     }
                     fclose(filePointer);
                 }
@@ -50,7 +77,7 @@ int main(int argc, char **argv)
             }
             while(fgets(strTemp, SIZE * sizeof(strTemp), filePointer))
             {
-                puts(strTemp);
+                printf("%s", strTemp);
             }
             fclose(filePointer);
         }

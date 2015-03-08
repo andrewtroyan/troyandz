@@ -1,6 +1,6 @@
 Usage: [path to MyCat] [OPTION]... [FILE]...
 Concatenate FILE(s), or standard input, to standard output.
 
-  -n, --number   number all output lines
-      --help     display this help and exit
-      
+  -b, --number-nonblank    number nonempty output lines, overrides -n
+  -n, --number             number all output lines
+      --help               display this help and exit
