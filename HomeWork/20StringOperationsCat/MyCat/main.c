@@ -10,19 +10,21 @@ int main(int argc, char **argv)
     {
         if(strcmp(argv[1], "--number") == 0)
         {
-            if(argv[2] != NULL)
+            int counter = 1;
+            for(int i = 2; argv[i] != NULL; ++i)
             {
                 FILE *filePoint;
                 char strTemp[SIZE];
-                filePoint = fopen(argv[2], "r");
+                filePoint = fopen(argv[i], "r");
                 if(filePoint == NULL)
                 {
-                    fprintf(stderr, "Cannot open the file.\n");
+                    fprintf(stderr, "No such file or directory.\n");
                     exit(1);
                 }
-                for(int i = 1; fgets(strTemp, sizeof(strTemp), filePoint); ++i)
+                while(fgets(strTemp, sizeof(strTemp), filePoint))
                 {
-                    printf("%6d %s", i, strTemp);
+                    printf("%6d  %s", counter, strTemp);
+                    ++counter;
                 }
                 fclose(filePoint);
             }
