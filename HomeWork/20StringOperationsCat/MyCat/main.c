@@ -7,7 +7,14 @@
 int main(int argc, char **argv)
 {
     FILE *filePointer;
-    char strTemp[SIZE];
+    char *strTemp = NULL;
+
+    strTemp = (char *)malloc(SIZE * sizeof(char));
+    if(strTemp == NULL)
+    {
+        fprintf(stderr, "Memory error.\n");
+        exit(1);
+    }
 
     if(argc > 1)
     {
@@ -24,7 +31,7 @@ int main(int argc, char **argv)
                 }
                 else
                 {
-                    while(fgets(strTemp, sizeof(strTemp), filePointer))
+                    while(fgets(strTemp, SIZE * sizeof(strTemp), filePointer))
                     {
                         printf("%6d  %s", counter, strTemp);
                         ++counter;
@@ -41,7 +48,7 @@ int main(int argc, char **argv)
                 fprintf(stderr, "Access error.\n");
                 exit(1);
             }
-            while(fgets(strTemp, sizeof(strTemp), filePointer))
+            while(fgets(strTemp, SIZE * sizeof(strTemp), filePointer))
             {
                 puts(strTemp);
             }
@@ -58,7 +65,7 @@ int main(int argc, char **argv)
                 }
                 else
                 {
-                    while(fgets(strTemp, sizeof(strTemp), filePointer))
+                    while(fgets(strTemp, SIZE * sizeof(strTemp), filePointer))
                     {
                         printf("%s", strTemp);
                     }
@@ -67,5 +74,8 @@ int main(int argc, char **argv)
             }
         }
     }
+
+    free(strTemp);
+    strTemp = NULL;
     return 0;
 }
