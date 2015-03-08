@@ -11,5 +11,7 @@ void printNumbers(char **, FILE *, char *);
 void printNumbersNonBlanks(char **, FILE *, char *);
 void printHelp(FILE *, char *);
 void catFiles(char **, FILE *, char *);
+void showEnds(char **, FILE *, char *);
+void squeezeBlanks(char **, FILE *, char *);
 
 #endif // CATOPERATIONS_H_INCLUDED
