@@ -29,10 +29,10 @@ int main()
             {
                 ++lengthOfWord;
                 character = fgetc(filePointer);
-            }while((character >= 65 && character <= 90) || (character >= 97 && character <= 122) || (char)character == '\'');
+            }while((character >= 65 && character <= 90) || (character >= 97 && character <= 122) || character == 33);
         }
 
-        if(strchr(" .,-;!?\"\n\0", (char)character))
+        if(strchr(" .,-;!?\"\n\0", character))
         {
             if(checkForPrimality(lengthOfWord) == 1)
             {
