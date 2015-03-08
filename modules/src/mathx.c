@@ -1,4 +1,3 @@
-
 int gcd(int a, int b)
 {
     if (b == 0)
@@ -21,14 +20,18 @@ int lcm(int a, int b)
 
 int checkForPrimality(int number)
 {
-    int indicator = 0;
-    for(int i = 2; i * i <= number; i++)
+    if(number > 0)
     {
-        if(number % i == 0)
-            indicator = 1;
+        int indicator = 0;
+        for(int i = 2; i * i <= number; i++)
+        {
+            if(number % i == 0)
+                indicator = 1;
+        }
+        if(indicator)
+            return -1;
+        else
+            return 1;
     }
-    if(indicator)
-        return -1;
-    else
-        return 1;
+    return 0;
 }
