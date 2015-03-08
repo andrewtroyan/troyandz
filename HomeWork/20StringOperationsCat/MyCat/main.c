@@ -14,19 +14,34 @@ int main(int argc, char **argv)
 
     if(argc > 1)
     {
-        if(strcmp(argv[1], "--number") == 0 || strcmp(argv[1], "-n") == 0)
+        if(strstr(argv[1], "--"))
         {
-            printNumbers(argv, filePointer, strTemp);
+            if(strstr(argv[1], "help"))
+            {
+                printHelp(filePointer, strTemp);
+            }
+            if(strstr(argv[1], "number"))
+            {
+                printNumbers(argv, filePointer, strTemp);
+            }
+            if(strstr(argv[1], "number-nonblank"))
+            {
+                printNumbersNonBlanks(argv, filePointer, strTemp);
+            }
         }
-        else if(strcmp(argv[1], "-b") == 0 || strcmp(argv[1], "--number-nonblank") == 0 || strcmp(argv[1], "-nb") == 0 || strcmp(argv[1], "-bn") == 0)
+        else if(strchr(argv[1], '-'))
         {
-            printNumbersNonBlanks(argv, filePointer, strTemp);
+            if(strchr(argv[1], 'b'))
+            {
+                printNumbersNonBlanks(argv, filePointer, strTemp);
+                return 0;
+            }
+            if(strchr(argv[1], 'n'))
+            {
+                printNumbers(argv, filePointer, strTemp);
+            }
         }
-        else if(strcmp(argv[1], "--help") == 0)
-        {
-            printHelp(filePointer, strTemp);
-        }
-        else
+        else if(strchr(argv[1], ' ') == 0)
         {
             catFiles(argv, filePointer, strTemp);
         }
