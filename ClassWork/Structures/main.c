@@ -40,7 +40,7 @@ int main()
 
     Fraction sum(Fraction a, Fraction b)
     {
-        assert(a.denominator && b.denominator);
+        assert(a.denominator > 0 && b.denominator > 0);
         Fraction result;
         result.numerator = a.numerator * b.denominator + b.numerator * a.denominator;
         result.denominator = a.denominator * b.denominator;
