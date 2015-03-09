@@ -2,10 +2,12 @@
 
 int main()
 {
-    MixedFraction myFirstFraction, *pointer = &myFirstFraction;
+    MixedFraction firstFraction, secondFraction, result;
 
-    enterMixedFraction(pointer);
-    showMixedFraction(pointer);
+    enterMixedFraction(&firstFraction);
+    enterMixedFraction(&secondFraction);
+    result = summarize(firstFraction, secondFraction);
+    showMixedFraction(result);
 
     return 0;
 }

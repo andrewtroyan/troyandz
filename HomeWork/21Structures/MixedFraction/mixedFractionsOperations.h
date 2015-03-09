@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
+#include "../../../Modules/include/mathx.h"
 
 typedef struct MixedFraction_
 {
@@ -10,6 +12,8 @@ typedef struct MixedFraction_
 } MixedFraction;
 
 void enterMixedFraction(MixedFraction *);
-void showMixedFraction(MixedFraction *);
+void showMixedFraction(MixedFraction);
+double turnToDouble(MixedFraction);
+MixedFraction summarize(MixedFraction, MixedFraction);
 
 #endif // MIXEDFRACTIONSOPERATIONS_H_INCLUDED
