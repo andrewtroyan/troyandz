@@ -28,7 +28,23 @@ void showComplexNumber(Complex number)
 
 void showMatingNumber(Complex number)
 {
-    printf("%.3f - i * %.3f\n", number.realNumber, fabs(number.imaginaryNumber));
+    if(number.realNumber && number.imaginaryNumber)
+    {
+        printf("%.3f - i * %.3f\n", number.realNumber, number.imaginaryNumber);
+    }
+    if(number.realNumber && number.imaginaryNumber == 0)
+    {
+        printf("%.3f", number.realNumber);
+    }
+    if(number.realNumber == 0 && number.imaginaryNumber)
+    {
+        printf("- i * %.3f\n", number.imaginaryNumber);
+    }
+    else if(number.realNumber == 0 && number.imaginaryNumber == 0)
+    {
+        printf("%d", 0);
+    }
+
 }
 
 Complex summarize(Complex number1, Complex number2) // (x1 + i * y1) + (x2 + i * y2) = (x1 + x2) + i * (y1 + y2)
