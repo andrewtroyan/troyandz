@@ -7,7 +7,7 @@ int main()
     int answer;
 
     printf("Instruction\nEnter a fraction in this order:\nINTEGER NUMERATOR/DENOMINATOR.\n\n"
-    "Select an operation:\n1.Summarize\n2.Deduct\n3.Multiply\n4.Divide\n5.Turn to double\n\n");
+    "Select an operation:\n1. Summarize\n2. Deduct\n3. Multiply\n4. Divide\n5. Turn to double\n\n");
 
     scanf("%d", &answer);
     system("clear");
