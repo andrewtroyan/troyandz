@@ -11,6 +11,7 @@ typedef struct MixedFraction_
     int integer, numerator, denominator;
 } MixedFraction;
 
+void convertFraction(MixedFraction *pointer);
 void enterMixedFraction(MixedFraction *);
 void showMixedFraction(MixedFraction);
 double turnToDouble(MixedFraction);
