@@ -15,6 +15,10 @@ void convertFraction(MixedFraction *pointer);
 void enterMixedFraction(MixedFraction *);
 void showMixedFraction(MixedFraction);
 double turnToDouble(MixedFraction);
+MixedFraction turnToImproper(MixedFraction);
 MixedFraction summarize(MixedFraction, MixedFraction);
+MixedFraction deduct(MixedFraction, MixedFraction);
+MixedFraction multiply(MixedFraction, MixedFraction);
+MixedFraction divide(MixedFraction, MixedFraction);
 
 #endif // MIXEDFRACTIONSOPERATIONS_H_INCLUDED
