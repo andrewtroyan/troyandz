@@ -2,7 +2,6 @@
 
 int enterDate(Date *pointer)
 {
-    pointer->year = 0, pointer->month = 0, pointer->day = 0;
     scanf("%d.%d.%d", &pointer->year, &pointer->month, &pointer->day);
     if(checkDate(*pointer) == false)
     {
