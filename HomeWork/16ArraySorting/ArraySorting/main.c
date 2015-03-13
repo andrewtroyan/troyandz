@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../../modules/include/compatibility.h"
-#include "../../../modules/include/multidimensionalArray.h"
+#include "../../../Modules/include/compatibility.h"
+#include "../../../Modules/include/multidimensionalArray.h"
 
 int main()
 {

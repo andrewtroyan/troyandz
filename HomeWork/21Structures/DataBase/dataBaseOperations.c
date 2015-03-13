@@ -99,4 +99,101 @@ void showData(Town *towns)
     }
 }
 
+void quickSorting(Town *array, int indexOfTheStart, int indexOfTheEnd, bool (*function)(Town, Town))
+{
+    if(indexOfTheStart < indexOfTheEnd)
+    {
+        int i = indexOfTheStart;
+        while(function(array[i], array[indexOfTheEnd]))
+        {
+            ++i;
+        }
+        for(int j = i; j < indexOfTheEnd; ++j)
+        {
+            if(function(array[i], array[indexOfTheEnd]))
+            {
+                Town temporary = array[j];
+                array[j] = array[i];
+                array[i] = temporary;
+                ++i;
+            }
+        }
+        Town temporary = array[i];
+        array[i] = array[indexOfTheEnd];
+        array[indexOfTheEnd] = temporary;
+        quickSorting(array, indexOfTheStart, i - 1, function);
+        quickSorting(array, i + 1, indexOfTheEnd, function);
+    }
+}
+
+bool sortNameFromLittleToBig(Town structure1, Town structure2)
+{
+    if(strcmp(structure1.name, structure2.name) < 0)
+        return true;
+    else
+        return false;
+}
+
+bool sortNameFromBigToLittle(Town structure1, Town structure2)
+{
+    if(strcmp(structure1.name, structure2.name) > 0)
+        return true;
+    else
+        return false;
+}
+
+bool sortCountryFromLittleToBig(Town structure1, Town structure2)
+{
+    if(strcmp(structure1.country, structure2.country) < 0)
+        return true;
+    else
+        return false;
+}
+
+bool sortCountryFromBigToLittle(Town structure1, Town structure2)
+{
+    if(strcmp(structure1.country, structure2.country) > 0)
+        return true;
+    else
+        return false;
+}
+
+bool sortLanguageFromLittleToBig(Town structure1, Town structure2)
+{
+    if(strcmp(structure1.language, structure2.language) < 0)
+        return true;
+    else
+        return false;
+}
+
+bool sortLanguageFromBigToLittle(Town structure1, Town structure2)
+{
+    if(strcmp(structure1.language, structure2.language) > 0)
+        return true;
+    else
+        return false;
+}
+
+bool sortAreaFromLittleToBig(Town structure1, Town structure2)
+{
+    return structure1.area < structure2.area;
+}
+
+bool sortAreaFromBigToLittle(Town structure1, Town structure2)
+{
+    return structure1.area > structure2.area;
+}
+
+bool sortPopulationFromLittleToBig(Town structure1, Town structure2)
+{
+    return structure1.population < structure2.population;
+}
+
+bool sortPopulationFromBigToLittle(Town structure1, Town structure2)
+{
+    return structure1.population > structure2.population;
+}
+
+
+
 
