@@ -15,4 +15,10 @@ typedef struct Town_
     long int population;
 } Town;
 
+void downloadFromFile(Town *);
+void downloadToFile(Town *);
+bool addData(Town *);
+bool deleteData(Town *);
+void showData(Town *);
+
 #endif // DATABASEOPERATIONS_H_INCLUDED
