@@ -6,7 +6,7 @@
 #include <stdbool.h>
 
 #define MAXSTR 30
-#define MAXAMOUNT 50
+#define MAXAMOUNT 10
 
 typedef struct Town_
 {

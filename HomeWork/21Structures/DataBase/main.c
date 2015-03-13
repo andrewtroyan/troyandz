@@ -21,14 +21,17 @@ int main()
     }
 
     int answer;
-    printf("Select an operation:\n1. Download from file\n2. Save to file\n3. Add\n4. Delete\n5. Show\n6. Sort\n7. Exit\n\n");
+    printf("INSTRUCTIONS:\nDownload data from file before you change it if you don't want to lose information.\n"
+           "If a word contains spaces, replace them with \"-\".\n\n"
+           "1. Download from file\n2. Save to file\n3. Add\n4. Delete\n5. Show\n6. Sort\n7. Exit\n\nSelect an operation: ");
 
     scanf("%d", &answer);
     while(answer > 0 && answer < 7)
     {
         system("clear");
-        printf("Select an operation:\n1. Download from file\n2. Save to file\n3. Add\n4. Delete\n5. Show\n6. Sort\n7. Exit\n\n");
-
+        printf("INSTRUCTIONS:\nDownload data from file before you change it if you don't want to lose information.\n"
+               "If a word contains spaces, replace them with \"-\".\n\n"
+               "1. Download from file\n2. Save to file\n3. Add\n4. Delete\n5. Show\n6. Sort\n7. Exit\n\n");
         switch(answer)
         {
         case 1:
