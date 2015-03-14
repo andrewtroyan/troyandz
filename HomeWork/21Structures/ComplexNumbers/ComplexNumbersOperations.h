@@ -11,11 +11,11 @@ typedef struct Complex_
 
 void enterComplexNumber(Complex *pointer);
 void showComplexNumber(Complex number);
-void showMatingNumber(Complex number);
 Complex summarize(Complex number1, Complex number2);
 Complex deduct(Complex number1, Complex number2);
 Complex multiply(Complex number1, Complex number2);
 Complex divide(Complex number1, Complex number2);
 Complex mate(Complex number);
+char getSign(double);
 
 #endif // COMPLEXNUMBERSOPERATIONS_H_INCLUDED

@@ -6,7 +6,7 @@ int main()
     int answer;
 
     printf("Instruction\nEnter a quaternion in this order:\nREAL + i * IMAGINARY + j * IMAGINARY + k * IMAGINARY.\n\n"
-    "Select an operation:\n1. Summarize\n2. Deduct\n3. Multiply\n4. Divide\n5. Mate\n\n");
+           "Select an operation:\n1. Summarize\n2. Deduct\n3. Multiply\n4. Divide\n5. Mate\n\n");
 
     scanf("%d", &answer);
     system("clear");
@@ -32,20 +32,37 @@ int main()
         showQuaternion(result);
         break;
     case 3:
+        printf("Enter the first quaternion: ");
+        enterQuaternion(&firstQuaternion);
+        printf("Enter the second quaternion: ");
+        enterQuaternion(&secondQuaternion);
+        result = multiply(firstQuaternion, secondQuaternion);
+        printf("The result: ");
+        showQuaternion(result);
         break;
     case 4:
+        printf("Enter the first quaternion: ");
+        enterQuaternion(&firstQuaternion);
+        printf("Enter the second quaternion: ");
+        enterQuaternion(&secondQuaternion);
+        result = divide(firstQuaternion, secondQuaternion);
+        printf("The result: ");
+        showQuaternion(result);
         break;
     case 5:
-        printf("Enter the quaternion number: ");
+        printf("Enter the quaternion: ");
         enterQuaternion(&firstQuaternion);
         result = mate(firstQuaternion);
         printf("The result: ");
-        showMatingQuaternion(result);
+        showQuaternion(result);
         break;
     default:
         fprintf(stderr, "Invalid value.\n");
         exit(1);
     }
+
+    enterQuaternion(&firstQuaternion);
+    showQuaternion(firstQuaternion);
 
     return 0;
 }

@@ -2,49 +2,14 @@
 
 void enterComplexNumber(Complex *pointer)
 {
-    scanf("%lf + i * %lf", &pointer->realNumber, &pointer->imaginaryNumber);
+    char sign;
+    scanf("%lf %c i * %lf", &pointer->realNumber, &sign, &pointer->imaginaryNumber);
+    pointer->imaginaryNumber *= sign == '-'? -1 : 1;
 }
 
 void showComplexNumber(Complex number)
 {
-    if(number.realNumber && number.imaginaryNumber)
-    {
-        printf("%.3f + i * %.3f\n", number.realNumber, number.imaginaryNumber);
-    }
-    if(number.realNumber && number.imaginaryNumber == 0)
-    {
-        printf("%.3f", number.realNumber);
-    }
-    if(number.realNumber == 0 && number.imaginaryNumber)
-    {
-        printf("i * %.3f\n", number.imaginaryNumber);
-    }
-    else if(number.realNumber == 0 && number.imaginaryNumber == 0)
-    {
-        printf("%d", 0);
-    }
-
-}
-
-void showMatingNumber(Complex number)
-{
-    if(number.realNumber && number.imaginaryNumber)
-    {
-        printf("%.3f - i * %.3f\n", number.realNumber, number.imaginaryNumber);
-    }
-    if(number.realNumber && number.imaginaryNumber == 0)
-    {
-        printf("%.3f", number.realNumber);
-    }
-    if(number.realNumber == 0 && number.imaginaryNumber)
-    {
-        printf("- i * %.3f\n", number.imaginaryNumber);
-    }
-    else if(number.realNumber == 0 && number.imaginaryNumber == 0)
-    {
-        printf("%d", 0);
-    }
-
+    printf("%.1f %c i * %.1f\n", number.realNumber, getSign(number.imaginaryNumber), fabs(number.imaginaryNumber));
 }
 
 Complex summarize(Complex number1, Complex number2) // (x1 + i * y1) + (x2 + i * y2) = (x1 + x2) + i * (y1 + y2)
@@ -84,4 +49,9 @@ Complex mate(Complex number)
     Complex result = number;
     result.imaginaryNumber *= (-1);
     return result;
+}
+
+char getSign(double number)
+{
+    return number >= 0? '+' : '-';
 }

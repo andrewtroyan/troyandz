@@ -54,7 +54,7 @@ int main()
         enterComplexNumber(&firstComplexNumber);
         result = mate(firstComplexNumber);
         printf("The result: ");
-        showMatingNumber(result);
+        showComplexNumber(result);
         break;
     default:
         fprintf(stderr, "Invalid value.\n");

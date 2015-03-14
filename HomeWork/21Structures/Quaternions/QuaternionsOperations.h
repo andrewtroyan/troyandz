@@ -11,11 +11,11 @@ typedef struct Quaternion_
 
 void enterQuaternion(Quaternion *pointer);
 void showQuaternion(Quaternion number);
-void showMatingNumber(Quaternion number);
 Quaternion summarize(Quaternion number1, Quaternion number2);
 Quaternion deduct(Quaternion number1, Quaternion number2);
-//Quaternion multiply(Quaternion number1, Quaternion number2);
-//Quaternion divide(Quaternion number1, Quaternion number2);
+Quaternion multiply(Quaternion number1, Quaternion number2);
+Quaternion divide(Quaternion number1, Quaternion number2);
 Quaternion mate(Quaternion number);
+char getSign(double);
 
 #endif // COMPLEXNUMBERSOPERATIONS_H_INCLUDED
