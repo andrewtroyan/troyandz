@@ -23,6 +23,8 @@ bool addToList(Data data, List *pointer)
             tempPointer = tempPointer->link;
         tempPointer->link = newData;
     }
+
+    newData = NULL;
     return true;
 }
 

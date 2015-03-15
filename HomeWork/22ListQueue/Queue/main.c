@@ -1,6 +1,6 @@
-#include "List.h"
+#include "Queue.h"
 
-//Программа для ввода названий городов, их площади и вывода данных на экран
+// Та же программа с городами, только с использованием очереди
 
 void showData(Data city)
 {
@@ -9,27 +9,30 @@ void showData(Data city)
 
 int main()
 {
-    List towns;
-    initializeList(&towns);
-    Data *data = (Data *)malloc(sizeof(Data));
-    if(!data)
+    Queue towns;
+    Data *city = (Data *)malloc(sizeof(Data));
+    if(!city)
     {
         fprintf(stderr, "No free memory.\n");
         exit(1);
     }
 
+    initializeQueue(&towns);
+
     printf("Enter the name of the city or \"exit\" for finish: ");
-    gets(data->name);
-    while(isFull(towns) == false && strcmp(data->name, "exit"))
+    gets(city->name);
+    while(isFull(towns) == false && strcmp(city->name, "exit"))
     {
         printf("Enter the area of this city: ");
-        scanf("%lf", &data->area);
-        addToList(*data, &towns);
+        scanf("%lf", &city->area);
+        addToQueue(*city, &towns);
         system("clear");
         printf("Enter the name of the city or \"exit\" for finish: ");
         getchar();
-        gets(data->name);
+        gets(city->name);
     }
+
+    removeFromQueue(&towns); // проверяем удаление узла
 
     system("clear");
 
@@ -39,12 +42,12 @@ int main()
     {
         printf("You filled:\n");
         workOnNodes(towns, showData);
-        printf("You entered %d city(ies).", amountOfNodes(towns));
+        printf("You entered %d city(ies).\n", amountOfNodesInQueue(towns));
     }
 
-    clearTheList(&towns);
-    free(data);
-    data = NULL;
+    clearQueue(&towns);
+    free(city);
+    city = NULL;
 
     return 0;
 }
