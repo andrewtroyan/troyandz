@@ -14,5 +14,6 @@ void enterTime(Time *);
 void showTime(Time);
 void addSeconds(Time *, long int);
 long int differenceInSeconds(Time, Time);
+void convertTime(Time *);
 
 #endif // TIMEOPERATIONS_H_INCLUDED

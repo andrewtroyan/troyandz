@@ -42,7 +42,7 @@ int main()
             break;
         case 4:
             printf("Enter the amount of seconds that you want to add to your last entered time: ");
-            scanf("%d", &seconds);
+            scanf("%ld", &seconds);
             addSeconds(&enteredTime, seconds);
             printf("The result: ");
             showTime(enteredTime);
@@ -53,7 +53,7 @@ int main()
             printf("Enter the second time: ");
             enterTime(&secondTime);
             result = differenceInSeconds(firstTime, secondTime);
-            printf("The difference between these two periods is %d second(s).\n", result);
+            printf("The difference between these two periods is %ld second(s).\n", result);
             break;
         }
 

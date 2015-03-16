@@ -2,7 +2,6 @@
 
 int main()
 {
-    FILE *filepoint;
     Town *towns = NULL;
     towns = (Town *)malloc(MAXAMOUNT * sizeof(Town));
     if(towns == NULL)
@@ -20,7 +19,8 @@ int main()
         towns[i].population = 0;
     }
 
-    int answer, *pointer;
+    int answer;
+    void *pointer;
     char charAnswer;
 
     printf("INSTRUCTIONS:\nDownload data from file before you change it if you don't want to lose information.\n"
