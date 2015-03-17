@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 #define MAXSTR 30
 #define MAXAMOUNT 10
@@ -31,5 +32,6 @@ bool sortAreaFromLittleToBig(Town, Town);
 bool sortAreaFromBigToLittle(Town, Town);
 bool sortPopulationFromLittleToBig(Town, Town);
 bool sortPopulationFromBigToLittle(Town, Town);
+int partition(Town *array, int indexOfTheStart, int indexOfTheEnd, bool (*function)(Town, Town));
 
 #endif // DATABASEOPERATIONS_H_INCLUDED

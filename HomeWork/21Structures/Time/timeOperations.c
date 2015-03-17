@@ -9,7 +9,7 @@ void enterTime(Time *pointer)
 
 void showTime(Time time)
 {
-    printf("%02d:%02d:%02d\n", time.hours, time.minutes, time.seconds);
+    printf("%02ld:%02ld:%02ld\n", time.hours, time.minutes, time.seconds);
 }
 
 void convertTime(Time *pointer)
