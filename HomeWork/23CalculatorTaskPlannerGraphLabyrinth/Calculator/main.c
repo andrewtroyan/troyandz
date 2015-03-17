@@ -18,7 +18,7 @@ int main(int argc, char **argv)
             Stack stack;
 
             fgets(string, MAXSTR, stdin);
-            char *pointer = string, operatorInString;
+            char *pointer = string;
             float numberInString;
             initializeList(&postfixNotation);
             initializeStack(&stack);
@@ -27,13 +27,17 @@ int main(int argc, char **argv)
             {
                 numberInString = strtof(string, &pointer);
                 setAsNumber(&current, numberInString);
-                //добавить в список
+                addToList(current, &postfixNotation);
                 if(*pointer == ' ')
                     ++pointer;
                 if(strchr("()+-*/^", *pointer))
-                    operatorInString = *pointer;
-                    setAsOperator(&current, operatorInString);
-                    //вынуть операторы из стека меньше либо равного приоритета, занести данный оператор в стек
+                    while(onTop(&current, stack) && getPriority(current.sign) >= getPriority(*pointer))
+                    {
+                        addToList(current, &postfixNotation);
+                        pop(&stack);
+                    }
+                    setAsOperator(&current, *pointer);
+                    push(current, &stack);
             }
         }
     }

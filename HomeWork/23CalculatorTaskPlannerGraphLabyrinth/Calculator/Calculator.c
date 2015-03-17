@@ -66,7 +66,6 @@ void clearTheList(List *pointer)
     {
         tempPointer = (*pointer)->link;
         free(*pointer);
-        *pointer = NULL;
         *pointer = tempPointer;
     }
 }
