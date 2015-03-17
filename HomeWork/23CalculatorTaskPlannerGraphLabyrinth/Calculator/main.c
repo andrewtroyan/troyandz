@@ -23,14 +23,32 @@ int main(int argc, char **argv)
             initializeList(&postfixNotation);
             initializeStack(&stack);
 
-            while(*pointer)
+            // -----
+
+            while(*pointer != '\n' && *pointer != '\0')
             {
-                numberInString = strtof(string, &pointer);
-                setAsNumber(&current, numberInString);
-                addToList(current, &postfixNotation);
-                if(*pointer == ' ')
+                if(*pointer == '(')
+                {
+                    setAsOperator(&current, *pointer);
+                    push(current, &stack);
                     ++pointer;
-                if(strchr("()+-*/^", *pointer))
+                }
+                else if(*pointer == ')')
+                {
+                    while(onTop(&current, stack) && getPriority(current.sign) > getPriority(*pointer))
+                    {
+                        addToList(current, &postfixNotation);
+                        pop(&stack);
+                    }
+                    pop(&stack);
+                    ++pointer;
+                }
+                else if(*pointer == ' ')
+                {
+                    ++pointer;
+                }
+                else if(strchr("-+*/^", *pointer))
+                {
                     while(onTop(&current, stack) && getPriority(current.sign) >= getPriority(*pointer))
                     {
                         addToList(current, &postfixNotation);
@@ -38,7 +56,41 @@ int main(int argc, char **argv)
                     }
                     setAsOperator(&current, *pointer);
                     push(current, &stack);
+                    ++pointer;
+                }
+                else if(*pointer == ' ')
+                {
+                    ++pointer;
+                }
+                else
+                {
+                    numberInString = strtof(pointer, &pointer);
+                    setAsNumber(&current, numberInString);
+                    addToList(current, &postfixNotation);
+                }
             }
+
+            while(onTop(&current, stack))
+            {
+                addToList(current, &postfixNotation);
+                pop(&stack);
+            }
+
+            clearStack(&stack);
+
+            // на данном этапе мы "прошлись" по введенной строке и занесли обратную польскую запись поэлементно в односвязный список
+            // -----
+
+            // -----
+            initializeStack(&stack);
+            workOnNodes(postfixNotation, &stack, workOnEveryNode);
+            // на данном этапе мы пробегаемся по нашему списку и работаем со стеком
+
+            Item result;
+            onTop(&result, stack); // наш результат хранится на вершине стека
+            clearStack(&stack);
+            clearTheList(&postfixNotation);
+            printf("%.f\n", result.number);
         }
     }
     return 0;

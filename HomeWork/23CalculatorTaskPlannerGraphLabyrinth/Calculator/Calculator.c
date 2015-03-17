@@ -12,7 +12,7 @@ int getPriority(char sign)
         return 3;
     else
     {
-        fprintf(stderr, "Invalis character.\n");
+        fprintf(stderr, "Invalid character.\n");
         exit(1);
     }
 }
@@ -21,14 +21,14 @@ void setAsNumber(Item *pointer, float number)
 {
     pointer->number = number;
     pointer->sign = 0;
-    pointer->indicator = number;
+    pointer->indicator = num;
 }
 
-void setAsOperator(Item *pointer, float operator)
+void setAsOperator(Item *pointer, char sign)
 {
     pointer->number = 0;
-    pointer->sign = operator;
-    pointer->indicator = operator;
+    pointer->sign = sign;
+    pointer->indicator = symbol;
 }
 
 void initializeList(List *pointer)
@@ -88,7 +88,6 @@ void push(Item item, Stack *top)
     temp->link = *top;
 
     *top = temp;
-    free(temp);
     temp = NULL;
 }
 
@@ -122,4 +121,56 @@ void clearStack(Stack *top)
 {
     while(*top)
         pop(top);
+}
+
+void workOnNodes(List list, Stack *stack, void (*function)(Item item, Stack *stack))
+{
+    List temp = list;
+    while(temp)
+    {
+        function(temp->data, stack);
+        temp = temp->link;
+    }
+}
+
+void workOnEveryNode(Item item, Stack *stack)
+{
+    if(item.indicator == num)
+    {
+        push(item, stack);
+    }
+    else if(item.indicator == symbol)
+    {
+        workOnOperator(item.sign, stack);
+    }
+}
+
+void workOnOperator(char sign, Stack *stack)
+{
+    Item firstNumber, secondNumber, result = {0, 0, num};
+    onTop(&firstNumber, *stack);
+    pop(stack);
+    onTop(&secondNumber, *stack);
+    pop(stack);
+
+    switch(sign)
+    {
+    case '-':
+        result.number = secondNumber.number - firstNumber.number;
+        break;
+    case '+':
+        result.number = firstNumber.number + secondNumber.number;
+        break;
+    case '*':
+        result.number = firstNumber.number * secondNumber.number;
+        break;
+    case '/':
+        result.number = secondNumber.number - firstNumber.number;
+        break;
+    case '^':
+        result.number = pow(secondNumber.number, firstNumber.number);
+        break;
+    }
+
+    push(result, stack);
 }
