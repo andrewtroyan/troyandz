@@ -13,7 +13,28 @@ int main(int argc, char **argv)
         else if(strstr(argv[1], "--interactive") || strstr(argv[1], "-i"))
         {
             char string[MAXSTR];
+            Item current = {0, 0, null};
+            List postfixNotation;
+            Stack stack;
+
             fgets(string, MAXSTR, stdin);
+            char *pointer = string, operatorInString;
+            float numberInString;
+            initializeList(&postfixNotation);
+            initializeStack(&stack);
+
+            while(*pointer)
+            {
+                numberInString = strtof(string, &pointer);
+                setAsNumber(&current, numberInString);
+                //добавить в список
+                if(*pointer == ' ')
+                    ++pointer;
+                if(strchr("()+-*/^", *pointer))
+                    operatorInString = *pointer;
+                    setAsOperator(&current, operatorInString);
+                    //вынуть операторы из стека меньше либо равного приоритета, занести данный оператор в стек
+            }
         }
     }
     return 0;
