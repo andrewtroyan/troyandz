@@ -11,7 +11,7 @@ typedef enum State_ {number, operator} State;
 
 typedef struct Item_
 {
-    double number;
+    float number;
     char sign;
     State indicator;
 } Item;
@@ -21,5 +21,7 @@ typedef struct Node_
     Item data;
     struct Node_ *next;
 } Node;
+
+typedef Node * List;
 
 #endif // CALCULATOR_H_INCLUDED
