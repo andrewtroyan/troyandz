@@ -41,5 +41,6 @@ void clearStack(Stack *top);
 void workOnNodes(List list, Stack *stack, void (*function)(Item item, Stack *stack));
 void workOnEveryNode(Item item, Stack *stack);
 void workOnOperator(char sign, Stack *stack);
+void turnToPostfix(List *postfixNotation, Stack *stack, char *string);
 
 #endif // CALCULATOR_H_INCLUDED

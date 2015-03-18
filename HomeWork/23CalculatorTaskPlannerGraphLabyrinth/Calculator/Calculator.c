@@ -174,3 +174,61 @@ void workOnOperator(char sign, Stack *stack)
 
     push(result, stack);
 }
+
+void turnToPostfix(List *postfixNotation, Stack *stack, char *string)
+{
+    Item current = {0, 0, null};
+    char *pointer = string;
+    float numberInString;
+
+    while(*pointer != '\n' && *pointer != '\0')
+    {
+        if(*pointer == '(')
+        {
+            setAsOperator(&current, *pointer);
+            push(current, stack);
+            ++pointer;
+        }
+        else if(*pointer == ')')
+        {
+            while(onTop(&current, *stack) && getPriority(current.sign) > getPriority(*pointer))
+            {
+                addToList(current, postfixNotation);
+                pop(stack);
+            }
+            pop(stack);
+            ++pointer;
+        }
+        else if(*pointer == ' ')
+        {
+            ++pointer;
+        }
+        else if(strchr("-+*/^", *pointer))
+        {
+            while(onTop(&current, *stack) && getPriority(current.sign) >= getPriority(*pointer))
+            {
+                addToList(current, postfixNotation);
+                pop(stack);
+            }
+            setAsOperator(&current, *pointer);
+            push(current, stack);
+            ++pointer;
+        }
+        else if(*pointer == ' ')
+        {
+            ++pointer;
+        }
+        else
+        {
+            numberInString = strtof(pointer, &pointer);
+            setAsNumber(&current, numberInString);
+            addToList(current, postfixNotation);
+        }
+    }
+
+    while(onTop(&current, *stack))
+    {
+        addToList(current, postfixNotation);
+        pop(stack);
+    }
+}
