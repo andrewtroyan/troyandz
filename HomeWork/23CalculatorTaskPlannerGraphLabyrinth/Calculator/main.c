@@ -4,13 +4,13 @@ int main(int argc, char **argv)
 {
     if(argc > 1)
     {
-        if(strstr(argv[1], "--help") || strstr(argv[1], "-h"))
+        if(strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0)
         {
             printf("Information:\n");
             printf("  -h  --help         print this usage and exit\n");
             printf("  -i  --interactive  force interactive mode\n");
         }
-        else if(strstr(argv[1], "--interactive") || strstr(argv[1], "-i"))
+        else if(strcmp(argv[1], "--interactive") == 0 || strcmp(argv[1], "-i") == 0)
         {
             char string[MAXSTR];
             Item result;
