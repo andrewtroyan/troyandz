@@ -78,7 +78,7 @@ int main()
 // -----
 
     ListOfRunnedPartsOfProcesses test = runnedProcesses;
-    printf("ID    Waiting time    Whole working time\n");
+    printf("ID    Waiting time    CPU burst\n");
     while(test)
     {
         printf("%-5d %-15d %-17d\n", test->runnedProcess.identifier, test->runnedProcess.waitingTime, test->runnedProcess.runningTime);
