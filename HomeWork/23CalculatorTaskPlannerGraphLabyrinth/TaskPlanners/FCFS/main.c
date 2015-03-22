@@ -64,7 +64,7 @@ int main()
 // -----
 
     ListOfFinishedProcesses test = finishedProcesses;
-    printf("ID    Waiting time    CPU burst\n");
+    printf("ID    Waiting time    Whole working time\n");
     while(test.node)
     {
         printf("%-5d %-15d %-17d\n", test.node->process.identifier, test.node->process.waitingTime, test.node->process.wholeRunningTime);
