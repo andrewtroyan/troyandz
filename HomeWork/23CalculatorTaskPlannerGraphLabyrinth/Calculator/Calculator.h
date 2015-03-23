@@ -13,7 +13,7 @@ typedef enum State_ {null = 0, num, symbol} State;
 
 typedef struct Item_
 {
-    float number;
+	float number;// пры іншых роўных карыстаемся double
     char sign;
     State indicator;
 } Item;
