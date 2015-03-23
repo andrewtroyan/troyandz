@@ -1,5 +1,6 @@
 #include "dataBaseOperations.h"
 #include <ctype.h>
+#include <stdio.h>
 
 void downloadFromFile(Town *towns)
 {

@@ -4,6 +4,7 @@ int main(int argc, char **argv)
 {
     if(argc > 1)
     {
+		// лепш усёж strcmp
         if(strstr(argv[1], "--help") || strstr(argv[1], "-h"))
         {
             printf("Information:\n");
@@ -19,7 +20,7 @@ int main(int argc, char **argv)
 
             fgets(string, MAXSTR, stdin);
             char *pointer = string;
-            float numberInString;
+            float numberInString; // пры іншых роўных карыстаемся double
             initializeList(&postfixNotation);
             initializeStack(&stack);
 
