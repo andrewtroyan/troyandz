@@ -17,7 +17,7 @@ int getPriority(char sign)
     }
 }
 
-void setAsNumber(Item *pointer, float number)
+void setAsNumber(Item *pointer, double number)
 {
     pointer->number = number;
     pointer->sign = 0;

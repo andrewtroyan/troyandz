@@ -13,7 +13,7 @@ typedef enum State_ {null = 0, num, symbol} State;
 
 typedef struct Item_
 {
-	float number;// пры іншых роўных карыстаемся double
+	double number;
     char sign;
     State indicator;
 } Item;
@@ -28,7 +28,7 @@ typedef Node * List;
 typedef Node * Stack;
 
 int getPriority(char sign);
-void setAsNumber(Item *pointer, float number);
+void setAsNumber(Item *pointer, double number);
 void setAsOperator(Item *pointer, char sign);
 void initializeList(List *pointer);
 bool addToList(Item data, List *pointer);
