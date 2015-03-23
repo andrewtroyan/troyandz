@@ -4,90 +4,37 @@ int main(int argc, char **argv)
 {
     if(argc > 1)
     {
-		// лепш усёж strcmp
-        if(strstr(argv[1], "--help") || strstr(argv[1], "-h"))
+        if(strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0)
         {
             printf("Information:\n");
             printf("  -h  --help         print this usage and exit\n");
             printf("  -i  --interactive  force interactive mode\n");
         }
-        else if(strstr(argv[1], "--interactive") || strstr(argv[1], "-i"))
+        else if(strcmp(argv[1], "--interactive") == 0 || strcmp(argv[1], "-i") == 0)
         {
             char string[MAXSTR];
-            Item current = {0, 0, null};
+            Item result;
             List postfixNotation;
             Stack stack;
 
             fgets(string, MAXSTR, stdin);
-            char *pointer = string;
-            float numberInString; // пры іншых роўных карыстаемся double
             initializeList(&postfixNotation);
             initializeStack(&stack);
 
             // -----
 
-            while(*pointer != '\n' && *pointer != '\0')
-            {
-                if(*pointer == '(')
-                {
-                    setAsOperator(&current, *pointer);
-                    push(current, &stack);
-                    ++pointer;
-                }
-                else if(*pointer == ')')
-                {
-                    while(onTop(&current, stack) && getPriority(current.sign) > getPriority(*pointer))
-                    {
-                        addToList(current, &postfixNotation);
-                        pop(&stack);
-                    }
-                    pop(&stack);
-                    ++pointer;
-                }
-                else if(*pointer == ' ')
-                {
-                    ++pointer;
-                }
-                else if(strchr("-+*/^", *pointer))
-                {
-                    while(onTop(&current, stack) && getPriority(current.sign) >= getPriority(*pointer))
-                    {
-                        addToList(current, &postfixNotation);
-                        pop(&stack);
-                    }
-                    setAsOperator(&current, *pointer);
-                    push(current, &stack);
-                    ++pointer;
-                }
-                else if(*pointer == ' ')
-                {
-                    ++pointer;
-                }
-                else
-                {
-                    numberInString = strtof(pointer, &pointer);
-                    setAsNumber(&current, numberInString);
-                    addToList(current, &postfixNotation);
-                }
-            }
-
-            while(onTop(&current, stack))
-            {
-                addToList(current, &postfixNotation);
-                pop(&stack);
-            }
+            turnToPostfix(&postfixNotation, &stack, string); // на данном этапе мы "прошлись" по введенной строке и занесли обратную польскую запись поэлементно в односвязный список
 
             clearStack(&stack);
 
-            // на данном этапе мы "прошлись" по введенной строке и занесли обратную польскую запись поэлементно в односвязный список
             // -----
 
-            // -----
             initializeStack(&stack);
-            workOnNodes(postfixNotation, &stack, workOnEveryNode);
-            // на данном этапе мы пробегаемся по нашему списку и работаем со стеком
 
-            Item result;
+            workOnNodes(postfixNotation, &stack, workOnEveryNode); // на данном этапе мы пробегаемся по нашему списку и работаем со стеком
+
+            // -----
+
             onTop(&result, stack); // наш результат хранится на вершине стека
             clearStack(&stack);
             clearTheList(&postfixNotation);
