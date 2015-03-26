@@ -56,7 +56,7 @@ bool addNewKnowledge(Node **root, Node *destination, char *question, char *newAn
     return true;
 }
 
-bool createNewNode(Node **node, char *str, enum Type type)
+bool createNewNode(Node **node, char *str, Type type)
 {
     char *p = NULL;
     p = (char *)malloc((strlen(str) + 1) * sizeof(char));
@@ -99,22 +99,76 @@ Node *playGame(Node *root)
 
 // -----
 
-bool addNode(Node **root, Node *parent, Data data, bool way)
+bool addNode(Node **root, Node **parent, Data data, bool way)
 {
     Node *temp = NULL;
     temp = (Node *)malloc(sizeof(Node));
     if(!temp)
         return false;
+    temp->data.str = (char *)malloc(data.sizestr * sizeof(char));
+    if(!temp->data.str)
+        return false;
+    strcpy(temp->data.str, data.str);
+    temp->data.sizestr = data.sizestr;
+    temp->data.type = data.type;
+    temp->yeslink = NULL;
+    temp->nolink = NULL;
     if(!*root)
+    {
         *root = temp;
+        temp->parent = NULL;
+    }
     else
     {
         if(way)
-            parent->yeslink = temp;
+            (*parent)->yeslink = temp;
         else
-            parent->nolink = temp;
+            (*parent)->nolink = temp;
+        temp->parent = *parent;
+        *parent = temp;
     }
     temp = NULL;
+    return true;
+}
+
+bool AddNode2(Node **root, Node **node, int way, char *str, Type type)
+{
+    char *p = NULL;
+    p = (char *)malloc((strlen(str) + 1) * sizeof(char));
+    if(!p)
+        return false;
+    Node *q = NULL;
+    q = (Node *)malloc(sizeof(Node));
+    if(!q)
+    {
+        free(p);
+        p = NULL;
+        return false;
+    }
+    strcpy(p, str);
+    q->data.str = p;
+    q->data.sizestr = strlen(p) + 1;
+    q->data.type = type;
+    if(!*root)
+    {
+        *root = q;
+        (*root)->parent = NULL;
+        (*root)->yeslink = NULL;
+        (*root)->nolink = NULL;
+    }
+    else
+    {
+        if(way)
+            (*node)->nolink = q;
+        else
+            (*node)->yeslink = q;
+        q->parent = *node;
+        q->yeslink = NULL;
+        q->nolink = NULL;
+        *node = q;
+    }
+    p = NULL;
+    q = NULL;
     return true;
 }
 
@@ -129,7 +183,7 @@ bool push(Node *pointer, Stack *stack)
     temp->node = pointer;
     temp->link = *stack;
 
-    (*stack)->link = temp;
+    *stack = temp;
     temp = NULL;
     return true;
 }

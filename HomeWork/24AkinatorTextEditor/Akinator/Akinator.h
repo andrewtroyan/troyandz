@@ -7,9 +7,12 @@
 #include <stdbool.h>
 #include <string.h>
 
+
+typedef enum Type_ {animal, noanimal} Type;
+
 typedef struct Data_
 {
-    enum Type {animal, noanimal} type;
+    Type type;
     char *str;
     int sizestr;
 } Data;
@@ -32,11 +35,12 @@ void addNewFork(Node *oldAnimal, Node *newAnimal, Node *question, bool answer);
 void hangFork(Node **root, Node *parent, Node *fork, bool wayToChild);
 bool determineWayToChild(Node *node);
 bool addNewKnowledge(Node **root, Node *destination, char *question, char *newAnimal, bool rightAnswer);
-bool createNewNode(Node **node, char *str, enum Type type);
+bool createNewNode(Node **node, char *str, Type type);
 
 Node *playGame(Node *root);
 
-bool addNode(Node **root, Node *parent, Data data, bool way);
+bool addNode(Node **root, Node **parent, Data data, bool way);
+bool AddNode2(Node **root, Node **node, int way, char *str, Type type);
 
 bool push(Node *pointer, Stack *stack);
 void pop(Stack *stack);
