@@ -7,7 +7,6 @@
 #include <stdbool.h>
 #include <string.h>
 
-
 typedef enum Type_ {animal, noanimal} Type;
 
 typedef struct Data_
@@ -39,13 +38,16 @@ bool createNewNode(Node **node, char *str, Type type);
 
 Node *playGame(Node *root);
 
-bool addNode(Node **root, Node **parent, Data data, bool way);
-bool AddNode2(Node **root, Node **node, int way, char *str, Type type);
-
-bool push(Node *pointer, Stack *stack);
-void pop(Stack *stack);
-bool isEmpty(Stack stack);
-bool onTop(Node **pointer, Stack stack);
+bool pushToStack(Node *pointer, Stack *stack);
+void popFromStack(Stack *stack);
+bool isStackEmpty(Stack stack);
+bool onTopOfStack(Node **pointer, Stack stack);
 void clearStack(Stack *stack);
+bool addNode(Node **root, Node **node, int way, char *str, Type type);
+bool readFromFile(FILE *filepointer, Node **root);
+void writeToFile(FILE *filepointer, Node *root);
+void addNewInformation(Node **root, Node *destination);
+void cleanTree(Node **root);
+void clearTree(Node **root);
 
 #endif // AKINATOR_H_INCLUDED
