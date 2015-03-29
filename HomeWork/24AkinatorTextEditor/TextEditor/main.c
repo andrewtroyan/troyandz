@@ -22,10 +22,16 @@ int main(int argc, char **argv)
         showTheText(wnd2, lines, text);
 
         int sign;
-        while(sign != '\n')
+        keypad(stdscr, true);
+        while(sign != 'q')
         {
             sign = getch();
-            insertSign(&lines, &text, sign);
+            if(sign == '\n')
+                pressEnter(&lines, &text);
+            else if(sign == KEY_BACKSPACE)
+                deleteSign(&lines, &text);
+            else
+                insertSign(&lines, &text, sign);
             showTheText(wnd2, lines, text);
         }
 

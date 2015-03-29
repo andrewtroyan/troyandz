@@ -26,13 +26,16 @@ typedef struct LineNode_
 
 void setWindows(WINDOW **wnd1, WINDOW **wnd2, WINDOW **wnd3, int rows, int cols);
 void deleteWindows(WINDOW **wnd1, WINDOW **wnd2, WINDOW **wnd3);
-void showTheText(WINDOW *wnd, LineNode *lines, TextNode *text);
 bool createLineNode(LineNode **line);
 bool createTextNode(TextNode **text);
-bool startWork(LineNode **lines, TextNode **text);
 void clearLines(LineNode **lines);
 void clearText(TextNode **text);
+bool startWork(LineNode **lines, TextNode **text);
+void showTheText(WINDOW *wnd, LineNode *lines, TextNode *text);
 bool insertSign(LineNode **lines, TextNode **text, int symbol);
 bool pressEnter(LineNode **lines, TextNode **text);
+bool deleteSign(LineNode **lines, TextNode **text);
+bool deleteTextNode(LineNode **lines, TextNode **text);
+bool deleteLineNode(LineNode **lines, TextNode **text);
 
 #endif // TEXTEDITOR_H_INCLUDED

@@ -54,80 +54,36 @@ bool createTextNode(TextNode **text)
     return true;
 }
 
-/*void deleteLineNode(LineNode *lines, LineNode *lineToDelete)
+void clearLines(LineNode **lines)
 {
-    if(lineToDelete != lines)
+    LineNode *temp = NULL;
+    while(*lines)
     {
-        lineToDelete->previous->amountOfSigns += lineToDelete->amountOfSigns;
-        lineToDelete->previous->indicator = current;
-        lineToDelete->previous->next = lineToDelete->next;
-        lineToDelete->next->previous = lineToDelete->previous;
-        lineToDelete->amountOfSigns = 0;
-        lineToDelete->indicator = general;
-        lineToDelete->next = NULL;
-        lineToDelete->previous = NULL;
-        lineToDelete->pointer = NULL;
-        free(lineToDelete);
-        lineToDelete = NULL;
+        temp = *lines;
+        *lines = (*lines)->next;
+        temp->amountOfSigns = 0;
+        temp->pointer = NULL;
+        temp->next = NULL;
+        temp->previous = NULL;
+        free(temp);
+        temp = NULL;
     }
 }
 
-void deleteTextNode(TextNode *text, TextNode *currentNode)
+void clearText(TextNode **text)
 {
-    if(currentNode != text)
+    TextNode *temp = NULL;
+    while(*text)
     {
-        TextNode *nodeToDelete = currentNode->previous;
-        nodeToDelete->previous->next = nodeToDelete->next;
-        nodeToDelete->next->previous = nodeToDelete->previous;
-        nodeToDelete->next = NULL;
-        nodeToDelete->previous = NULL;
-        nodeToDelete->sign = 32;
-        free(nodeToDelete);
-        nodeToDelete = NULL;
+        temp = *text;
+        *text = (*text)->next;
+        temp->sign = 0;
+        temp->next = NULL;
+        temp->previous = NULL;
+        free(temp);
+        temp = NULL;
     }
 }
-
-bool insertSign(LineNode *lines, int symbol)
-{
-    LineNode *linesTemp = lines;
-    while(linesTemp->indicator != current)
-        linesTemp = linesTemp->next;
-
-    TextNode *textTemp = linesTemp->pointer;
-    while(textTemp->indicator != current)
-        textTemp = textTemp->next;
-
-    TextNode *insertNode = createTextNode();
-    if(!insertNode)
-        return false;
-    insertNode->sign = symbol;
-    insertNode->previous = textTemp->previous;
-    insertNode->next = textTemp;
-    if(linesTemp->pointer == textTemp)
-        linesTemp->pointer = insertNode;
-    ++(linesTemp->amountOfSigns);
-    textTemp = insertNode = NULL;
-    linesTemp = NULL;
-    return true;
-}
-
-void deleteSign(LineNode *lines, TextNode *text)
-{
-    LineNode *linesTemp = lines;
-    while(linesTemp->indicator != current)
-        linesTemp = linesTemp->next;
-
-    TextNode *textTemp = linesTemp->pointer;
-    while(textTemp->indicator != current)
-        textTemp = textTemp->next;
-
-    if(linesTemp->pointer == textTemp && lines != linesTemp)
-        deleteLineNode(lines, linesTemp);
-    else
-        deleteTextNode(text, textTemp);
-    linesTemp = NULL;
-    textTemp = NULL;
-}*/
 
 bool startWork(LineNode **lines, TextNode **text)
 {
@@ -145,6 +101,31 @@ bool startWork(LineNode **lines, TextNode **text)
     (*lines)->pointer = *text;
     (*lines)->indicator = current;
     return true;
+}
+
+void showTheText(WINDOW *wnd, LineNode *lines, TextNode *text)
+{
+    wclear(wnd);
+    LineNode *linesTemp = lines;
+    TextNode *textTemp = text;
+    for(int i = 0; linesTemp; ++i, linesTemp = linesTemp->next)
+    {
+        for(int j = 0; j < linesTemp->amountOfSigns && textTemp; ++j, textTemp = textTemp->next)
+        {
+            wmove(wnd, i, j);
+            if(textTemp->indicator == current)
+                wattron(wnd, A_REVERSE);
+
+            if(textTemp->sign == '\n' || textTemp->sign == '\0')
+                wprintw(wnd, " ");
+            else
+                wprintw(wnd, "%c", textTemp->sign);
+
+            if(textTemp->indicator == current)
+                wattroff(wnd, A_REVERSE);
+        }
+    }
+    wrefresh(wnd);
 }
 
 bool insertSign(LineNode **lines, TextNode **text, int symbol)
@@ -182,109 +163,189 @@ bool insertSign(LineNode **lines, TextNode **text, int symbol)
 
 bool pressEnter(LineNode **lines, TextNode **text)
 {
-    LineNode *lineTemp = *lines;
-    TextNode *textTemp = NULL;
+    if(!insertSign(lines, text, '\n'))
+        return false;
 
+    LineNode *lineTemp = *lines;
     while(lineTemp->indicator != current)
         lineTemp = lineTemp->next;
-    textTemp = lineTemp->pointer;
+
+    TextNode *textTemp = lineTemp->pointer;
     while(textTemp->indicator != current)
         textTemp = textTemp->next;
 
-    TextNode *newNode = NULL;
-    if(!createTextNode(&newNode))
-        return false;
-    newNode->sign = '\n';
-    newNode->next = textTemp;
-    newNode->previous = textTemp->previous;
-    if(textTemp->previous)
-        textTemp->previous->next = newNode;
-    textTemp->previous = newNode;
-    ++(lineTemp->amountOfSigns);
-
     int amount = 0;
-    bool indicator = false;
+    bool state = false;
     TextNode *test = lineTemp->pointer;
     for(int i = 0; i < lineTemp->amountOfSigns; ++i, test = test->next)
     {
         if(test->indicator == current)
-            indicator = true;
-        if(indicator)
+            state = true;
+        if(state)
             ++amount;
     }
 
     LineNode *newLine = NULL;
     if(!createLineNode(&newLine))
         return false;
+
+    lineTemp->amountOfSigns -= amount;
+    lineTemp->indicator = general;
     newLine->pointer = textTemp;
     newLine->amountOfSigns = amount;
-    lineTemp->amountOfSigns -= amount;
     newLine->indicator = current;
-    lineTemp->indicator = general;
     newLine->previous = lineTemp;
     newLine->next = lineTemp->next;
     if(lineTemp->next)
-
         lineTemp->next->previous = newLine;
     lineTemp->next = newLine;
 
     lineTemp = newLine = NULL;
-    textTemp = newNode = test = NULL;
+    textTemp = test = NULL;
     return true;
 }
 
-void showTheText(WINDOW *wnd, LineNode *lines, TextNode *text)
+bool deleteSign(LineNode **lines, TextNode **text)
 {
-    LineNode *linesTemp = lines;
-    TextNode *textTemp = text;
-    wclear(wnd);
-    for(int i = 0; linesTemp; ++i, linesTemp = linesTemp->next)
+    LineNode *linesTemp = *lines;
+    while(linesTemp->indicator != current)
+        linesTemp = linesTemp->next;
+
+    TextNode *textTemp = linesTemp->pointer;
+    while(textTemp->indicator != current)
+        textTemp = textTemp->next;
+
+    if((*lines)->pointer != textTemp)
     {
-        for(int j = 0; j < linesTemp->amountOfSigns && textTemp; ++j, textTemp = textTemp->next)
+        if(linesTemp->pointer == textTemp)
         {
-            move(i, j);
-            if(textTemp->indicator == current)
-                wattron(wnd, A_REVERSE);
-
-            if(textTemp->sign == '\n' || textTemp->sign == '\0')
-                wprintw(wnd, " ");
-            else
-                wprintw(wnd, "%c", textTemp->sign);
-
-            if(textTemp->indicator == current)
-                wattroff(wnd, A_REVERSE);
+            if(!deleteLineNode(lines, text))
+            {
+                linesTemp = NULL;
+                textTemp = NULL;
+                return false;
+            }
         }
+        else
+        {
+            if(!deleteTextNode(lines, text))
+            {
+                linesTemp = NULL;
+                textTemp = NULL;
+                return false;
+            }
+        }
+        linesTemp = NULL;
+        textTemp = NULL;
+        return true;
     }
-    wrefresh(wnd);
+    linesTemp = NULL;
+    textTemp = NULL;
+    return false;
 }
 
-void clearLines(LineNode **lines)
+bool deleteTextNode(LineNode **lines, TextNode **text)
 {
-    LineNode *temp = NULL;
-    while(*lines)
+    LineNode *linesTemp = *lines;
+    while(linesTemp->indicator != current)
+        linesTemp = linesTemp->next;
+
+    TextNode *textTemp = linesTemp->pointer;
+    while(textTemp->indicator != current)
+        textTemp = textTemp->next;
+
+    if(linesTemp->pointer != textTemp)
     {
-        temp = *lines;
-        *lines = (*lines)->next;
-        temp->amountOfSigns = 0;
-        temp->pointer = NULL;
-        temp->next = NULL;
-        temp->previous = NULL;
-        free(temp);
-        temp = NULL;
+        TextNode *nodeToDelete = textTemp->previous;
+        textTemp->previous = nodeToDelete->previous;
+        if(*text == nodeToDelete)
+        {
+            *text = textTemp;
+            linesTemp->pointer = textTemp;
+        }
+        else
+            nodeToDelete->previous->next = textTemp;
+        if(linesTemp->pointer == nodeToDelete)
+            linesTemp->pointer = textTemp;
+        --(linesTemp->amountOfSigns);
+        nodeToDelete->sign = 0;
+        nodeToDelete->next = NULL;
+        nodeToDelete->previous = NULL;
+        free(nodeToDelete);
+        nodeToDelete = NULL;
+        linesTemp = NULL;
+        textTemp = NULL;
+        return true;
     }
+
+    linesTemp = NULL;
+    textTemp = NULL;
+    return false;
 }
 
-void clearText(TextNode **text)
+bool deleteLineNode(LineNode **lines, TextNode **text)
 {
-    TextNode *temp = NULL;
-    while(*text)
+    LineNode *linesTemp = *lines;
+    while(linesTemp->indicator != current)
+        linesTemp = linesTemp->next;
+
+    TextNode *textTemp = linesTemp->pointer;
+    while(textTemp->indicator != current)
+        textTemp = textTemp->next;
+
+    if(linesTemp->pointer == textTemp)
     {
-        temp = *text;
-        *text = (*text)->next;
-        temp->sign = 0;
-        temp->next = NULL;
-        temp->previous = NULL;
-        free(temp);
-        temp = NULL;
+        TextNode *nodeToDelete = textTemp->previous;
+        textTemp->previous = nodeToDelete->previous;
+        if(*text == nodeToDelete)
+        {
+            LineNode *lineToDelete = linesTemp->previous;
+            linesTemp->previous = lineToDelete->previous;
+            *text = textTemp;
+            *lines = linesTemp;
+            lineToDelete->pointer = NULL;
+            lineToDelete->next = NULL;
+            lineToDelete->previous = NULL;
+            lineToDelete->amountOfSigns= 0;
+            free(lineToDelete);
+            lineToDelete = NULL;
+        }
+        else
+        {
+            nodeToDelete->previous->next = textTemp;
+
+            LineNode *lineToComplete = linesTemp->previous;
+            lineToComplete->amountOfSigns += linesTemp->amountOfSigns - 1;
+            lineToComplete->indicator = current;
+            lineToComplete->next = linesTemp->next;
+            if(linesTemp->next)
+                linesTemp->next->previous = lineToComplete;
+            linesTemp->amountOfSigns = 0;
+            linesTemp->indicator = general;
+            linesTemp->next = NULL;
+            linesTemp->previous = NULL;
+            linesTemp->pointer = NULL;
+            free(linesTemp);
+            linesTemp = NULL;
+
+            if(lineToComplete->pointer == nodeToDelete)
+                lineToComplete->pointer = textTemp;
+
+            lineToComplete = NULL;
+        }
+        nodeToDelete->sign = 0;
+        nodeToDelete->next = NULL;
+        nodeToDelete->previous = NULL;
+        free(nodeToDelete);
+        nodeToDelete = NULL;
+        linesTemp = NULL;
+        textTemp = NULL;
+        return true;
     }
+
+    linesTemp = NULL;
+    textTemp = NULL;
+    return false;
 }
+
+
