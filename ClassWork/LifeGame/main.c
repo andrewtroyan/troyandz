@@ -3,18 +3,19 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
-#define SCREEN_WIDTH 1920
-#define SCREEN_HEIGHT 1080
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 480
 
 int main()
 {
+    system("export SDL_VIDEODRIVER=wayland");
     if(SDL_Init(SDL_INIT_VIDEO))
     {
         fprintf(stderr, "SDL_Init Error: %s\n", SDL_GetError());
         exit(1);
     }
 
-    SDL_Window *win = SDL_CreateWindow("Life Game", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOWEVENT_SHOWN);
+    SDL_Window *win = SDL_CreateWindow("Life Game", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
     if(!win)
     {
@@ -37,6 +38,8 @@ int main()
     SDL_Rect rect = {0, 0, 10, 10};
     SDL_Event e;
 
+    int field[2][48][64] = {0};
+
     bool quit = false;
 
     while(!quit)
@@ -45,29 +48,19 @@ int main()
         {
             if(e.type == SDL_QUIT)
                 quit = true;
+            if(e.type == SDL_MOUSEBUTTONDOWN)
+            {
+                //фиксируем позицию мышки
+            }
             if(e.type == SDL_KEYDOWN)
             {
                 SDL_KeyboardEvent kEvent = e.key;
-                switch(kEvent.keysym.scancode)
+                if(kEvent.keysym.scancode == SDL_SCANCODE_RETURN)
                 {
-                case SDL_SCANCODE_A:
-                    rect.x = (rect.x - 10 + SCREEN_WIDTH) % SCREEN_WIDTH;
-                    break;
-                case SDL_SCANCODE_D:
-                    rect.x = (rect.x + 10 + SCREEN_WIDTH) % SCREEN_WIDTH;
-                    break;
-                case SDL_SCANCODE_W:
-                    rect.y = (rect.y - 10 + SCREEN_HEIGHT) % SCREEN_HEIGHT;
-                    break;
-                case SDL_SCANCODE_S:
-                    rect.y = (rect.y + 10 + SCREEN_HEIGHT) % SCREEN_HEIGHT;
-                    break;
+                    //запуск обхода
                 }
             }
-            if(e.type == SDL_MOUSEBUTTONDOWN)
-                quit = true;
         }
-
 
         SDL_SetRenderDrawColor(ren, 0x00, 0x00, 0x00, 0xFF);
         SDL_RenderClear(ren);
