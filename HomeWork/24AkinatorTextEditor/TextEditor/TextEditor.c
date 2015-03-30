@@ -348,4 +348,54 @@ bool deleteLineNode(LineNode **lines, TextNode **text)
     return false;
 }
 
+void getLeft(LineNode **lines, TextNode **text)
+{
+    LineNode *linesTemp = *lines;
+    while(linesTemp->indicator != current)
+        linesTemp = linesTemp->next;
+
+    TextNode *textTemp = linesTemp->pointer;
+    while(textTemp->indicator != current)
+        textTemp = textTemp->next;
+
+    if(textTemp->previous)
+    {
+        if(linesTemp->pointer == textTemp)
+        {
+            linesTemp->indicator = general;
+            linesTemp->previous->indicator = current;
+        }
+        textTemp->indicator = general;
+        textTemp->previous->indicator = current;
+    }
+
+    linesTemp = NULL;
+    textTemp = NULL;
+}
+
+void getRight(LineNode **lines, TextNode **text)
+{
+    LineNode *linesTemp = *lines;
+    while(linesTemp->indicator != current)
+        linesTemp = linesTemp->next;
+
+    TextNode *textTemp = linesTemp->pointer;
+    while(textTemp->indicator != current)
+        textTemp = textTemp->next;
+
+    if(textTemp->next)
+    {
+        if(linesTemp->next && textTemp == linesTemp->next->pointer)
+        {
+            linesTemp->indicator = general;
+            linesTemp->next->indicator = current;
+        }
+        textTemp->indicator = general;
+        textTemp->next->indicator = current;
+    }
+
+    linesTemp = NULL;
+    textTemp = NULL;
+}
+
 

@@ -26,12 +26,24 @@ int main(int argc, char **argv)
         while(sign != 'q')
         {
             sign = getch();
-            if(sign == '\n')
+            switch(sign)
+            {
+            case 10:
                 pressEnter(&lines, &text);
-            else if(sign == KEY_BACKSPACE)
+                break;
+            case KEY_BACKSPACE:
                 deleteSign(&lines, &text);
-            else
+                break;
+            case KEY_LEFT:
+                getLeft(&lines, &text);
+                break;
+            case KEY_RIGHT:
+                getRight(&lines, &text);
+                break;
+            default:
                 insertSign(&lines, &text, sign);
+                break;
+            }
             showTheText(wnd2, lines, text);
         }
 

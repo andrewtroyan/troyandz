@@ -34,6 +34,8 @@ bool startWork(LineNode **lines, TextNode **text);
 void showTheText(WINDOW *wnd, LineNode *lines, TextNode *text);
 bool insertSign(LineNode **lines, TextNode **text, int symbol);
 bool pressEnter(LineNode **lines, TextNode **text);
+void getLeft(LineNode **line, TextNode **text);
+void getRight(LineNode **lines, TextNode **text);
 bool deleteSign(LineNode **lines, TextNode **text);
 bool deleteTextNode(LineNode **lines, TextNode **text);
 bool deleteLineNode(LineNode **lines, TextNode **text);
