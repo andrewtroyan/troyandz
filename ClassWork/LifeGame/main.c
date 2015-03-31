@@ -38,7 +38,7 @@ int main()
     SDL_Rect rect = {0, 0, 10, 10};
     SDL_Event e;
 
-    int field[2][48][64] = {0};
+    //int field[2][48][64];
 
     bool quit = false;
 
