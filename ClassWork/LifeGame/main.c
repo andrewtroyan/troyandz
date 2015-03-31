@@ -39,6 +39,7 @@ int main()
     SDL_Event e;
 
     //int field[2][48][64];
+    SDL_Cursor *cursor;
 
     bool quit = false;
 
@@ -50,7 +51,7 @@ int main()
                 quit = true;
             if(e.type == SDL_MOUSEBUTTONDOWN)
             {
-                //фиксируем позицию мышки
+                cursor = SDL_GetCursor();
             }
             if(e.type == SDL_KEYDOWN)
             {
