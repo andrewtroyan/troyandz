@@ -1,14 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <SDL2/SDL.h>
-
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+#include "LifeGame.h"
 
 int main()
 {
-    system("export SDL_VIDEODRIVER=wayland");
     if(SDL_Init(SDL_INIT_VIDEO))
     {
         fprintf(stderr, "SDL_Init Error: %s\n", SDL_GetError());
@@ -38,27 +31,35 @@ int main()
     SDL_Rect rect = {0, 0, 10, 10};
     SDL_Event e;
 
-    //int field[2][48][64];
-    SDL_Cursor *cursor;
-
-    bool quit = false;
-
-    while(!quit)
+    int ***field = NULL;
+    if(!memoryAlloc(&field))
     {
-        while(SDL_PollEvent(&e)) //User requests quit
+        SDL_DestroyRenderer(ren);
+        SDL_DestroyWindow(win);
+        SDL_Quit();
+        fprintf(stderr, "No free memory.\n");
+        exit(1);
+    }
+
+    State indicator = keep;
+
+    while(indicator == keep)
+    {
+        while(SDL_PollEvent(&e))
         {
             if(e.type == SDL_QUIT)
-                quit = true;
+                indicator = quit;
             if(e.type == SDL_MOUSEBUTTONDOWN)
             {
-                cursor = SDL_GetCursor();
+                //зафиксить пложение курсора
+                //занести в таблицу
             }
             if(e.type == SDL_KEYDOWN)
             {
                 SDL_KeyboardEvent kEvent = e.key;
                 if(kEvent.keysym.scancode == SDL_SCANCODE_RETURN)
                 {
-                    //запуск обхода
+                    indicator = start;
                 }
             }
         }
@@ -70,6 +71,28 @@ int main()
         SDL_RenderPresent(ren);
     }
 
+    if(indicator == start)
+    {
+        while(indicator != quit)
+        {
+            while(SDL_PollEvent(&e))
+            {
+                if(e.type == SDL_KEYDOWN)
+                {
+                    SDL_KeyboardEvent kEvent = e.key;
+                    if(kEvent.keysym.scancode == SDL_SCANCODE_SPACE)
+                        indicator = quit;
+                }
+                else
+                {
+                    //обход
+                }
+            }
+            //обход ???
+        }
+    }
+
+    clearField(&field);
     SDL_DestroyRenderer(ren);
     SDL_DestroyWindow(win);
     SDL_Quit();
