@@ -27,7 +27,7 @@ bool memoryAlloc(int ****field)
     {
         for(int j = 0; j < SCREEN_HEIGHT / 10; ++j)
         {
-            **(field[i][j]) = NULL;
+            *(field[i][j]) = NULL;
             *(field[i][j]) = (int *)malloc((SCREEN_WIDTH / 10) * sizeof(int));
             if(!*(field[i][j]))
             {
