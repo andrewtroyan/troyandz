@@ -2,100 +2,145 @@
 
 int main()
 {
-    if(SDL_Init(SDL_INIT_VIDEO))
+    SDL_Window *win = NULL;
+    SDL_Renderer *ren = NULL;
+    if(!createAll(&win, &ren, "Life Game", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT))
     {
-        fprintf(stderr, "SDL_Init Error: %s\n", SDL_GetError());
+        fprintf(stderr, "%s", SDL_GetError());
         exit(1);
     }
 
-    SDL_Window *win = SDL_CreateWindow("Life Game", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-
-    if(!win)
-    {
-        fprintf(stderr, "SDL_CreateWindow Error: %s\n", SDL_GetError());
-        SDL_Quit();
-        exit(1);
-    }
-
-    SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-
-    if(!ren)
-    {
-        SDL_DestroyWindow(win);
-        fprintf(stderr, "SDL_CreateRenderer Error: %s\n", SDL_GetError());
-        SDL_Quit();
-        exit(1);
-    }
-
-
-    SDL_Rect rect = {0, 0, 10, 10};
-    SDL_Event e;
+//-----
 
     int ***field = NULL;
-    if(!memoryAlloc(&field))
+
+    field = (int ***)malloc(2 * sizeof(int **));
+    if(!field)
     {
-        SDL_DestroyRenderer(ren);
-        SDL_DestroyWindow(win);
-        SDL_Quit();
         fprintf(stderr, "No free memory.\n");
         exit(1);
     }
+    for(int i = 0; i < 2; ++i)
+    {
+        field[i] = NULL;
+        field[i] = (int **)malloc((SCREEN_HEIGHT / 10) * sizeof(int *));
+        if(!field[i])
+        {
+            for(int index = i - 1; index >= 0; --index)
+            {
+                free(field[index]);
+                field[index] = NULL;
+            }
+            free(field);
+            field = NULL;
+            fprintf(stderr, "No free memory.\n");
+            exit(1);
+        }
+    }
 
+    for(int i = 0; i < 2; ++i)
+    {
+        for(int j = 0; j < SCREEN_HEIGHT / 10; ++j)
+        {
+            field[i][j] = NULL;
+            field[i][j] = (int *)malloc((SCREEN_WIDTH / 10) * sizeof(int));
+            if(!field[i][j])
+            {
+                for(int i = 0; i < 2; ++i)
+                {
+                    for(int j = 0; j < SCREEN_HEIGHT / 10; ++j)
+                    {
+                        free(field[i][j]);
+                        field[i][j] = NULL;
+                    }
+                    free(field[i]);
+                    field[i] = NULL;
+                }
+                free(field);
+                field = NULL;
+                fprintf(stderr, "No free memory.\n");
+                exit(1);
+            }
+        }
+    }
+
+    for(int i = 0; i < 2; ++i)
+        for(int j = 0; j < SCREEN_HEIGHT / 10; ++j)
+            for(int k = 0; k < SCREEN_WIDTH / 10; ++k)
+                field[i][j][k] = 0;
+
+//-----
+
+    SDL_Rect rect = {0, 0, 10, 10};
+    SDL_Event event;
     State indicator = keep;
+    bool indicatorOfClick = false;
+
+    SDL_RenderClear(ren);
+    SDL_SetRenderDrawColor(ren, 0x00, 0x00, 0x00, 0xFF);
+    SDL_SetRenderDrawColor(ren, 0xFF, 0xFF, 0xFF, 0xFF);
 
     while(indicator == keep)
     {
-        while(SDL_PollEvent(&e))
+        while(SDL_PollEvent(&event))
         {
-            if(e.type == SDL_QUIT)
+            if(event.type == SDL_QUIT)
                 indicator = quit;
-            if(e.type == SDL_MOUSEBUTTONDOWN)
+            if(event.type == SDL_MOUSEBUTTONDOWN)
             {
-                //зафиксить пложение курсора
-                //занести в таблицу
+                indicatorOfClick = true;
+                SDL_MouseButtonEvent mouse = event.button;
+                field[1][mouse.y / 10][mouse.x / 10] = 1;
+                rect.y = mouse.y - mouse.y % 10;
+                rect.x = mouse.x - mouse.x % 10;
+                SDL_RenderFillRect(ren, &rect);
+                SDL_RenderPresent(ren);
             }
-            if(e.type == SDL_KEYDOWN)
+            if(event.type == SDL_KEYDOWN)
             {
-                SDL_KeyboardEvent kEvent = e.key;
-                if(kEvent.keysym.scancode == SDL_SCANCODE_RETURN)
-                {
+                SDL_KeyboardEvent kEvent = event.key;
+                if(kEvent.keysym.scancode == SDL_SCANCODE_RETURN && indicatorOfClick)
                     indicator = start;
-                }
+                else if(kEvent.keysym.scancode == SDL_SCANCODE_RETURN && !indicatorOfClick)
+                    indicator = quit;
             }
         }
-
-        SDL_SetRenderDrawColor(ren, 0x00, 0x00, 0x00, 0xFF);
-        SDL_RenderClear(ren);
-        SDL_SetRenderDrawColor(ren, 0xFF, 0xFF, 0xFF, 0xFF);
-        SDL_RenderFillRect(ren, &rect);
-        SDL_RenderPresent(ren);
     }
 
-    if(indicator == start)
+    while(indicator == start)
     {
-        while(indicator != quit)
+        while(SDL_PollEvent(&event))
         {
-            while(SDL_PollEvent(&e))
+            if(event.type == SDL_KEYDOWN)
             {
-                if(e.type == SDL_KEYDOWN)
-                {
-                    SDL_KeyboardEvent kEvent = e.key;
-                    if(kEvent.keysym.scancode == SDL_SCANCODE_SPACE)
-                        indicator = quit;
-                }
-                else
-                {
-                    //обход
-                }
+                if(event.key.keysym.scancode == SDL_SCANCODE_RETURN)
+                    indicator = quit;
             }
-            //обход ???
+            else
+            {
+                SDL_RenderClear(ren);
+                aroundField(field, SCREEN_WIDTH, SCREEN_HEIGHT, ren);
+                SDL_RenderPresent(ren);
+            }
         }
     }
 
-    clearField(&field);
-    SDL_DestroyRenderer(ren);
-    SDL_DestroyWindow(win);
-    SDL_Quit();
+//-----
+
+    deleteAll(&win, &ren);
+
+    for(int i = 0; i < 2; ++i)
+    {
+        for(int j = 0; j < SCREEN_HEIGHT / 10; ++j)
+        {
+            free(field[i][j]);
+            field[i][j] = NULL;
+        }
+        free(field[i]);
+        field[i] = NULL;
+    }
+    free(field);
+    field = NULL;
 
     return 0;
 }
