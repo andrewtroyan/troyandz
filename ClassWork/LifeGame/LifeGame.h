@@ -11,11 +11,21 @@
 
 typedef enum State_ {keep, quit, start} State;
 
-//bool memoryAlloc(int ****field);
-//void clearField(int ****field);
+typedef struct CurrentCell_
+{
+    int y, x;
+} CurrentCell;
+
+bool memoryAlloc(int ****field);
+void clearField(int ****field);
+
 bool createAll(SDL_Window **win, SDL_Renderer **ren, char *name, int y, int x, int width, int height);
 void deleteAll(SDL_Window **win, SDL_Renderer **ren);
+
+void enterData(int ***field, SDL_Event event, CurrentCell *currentCell, int width, int height);
+void showField(int ***field, SDL_Renderer *ren, CurrentCell currentCell, int width, int height);
+bool play(int ***field, SDL_Renderer *ren, int width, int height);
+bool aroundField(int ***field, int width, int height, SDL_Renderer *ren);
 int aroundCell(int ***field, int z, int y, int x, int width, int height);
-void aroundField(int ***field, int width, int height, SDL_Renderer *ren);
 
 #endif // LIFEGAME_H_INCLUDED
