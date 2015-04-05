@@ -24,7 +24,7 @@ void drawLissajousFigure(SDL_Renderer *ren, int m, int n)
     SDL_SetRenderDrawColor(ren, 0x00, 0x00, 0x00, 0xFF);
     SDL_RenderClear(ren);
     SDL_SetRenderDrawColor(ren, 0xFF, 0xFF, 0xFF, 0xFF);
-    for(double i = 0; i <= 360; i += 0.01)
+    for(double i = 0; i <= 180; i += 0.01)
     {
         x = (SCREEN_WIDTH / 2) + (SCREEN_WIDTH / 2) * cos(m * i), y = (SCREEN_HIGHT / 2) + (SCREEN_HIGHT / 2) * sin(n * i);
         SDL_RenderDrawPoint(ren, x, y);
@@ -59,7 +59,7 @@ void turnLissajousFigure(SDL_Renderer *ren, int m, int n, State *indicator)
             SDL_SetRenderDrawColor(ren, 0x00, 0x00, 0x00, 0xFF);
             SDL_RenderClear(ren);
             SDL_SetRenderDrawColor(ren, 0xFF, 0xFF, 0xFF, 0xFF);
-            for(double i = 0; i <= 50; i += 0.01)
+            for(double i = 0; i <= 180; i += 0.01)
             {
                 x = (SCREEN_WIDTH / 2) + (SCREEN_WIDTH / 2) * cos(m * i), y = (SCREEN_HIGHT / 2) + (SCREEN_HIGHT / 2) * sin(n * i + j);
                 SDL_RenderDrawPoint(ren, x, y);
