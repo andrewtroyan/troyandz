@@ -25,13 +25,13 @@ int main()
             else if(event.type == SDL_KEYDOWN)
             {
                 SDL_KeyboardEvent key = event.key;
-                if(key.keysym.scancode == SDL_SCANCODE_W)
+                if(key.keysym.scancode == SDL_SCANCODE_UP)
                     ++m;
-                if(key.keysym.scancode == SDL_SCANCODE_S)
+                if(key.keysym.scancode == SDL_SCANCODE_DOWN)
                     m -= m > 1? 1 : 0;
-                if(key.keysym.scancode == SDL_SCANCODE_A)
+                if(key.keysym.scancode == SDL_SCANCODE_LEFT)
                     n -= n > 1? 1 : 0;
-                if(key.keysym.scancode == SDL_SCANCODE_D)
+                if(key.keysym.scancode == SDL_SCANCODE_RIGHT)
                     ++n;
                 if(key.keysym.scancode == SDL_SCANCODE_RETURN)
                     indicator = turn;
