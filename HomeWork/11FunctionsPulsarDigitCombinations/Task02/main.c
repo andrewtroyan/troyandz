@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "../../../modules/include/compatibility.h"
 #include "animation.h"
 
 int main()
@@ -12,4 +9,3 @@ int main()
     return 0;
 }
 
-// almost all is correct
