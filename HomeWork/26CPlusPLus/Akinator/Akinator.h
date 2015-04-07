@@ -1,52 +1,74 @@
 #ifndef AKINATOR_H_INCLUDED
 #define AKINATOR_H_INCLUDED
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <stdbool.h>
-#include <string.h>
+#include <iostream>
+#include <cstdlib>
+#include <cassert>
+#include <cstdbool>
+#include <cstring>
 
 typedef enum Type_ {animal, noanimal} Type;
 
-typedef struct Data_
+struct Data
 {
     Type type;
     char *str;
     int sizestr;
-} Data;
+};
 
-typedef struct Node_
+struct Node
 {
     Data data;
-    struct Node_ *parent, *yeslink, *nolink;
-} Node;
+    Node *parent, *yeslink, *nolink;
+};
 
-typedef struct NodeForStack_
+
+struct NodeForStack
 {
     Node *node;
-    struct NodeForStack_ *link;
-} NodeForStack;
+    NodeForStack *link;
+};
 
 typedef NodeForStack * Stack;
 
+// -----
+
+namespace tree
+{
 void addNewFork(Node *oldAnimal, Node *newAnimal, Node *question, bool answer);
 void hangFork(Node **root, Node *parent, Node *fork, bool wayToChild);
 bool determineWayToChild(Node *node);
-bool addNewKnowledge(Node **root, Node *destination, char *question, char *newAnimal, bool rightAnswer);
-bool createNewNode(Node **node, char *str, Type type);
+void addNewKnowledge(Node **root, Node *destination, char *question, char *newAnimal, bool rightAnswer);
+void createNewNode(Node **node, char *str, Type type);
+void addNode(Node **root, Node **node, int way, char *str, Type type);
+void addNewInformation(Node **root, Node *destination);
+void clearTree(Node **root);
+}
 
+// -----
+
+namespace game
+{
 Node *playGame(Node *root);
+}
 
-bool pushToStack(Node *pointer, Stack *stack);
+// -----
+
+namespace stack
+{
+void pushToStack(Node *pointer, Stack *stack);
 void popFromStack(Stack *stack);
 bool isStackEmpty(Stack stack);
 bool onTopOfStack(Node **pointer, Stack stack);
 void clearStack(Stack *stack);
-bool addNode(Node **root, Node **node, int way, char *str, Type type);
+}
+
+// -----
+
+namespace file
+{
 bool readFromFile(FILE *filepointer, Node **root);
 void writeToFile(FILE *filepointer, Node *root);
-void addNewInformation(Node **root, Node *destination);
-void clearTree(Node **root);
+}
 
 #endif // AKINATOR_H_INCLUDED
