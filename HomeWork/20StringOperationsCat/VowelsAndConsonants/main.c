@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int main()
 {
@@ -31,8 +32,7 @@ int main()
                 consonants = 0;
             }
         }
-        else if(character == 65 || character == 69 || character == 73 || character == 79 || character == 85 || character == 89 ||
-        character == 97 || character == 101 || character == 105 || character == 111 || character == 117 || character == 121)
+        else if(strchr("AEIOUYaeiouy", character))
         {
             ++vowels;
         }
