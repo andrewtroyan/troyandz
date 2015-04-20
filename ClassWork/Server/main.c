@@ -26,7 +26,7 @@ int main()
         return 1;
     }
 
-    error = listen(listenSocket, 5);
+    error = listen(listenSocket, 5); //5 - одновременно подключаемых устройств
     if(error)
     {
         write(2, "Error: listen.\n", 15);
