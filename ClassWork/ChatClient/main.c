@@ -25,8 +25,9 @@ int main()
     int error;
     struct sockaddr_in peer;
     peer.sin_family = AF_INET;
-    peer.sin_port = htons(7502);
+    peer.sin_port = htons(7500);
     peer.sin_addr.s_addr = inet_addr(serverIP);
+    //peer.sin_addr.s_addr = inet_addr("127.0.0.1");
 
     error = connect(aSocket, (struct sockaddr *)&peer, sizeof(peer));
     if(error)
@@ -41,6 +42,7 @@ int main()
     while(!exit)
     {
         write(1, "<< ", 3);
+        memset(buf, 0, strlen(buf));
         read(0, buf, MAXSTR);
 
         error = write(aSocket, buf, strlen(buf));
@@ -55,9 +57,8 @@ int main()
         }
         else
         {
-            memset(buf, 0, strlen(buf));
-
             write(1, ">> ", 3);
+            memset(buf, 0, strlen(buf));
             error = read(aSocket, buf, MAXSTR);
             if(error <= 0)
             {
