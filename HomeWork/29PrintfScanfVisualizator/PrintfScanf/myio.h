@@ -6,5 +6,6 @@
 #include <string.h>
 
 int myprintf(char *string, ...);
+int myscanf(char *string, ...);
 
 #endif // MYIO_H_INCLUDED

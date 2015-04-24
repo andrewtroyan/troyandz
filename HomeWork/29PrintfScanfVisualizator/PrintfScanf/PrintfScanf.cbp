@@ -31,9 +31,17 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="../../../Modules/include/integer.h" />
+		<Unit filename="../../../Modules/src/integer.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="myio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="myio.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

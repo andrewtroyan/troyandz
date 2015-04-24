@@ -43,7 +43,7 @@ int itos(char **string, int integer, int base)
         if(n < 10)
             (*string)[i] = n + 48;
         else
-            (*string)[i] = n + 55;
+            (*string)[i] = n + 87;
 
         integer %= divider;
         divider /= base;
