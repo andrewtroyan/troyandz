@@ -32,7 +32,7 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Linker>
-			<Add library="ncursesw" />
+			<Add library="ncurses" />
 		</Linker>
 		<Unit filename="../../../Modules/include/ncursesDetails.h" />
 		<Unit filename="../../../Modules/src/ncursesDetails.c">
