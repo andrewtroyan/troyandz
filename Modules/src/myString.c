@@ -30,3 +30,22 @@ char * myStrcpy(char *destination, const char *source)
     *destination = '\0';
     return pointer;
 }
+
+void mystrcat(char *dest, int amount, ...) //int amount - amount of strings to concatenate
+{
+    va_list list;
+    va_start(list, amount);
+
+    int n = 0;
+    while(dest[n] != '\n' && dest[n] != '\0')
+        ++n;
+
+    for(int i = 0; i < amount; ++i)
+    {
+        char *temp = va_arg(list, char *);
+        for(int j = 0; temp[j] != '\n' && temp[j] != '\0'; ++j, ++n)
+            dest[n] = temp[j];
+    }
+
+    va_end(list);
+}

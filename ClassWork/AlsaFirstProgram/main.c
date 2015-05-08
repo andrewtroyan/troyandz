@@ -68,7 +68,7 @@ int main()
     snd_pcm_hw_params_get_period_size(params, &frames, &dir);
     snd_pcm_prepare(handle);
     size = frames * 4; /* 2 bytes/sample, 2 channels */
-    // = frames * 2;
+    //size = frames * 2;
     buffer = (char *) malloc(size);
 
     /* We want to loop for 5 seconds */
