@@ -10,7 +10,7 @@ int main(int argc, char **argv)
     else
     {
         struct winsize size;
-        ioctl(fileno(stdout), TIOCGWINSZ, (char *) &size);
+        ioctl(1, TIOCGWINSZ, (char *) &size);
 
         WINDOW *wnd1, *wnd2, *wnd3;
         setWindows(&wnd1, &wnd2, &wnd3, size.ws_row, size.ws_col);
