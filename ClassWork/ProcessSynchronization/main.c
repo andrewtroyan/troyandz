@@ -1,9 +1,10 @@
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
-#include <unistd.h>
 #include <signal.h>
 #include <wait.h>
+#include <sched.h>
 
 int treatSig = 1;
 
@@ -50,36 +51,28 @@ int main()
 
             char symbol;
             FILE *filepoiner = NULL;
-            filepoiner = fopen("Voyna_I_Mir_Tom_1.txt", "r");
-
+            filepoiner = fopen("An_American_Tragedy.txt", "r");
+            close(pf[0]);
             while(treatSig && !feof(filepoiner))
             {
                 symbol = fgetc(filepoiner);
-                write(pf[0], &symbol, sizeof(symbol));
+                write(pf[1], &symbol, sizeof(symbol));
             }
-
-            symbol = '\0';
-
-            write(pf[0], &symbol, sizeof(symbol));
-            close(pf[0]);
+            fclose(filepoiner);
         }
         else //родительский процесс (P1)
         {
-            sleep(500);
+            usleep(15000);
             kill(p2, SIGQUIT);
         }
     }
     else
     {
-        wait(NULL);
+        waitpid(p1, NULL, 0);
         char symbol;
-        read(pf[1], &symbol, sizeof(symbol));
-        while(symbol != '\0')
-        {
-            printf("%c", symbol);
-            read(pf[1], &symbol, sizeof(symbol));
-        }
         close(pf[1]);
+        while(read(pf[0], &symbol, sizeof(symbol)) > 0)
+            printf("%c", symbol);
     }
     return 0;
 }
