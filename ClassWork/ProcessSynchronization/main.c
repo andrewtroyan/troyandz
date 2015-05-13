@@ -73,6 +73,9 @@ int main()
         close(pf[1]);
         while(read(pf[0], &symbol, sizeof(symbol)) > 0)
             printf("%c", symbol);
+
+        close(pf[0]);
+        close(pf[1]);
     }
     return 0;
 }
