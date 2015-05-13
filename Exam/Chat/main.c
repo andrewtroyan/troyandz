@@ -5,8 +5,6 @@
 
 int main()
 {
-    char **serverArgs = {"&", NULL};
-
     char answer;
     printf("Welcome to chat! Do you want to host this app? y/n: ");
     scanf(" %c", &answer);
