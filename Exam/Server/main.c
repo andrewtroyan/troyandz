@@ -32,7 +32,7 @@ int main()
     local.sin_port = htons(PORT);
     local.sin_addr.s_addr = htonl(INADDR_ANY);
 
-    error = bind(listenSocket, (const struct sockaddr *)&local, sizeof(local));
+    error = bind(listenSocket, (const struct sockaddr *)&local, sizeof(local)); //связываем наш будующий слушающий с адресным пространством
     if(error)
     {
         fprintf(stderr, "Error: bind.\n");
@@ -40,7 +40,7 @@ int main()
         return 1;
     }
 
-    error = listen(listenSocket, LISTEN_QUEUE);
+    error = listen(listenSocket, LISTEN_QUEUE); //делаем наш сокет слушающим
     if(error)
     {
         fprintf(stderr, "Error: listen.\n");
@@ -48,7 +48,7 @@ int main()
         return 1;
     }
 
-    int epollDescriptor = epoll_create(EPOLL_SIZE);
+    int epollDescriptor = epoll_create(EPOLL_SIZE); //создаем инструмент, с помощью которго будем обрабатывать дескрипторы (сокеты клиентов)
     struct epoll_event event;
     struct epoll_event *events;
 
