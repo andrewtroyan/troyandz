@@ -31,13 +31,20 @@ int main()
 
     while(1)
     {
-        amountOfEvents = epoll_wait(epollDescriptor, events, EPOLL_SIZE, -1);
+        amountOfEvents = epoll_wait(epollDescriptor, events, EPOLL_SIZE, 60000);
         if(amountOfEvents == -1)
         {
             fprintf(stderr, "Error: epoll_wait.\n");
             close(listenSocket);
             free(events);
             return 1;
+        }
+        else if(!amountOfEvents)
+        {
+            fprintf(stderr, "No clients.\n");
+            close(listenSocket);
+            free(events);
+            return 0;
         }
 
         for(int i = 0; i < amountOfEvents; ++i)

@@ -69,6 +69,7 @@ int main()
         {
             printf("Accept denied. Enter another name: ");
             fgets(name, NAME_LENGTH - 1, stdin);
+            name[strlen(name) - 1] = '\0';
             strcpy(infoToSend.name, name);
             close(clientSocket);
             error = 1;
