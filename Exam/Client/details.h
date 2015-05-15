@@ -1,15 +1,6 @@
 #ifndef DETAILS_H_INCLUDED
 #define DETAILS_H_INCLUDED
 
-#define _XOPEN_SOURCE_EXTENDED
-#define _POSIX_C_SOURCE 199309L
-
-#include <sys/ioctl.h>
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <ncurses.h>
-#include <locale.h>
 #include <string.h>
 #include <unistd.h>
 #include <pthread.h>

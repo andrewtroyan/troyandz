@@ -1,54 +1,18 @@
 #include <sys/epoll.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <arpa/inet.h>
-#include <fcntl.h>
 
 #include "details.h"
 
-#define PORT 7570
-#define LISTEN_QUEUE 64
-#define EPOLL_SIZE 65
-
 int main()
 {
-    int listenSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if(listenSocket < 0)
-    {
-        fprintf(stderr, "Error: socket.\n");
-        return 1;
-    }
-
-    if(fcntl(listenSocket, F_SETFL, O_NONBLOCK, 1) == -1)
-    {
-        fprintf(stderr, "Failed to set non-block mode.\n");
-        close(listenSocket);
-        return 1;
-    }
-
-    int error;
+    int listenSocket;
     struct sockaddr_in local;
-    local.sin_family = AF_INET;
-    local.sin_port = htons(PORT);
-    local.sin_addr.s_addr = htonl(INADDR_ANY);
 
-    error = bind(listenSocket, (const struct sockaddr *)&local, sizeof(local)); //связываем наш будующий слушающий с адресным пространством
-    if(error)
-    {
-        fprintf(stderr, "Error: bind.\n");
-        close(listenSocket);
+    if(setListenSocket(&listenSocket, (void *)&local))
         return 1;
-    }
 
-    error = listen(listenSocket, LISTEN_QUEUE); //делаем наш сокет слушающим
-    if(error)
-    {
-        fprintf(stderr, "Error: listen.\n");
-        close(listenSocket);
-        return 1;
-    }
-
-    int epollDescriptor = epoll_create(EPOLL_SIZE); //создаем инструмент, с помощью которго будем обрабатывать дескрипторы (сокеты клиентов)
+    int epollDescriptor = epoll_create(EPOLL_SIZE);
     struct epoll_event event;
     struct epoll_event *events;
 
@@ -72,6 +36,7 @@ int main()
         {
             fprintf(stderr, "Error: epoll_wait.\n");
             close(listenSocket);
+            free(events);
             return 1;
         }
 
@@ -79,19 +44,24 @@ int main()
         {
             if(events[i].data.fd == listenSocket)
             {
-                clientSocket = accept(listenSocket, (struct sockaddr *)&clientAddress, &addrSize);
+                clientSocket = -1;
+
+                for(int i = 0; i < 1000 && clientSocket < 0; ++i)
+                    clientSocket = accept(listenSocket, (struct sockaddr *)&clientAddress, &addrSize);
+
                 if(clientSocket < 0)
                 {
                     char ip[16];
                     sprintf(ip, "%d", clientAddress.sin_addr.s_addr);
                     fprintf(stderr, "Failed to accept a client (IP: %s).\n", ip);
+                    continue;
                 }
 
                 if(fcntl(clientSocket, F_SETFL, O_NONBLOCK, 1) == -1)
                 {
                     fprintf(stderr, "Failed to set non-block mode.\n");
                     close(clientSocket);
-                    return 1;
+                    continue;
                 }
 
                 while(read(clientSocket, &infoToGet, sizeof(infoToGet)) <= 0);
@@ -152,8 +122,6 @@ int main()
             }
         }
     }
-
-    free(events);
 
     return 0;
 }

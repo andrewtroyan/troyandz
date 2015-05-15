@@ -9,12 +9,10 @@
 
 #include "details.h"
 
-#define PORT 7570
+#define PORT 7500
 
 int main()
 {
-    setlocale(LC_ALL,"ru_RU.UTF-8");
-
     char ip[16], name[NAME_LENGTH];
 
     printf("Enter the server IP: ");
@@ -39,27 +37,35 @@ int main()
 
     while(error)
     {
-        clientSocket = socket(AF_INET, SOCK_STREAM, 0); //создаем сокет
+        clientSocket = socket(AF_INET, SOCK_STREAM, 0);
         if(clientSocket < 0)
         {
             fprintf(stderr, "socket() error.\n");
             return 1;
         }
 
-        if(fcntl(clientSocket, F_SETFL, O_NONBLOCK, 1) == -1) //делаем этот сокет неблокирующим
+        if(fcntl(clientSocket, F_SETFL, O_NONBLOCK, 1) == -1)
         {
             fprintf(stderr, "Failed to set non-block mode.\n");
             close(clientSocket);
             return 1;
         }
 
-        while(connect(clientSocket, (struct sockaddr *)&peer, sizeof(peer))); //коннектимся к серверу
+        for(int i = 0; i < 1000 && error; ++i)
+            error = connect(clientSocket, (struct sockaddr *)&peer, sizeof(peer));
 
-        while(write(clientSocket, &infoToSend, sizeof(infoToSend)) <= 0); //пишем команду на добавление ("--add")
+        if(error)
+        {
+            fprintf(stderr, "Can't connect.\n");
+            close(clientSocket);
+            return 1;
+        }
 
-        while(read(clientSocket, &infoToGet, sizeof(infoToGet)) <= 0); //читаем ответ сервера
+        while(write(clientSocket, &infoToSend, sizeof(infoToSend)) <= 0);
 
-        if(!strcmp(infoToGet.message, "--denied")) //в том случае, когда сервер отказал в доступе
+        while(read(clientSocket, &infoToGet, sizeof(infoToGet)) <= 0);
+
+        if(!strcmp(infoToGet.message, "--denied"))
         {
             printf("Accept denied. Enter another name: ");
             fgets(name, NAME_LENGTH - 1, stdin);
@@ -67,9 +73,15 @@ int main()
             close(clientSocket);
             error = 1;
         }
-        else if(!strcmp(infoToGet.message, "--accepted")) //сервер принял
+        else if(!strcmp(infoToGet.message, "--accepted"))
             error = 0;
-        else if(!strcmp(infoToGet.message, "--error")) //другая ошибка (неизвестно)
+        else if(!strcmp(infoToGet.message, "--error"))
+        {
+            fprintf(stderr, "Failed to access.\n");
+            close(clientSocket);
+            return 1;
+        }
+        else
         {
             fprintf(stderr, "Failed to access.\n");
             close(clientSocket);
@@ -81,11 +93,15 @@ int main()
     ioctl(1, TIOCGWINSZ, (char *) &size);
 
     WINDOW **wins = NULL;
-    if(setWindows(&wins, size.ws_row, size.ws_col)) //создаем окна
+    if(setWindows(&wins, size.ws_row, size.ws_col))
         return 1;
 
+    refresh();
+    curs_set(0);
     wprintw(wins[2], "Users online: %d", infoToGet.amountOfOnline);
     wrefresh(wins[2]);
+    wrefresh(wins[3]);
+    curs_set(1);
 
     ThreadInfo info;
     info.listOfWindows = wins;
@@ -96,32 +112,24 @@ int main()
 
     pthread_t thread1;
 
-    pthread_create(&thread1, NULL, &readFromServer, &info); //создаем поток, который будет постоянно находиться в режиме чтения
+    pthread_create(&thread1, NULL, &readFromServer, &info);
 
     while(1)
     {
-        char symbol = wgetch(wins[3]); //читаем по символу и отображаем в окне ncurses (для того, чтобы мы его видели)
-        int i = 0;
-        while(symbol != '\n' && i < 255)
-        {
-            wprintw(wins[3], "%c", symbol);
-            wrefresh(wins[3]);
-            message[i] = symbol;
-            symbol = wgetch(wins[3]);
-            ++i;
-        }
-        message[i] = '\0'; //добавляем в конец нулевой символ для разграничения строки
+        wrefresh(wins[3]);
+        curs_set(1);
+        wgetnstr(wins[3], message, sizeof(message) - 1);
         wclear(wins[3]);
 
-        strcpy(infoToSend.message, message); //копируем наше сообщение в структуру, которую будем передавать по сети
+        strcpy(infoToSend.message, message);
 
         while(write(clientSocket, &infoToSend, sizeof(infoToSend)) <= 0);
 
-        if(!strcmp(message, "--exit")) //если мы ввели это сообщение
+        if(!strcmp(message, "--exit"))
         {
-            close(clientSocket); //то закрываем сокет
-            deleteWindows(&wins); //закрываем наши ncurses окна
-            exit(0); //и выходим без какой-либо ошибки
+            close(clientSocket);
+            deleteWindows(&wins);
+            exit(0);
         }
     }
 

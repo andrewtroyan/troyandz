@@ -1,8 +1,5 @@
 #include "details.h"
 
-#include <unistd.h>
-#include <string.h>
-
 int setWindows(WINDOW ***wins, int rows, int cols)
 {
     *wins = (WINDOW **)malloc(4 * sizeof(WINDOW *));
@@ -66,17 +63,25 @@ void *readFromServer(void *arg)
         {
             if(strlen(sockInfo.name) && strlen(sockInfo.message))
             {
+                refresh();
+                curs_set(0);
                 wclear(thrInfo.listOfWindows[2]);
                 wprintw(thrInfo.listOfWindows[1], "%s: %s\n", sockInfo.name, sockInfo.message);
                 wprintw(thrInfo.listOfWindows[2], "Users online: %d", sockInfo.amountOfOnline);
                 wrefresh(thrInfo.listOfWindows[1]);
                 wrefresh(thrInfo.listOfWindows[2]);
+                wrefresh(thrInfo.listOfWindows[3]);
+                curs_set(1);
             }
             else
             {
+                refresh();
+                curs_set(0);
                 wclear(thrInfo.listOfWindows[2]);
                 wprintw(thrInfo.listOfWindows[2], "Users online: %d", sockInfo.amountOfOnline);
                 wrefresh(thrInfo.listOfWindows[2]);
+                wrefresh(thrInfo.listOfWindows[3]);
+                curs_set(1);
             }
         }
     }

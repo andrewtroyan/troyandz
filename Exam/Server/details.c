@@ -1,5 +1,46 @@
 #include "details.h"
 
+int setListenSocket(int *listenSocket, void *address)
+{
+    *listenSocket = socket(AF_INET, SOCK_STREAM, 0);
+    if(*listenSocket < 0)
+    {
+        fprintf(stderr, "Error: socket.\n");
+        return 1;
+    }
+
+    if(fcntl(*listenSocket, F_SETFL, O_NONBLOCK, 1) == -1)
+    {
+        fprintf(stderr, "Failed to set non-block mode.\n");
+        close(*listenSocket);
+        return 1;
+    }
+
+    int error;
+    struct sockaddr_in *local = (struct sockaddr_in *)address;
+    local->sin_family = AF_INET;
+    local->sin_port = htons(PORT);
+    local->sin_addr.s_addr = htonl(INADDR_ANY);
+
+    error = bind(*listenSocket, (const struct sockaddr *)local, sizeof(struct sockaddr_in));
+    if(error)
+    {
+        fprintf(stderr, "Error: bind.\n");
+        close(*listenSocket);
+        return 1;
+    }
+
+    error = listen(*listenSocket, LISTEN_QUEUE);
+    if(error)
+    {
+        fprintf(stderr, "Error: listen.\n");
+        close(*listenSocket);
+        return 1;
+    }
+
+    return 0;
+}
+
 int addClient(Client **list, char *name, int socket)
 {
     if(!strlen(name))

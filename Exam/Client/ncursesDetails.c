@@ -12,7 +12,6 @@ void initialiseProgram()
         exit(1);
     }
     cbreak();
-    noecho();
     curs_set(0);
     start_color();
     init_pair(normal, COLOR_WHITE, COLOR_BLACK);

@@ -5,9 +5,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <arpa/inet.h>
+#include <fcntl.h>
 
 #define MESSAGE_LENGTH 512
 #define NAME_LENGTH 32
+
+#define PORT 7500
+#define LISTEN_QUEUE 64
+#define EPOLL_SIZE 65
 
 typedef struct Client_
 {
@@ -22,6 +28,7 @@ typedef struct SocketInfo_
     int amountOfOnline;
 } SocketInfo;
 
+int setListenSocket(int *listenSocket, void *address);
 int addClient(Client **list, char *name, int socket);
 int deleteClient(Client **list, int socket);
 int checkTheLength(char *name);
