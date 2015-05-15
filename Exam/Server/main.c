@@ -12,7 +12,7 @@ int main()
     if(setListenSocket(&listenSocket, (void *)&local))
         return 1;
 
-    int epollDescriptor = epoll_create(EPOLL_SIZE);
+    int epollDescriptor = epoll_create(EPOLL_SIZE); //создаем инструмент, с помощью которго будем обрабатывать дескрипторы (сокеты клиентов)
     struct epoll_event event;
     struct epoll_event *events;
 

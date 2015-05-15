@@ -2,14 +2,14 @@
 
 int setListenSocket(int *listenSocket, void *address)
 {
-    *listenSocket = socket(AF_INET, SOCK_STREAM, 0);
+    *listenSocket = socket(AF_INET, SOCK_STREAM, 0); //создаем сокет
     if(*listenSocket < 0)
     {
         fprintf(stderr, "Error: socket.\n");
         return 1;
     }
 
-    if(fcntl(*listenSocket, F_SETFL, O_NONBLOCK, 1) == -1)
+    if(fcntl(*listenSocket, F_SETFL, O_NONBLOCK, 1) == -1) //переводим его в неблокирующий режим
     {
         fprintf(stderr, "Failed to set non-block mode.\n");
         close(*listenSocket);
@@ -22,7 +22,7 @@ int setListenSocket(int *listenSocket, void *address)
     local->sin_port = htons(PORT);
     local->sin_addr.s_addr = htonl(INADDR_ANY);
 
-    error = bind(*listenSocket, (const struct sockaddr *)local, sizeof(struct sockaddr_in));
+    error = bind(*listenSocket, (const struct sockaddr *)local, sizeof(struct sockaddr_in)); //связываем наш будующий слушающий с адресным пространством
     if(error)
     {
         fprintf(stderr, "Error: bind.\n");
@@ -30,7 +30,7 @@ int setListenSocket(int *listenSocket, void *address)
         return 1;
     }
 
-    error = listen(*listenSocket, LISTEN_QUEUE);
+    error = listen(*listenSocket, LISTEN_QUEUE); //делаем наш сокет слушающим
     if(error)
     {
         fprintf(stderr, "Error: listen.\n");

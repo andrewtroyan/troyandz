@@ -37,14 +37,14 @@ int main()
 
     while(error)
     {
-        clientSocket = socket(AF_INET, SOCK_STREAM, 0);
+        clientSocket = socket(AF_INET, SOCK_STREAM, 0); //создаем сокет
         if(clientSocket < 0)
         {
             fprintf(stderr, "socket() error.\n");
             return 1;
         }
 
-        if(fcntl(clientSocket, F_SETFL, O_NONBLOCK, 1) == -1)
+        if(fcntl(clientSocket, F_SETFL, O_NONBLOCK, 1) == -1) //делаем этот сокет неблокирующим
         {
             fprintf(stderr, "Failed to set non-block mode.\n");
             close(clientSocket);
@@ -52,7 +52,7 @@ int main()
         }
 
         for(int i = 0; i < 1000 && error; ++i)
-            error = connect(clientSocket, (struct sockaddr *)&peer, sizeof(peer));
+            error = connect(clientSocket, (struct sockaddr *)&peer, sizeof(peer)); //коннектимся к серверу
 
         if(error)
         {
@@ -61,11 +61,11 @@ int main()
             return 1;
         }
 
-        while(write(clientSocket, &infoToSend, sizeof(infoToSend)) <= 0);
+        while(write(clientSocket, &infoToSend, sizeof(infoToSend)) <= 0); //пишем команду на добавление ("--add")
 
-        while(read(clientSocket, &infoToGet, sizeof(infoToGet)) <= 0);
+        while(read(clientSocket, &infoToGet, sizeof(infoToGet)) <= 0); //читаем ответ сервера
 
-        if(!strcmp(infoToGet.message, "--denied"))
+        if(!strcmp(infoToGet.message, "--denied")) //в том случае, когда сервер отказал в доступе
         {
             printf("Accept denied. Enter another name: ");
             fgets(name, NAME_LENGTH - 1, stdin);
@@ -73,9 +73,9 @@ int main()
             close(clientSocket);
             error = 1;
         }
-        else if(!strcmp(infoToGet.message, "--accepted"))
+        else if(!strcmp(infoToGet.message, "--accepted")) //сервер принял
             error = 0;
-        else if(!strcmp(infoToGet.message, "--error"))
+        else if(!strcmp(infoToGet.message, "--error")) //другая ошибка (неизвестно)
         {
             fprintf(stderr, "Failed to access.\n");
             close(clientSocket);
@@ -93,7 +93,7 @@ int main()
     ioctl(1, TIOCGWINSZ, (char *) &size);
 
     WINDOW **wins = NULL;
-    if(setWindows(&wins, size.ws_row, size.ws_col))
+    if(setWindows(&wins, size.ws_row, size.ws_col)) //создаем окна
         return 1;
 
     refresh();
@@ -112,24 +112,24 @@ int main()
 
     pthread_t thread1;
 
-    pthread_create(&thread1, NULL, &readFromServer, &info);
+    pthread_create(&thread1, NULL, &readFromServer, &info); //создаем поток, который будет постоянно находиться в режиме чтения
 
     while(1)
     {
         wrefresh(wins[3]);
         curs_set(1);
-        wgetnstr(wins[3], message, sizeof(message) - 1);
+        wgetnstr(wins[3], message, sizeof(message) - 1); //пользователь вводит сообщение
         wclear(wins[3]);
 
-        strcpy(infoToSend.message, message);
+        strcpy(infoToSend.message, message); //копируем наше сообщение в структуру, которую будем передавать по сети
 
         while(write(clientSocket, &infoToSend, sizeof(infoToSend)) <= 0);
 
-        if(!strcmp(message, "--exit"))
+        if(!strcmp(message, "--exit")) //если мы ввели это сообщение
         {
-            close(clientSocket);
-            deleteWindows(&wins);
-            exit(0);
+            close(clientSocket); //то закрываем сокет
+            deleteWindows(&wins); //закрываем наши ncurses окна
+            exit(0); //и выходим без какой-либо ошибки
         }
     }
 
