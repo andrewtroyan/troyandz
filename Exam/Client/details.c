@@ -73,6 +73,13 @@ void *readFromServer(void *arg)
                 wrefresh(thrInfo.listOfWindows[3]);
                 curs_set(1);
             }
+            else if(!strcmp(sockInfo.message, "--exit"))
+            {
+                close(thrInfo.socket);
+                deleteWindows(&(thrInfo.listOfWindows));
+                fprintf(stderr, "Server is not available.\n");
+                exit(1);
+            }
             else
             {
                 refresh();
@@ -87,3 +94,10 @@ void *readFromServer(void *arg)
     }
     return NULL;
 }
+
+void sigHandler(int arg)
+{
+    runCode = sig;
+}
+
+

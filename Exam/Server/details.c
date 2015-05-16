@@ -147,6 +147,22 @@ int deleteClient(Client **list, int socket)
     return 0;
 }
 
+void clearClientList(Client **list)
+{
+    Client *temp = NULL;
+    while(*list)
+    {
+        temp = *list;
+        (*list) = (*list)->next;
+        temp->amountOfOnline = 0;
+        memset(temp->name, 0, strlen(temp->name));
+        close(temp->socket);
+        temp->next = NULL;
+        temp->previous = NULL;
+        free(temp);
+    }
+}
+
 int checkTheLength(char *name)
 {
     if(strlen(name) > 0 && strlen(name) < NAME_LENGTH)
@@ -175,4 +191,9 @@ void writeToAllClients(Client *list, SocketInfo *info)
         while(write(temp->socket, info, sizeof(*info)) <= 0);
         temp = temp->next;
     }
+}
+
+void sigHandler(int arg)
+{
+    runCode = sig;
 }

@@ -6,10 +6,11 @@
 #include <pthread.h>
 #include <fcntl.h>
 #include <sys/epoll.h>
+#include <signal.h>
 
 #include "details.h"
 
-#define PORT 7500
+#define PORT 7600
 
 int main()
 {
@@ -109,13 +110,27 @@ int main()
     strcpy(info.name, name);
     info.socket = clientSocket;
 
+    runCode = run;
+    struct sigaction act;
+    sigemptyset(&act.sa_mask);
+    act.sa_handler = &sigHandler;
+    act.sa_flags = 0;
+
+    if(sigaction(SIGHUP, &act, NULL) == -1 || sigaction(SIGINT, &act, NULL) == -1)
+    {
+        fprintf (stderr, "sigaction() error.\n");
+        close(clientSocket);
+        deleteWindows(&wins);
+        return 1;
+    }
+
     char message[MESSAGE_LENGTH];
 
-    pthread_t thread1;
+    pthread_t thread;
 
-    pthread_create(&thread1, NULL, &readFromServer, &info); //создаем поток, который будет постоянно находиться в режиме чтения
+    pthread_create(&thread, NULL, &readFromServer, &info); //создаем поток, который будет постоянно находиться в режиме чтения
 
-    while(1)
+    while(runCode == run)
     {
         wrefresh(wins[3]);
         curs_set(1);
@@ -127,11 +142,25 @@ int main()
         while(write(clientSocket, &infoToSend, sizeof(infoToSend)) <= 0);
 
         if(!strcmp(message, "--exit")) //если мы ввели это сообщение
-        {
-            close(clientSocket); //то закрываем сокет
-            deleteWindows(&wins); //закрываем наши ncurses окна
-            exit(0); //и выходим без какой-либо ошибки
-        }
+            runCode = stop;
+    }
+
+    pthread_cancel(thread);
+
+    if(runCode == stop)
+    {
+        close(clientSocket); //то закрываем сокет
+        deleteWindows(&wins); //закрываем наши ncurses окна
+        return 0; //и выходим без какой-либо ошибки
+    }
+    else if(runCode == sig)
+    {
+        strcpy(infoToSend.message, "--exit");
+        while(write(clientSocket, &infoToSend, sizeof(infoToSend)) <= 0);
+        close(clientSocket);
+        deleteWindows(&wins);
+        fprintf(stderr, "Error occured.\n");
+        return 1;
     }
 
     return 0;

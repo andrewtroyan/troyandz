@@ -10,6 +10,10 @@
 #define MESSAGE_LENGTH 512
 #define NAME_LENGTH 32
 
+typedef enum runState_ {run, stop, sig} runState;
+
+runState runCode;
+
 typedef struct SocketInfo_
 {
     char name[NAME_LENGTH], message[MESSAGE_LENGTH];
@@ -26,5 +30,6 @@ typedef struct ThreadInfo_
 int setWindows(WINDOW ***wins, int rows, int cols);
 void deleteWindows(WINDOW ***wins);
 void *readFromServer(void *arg);
+void sigHandler(int arg);
 
 #endif // DETAILS_H_INCLUDED
