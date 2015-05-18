@@ -18,7 +18,7 @@ int setListenSocket(int *listenSocket, void *address)
 
     int error;
     struct sockaddr_in *local = (struct sockaddr_in *)address;
-    local->sin_family = AF_INET;
+    local->sin_family = AF_INET; //настраиваем адресное пространство
     local->sin_port = htons(PORT);
     local->sin_addr.s_addr = htonl(INADDR_ANY);
 
@@ -43,6 +43,7 @@ int setListenSocket(int *listenSocket, void *address)
 
 int addClient(Client **list, char *name, int socket)
 {
+//обработка ошибок
     if(!strlen(name))
     {
         fprintf(stderr, "No name. Error: addClient.\n");
@@ -55,7 +56,7 @@ int addClient(Client **list, char *name, int socket)
     }
 
     Client *newClient = NULL;
-    newClient = (Client *)malloc(sizeof(Client));
+    newClient = (Client *)malloc(sizeof(Client)); //выделяем память для нового клиента
     if(!newClient)
     {
         fprintf(stderr, "Failed to add %s to client list.\n", name);
@@ -103,6 +104,7 @@ int addClient(Client **list, char *name, int socket)
 
 int deleteClient(Client **list, int socket)
 {
+//обработка ошибок
     if(socket < 0)
     {
         fprintf(stderr, "Wrong socket. Error: deleteClient.\n");
@@ -141,7 +143,7 @@ int deleteClient(Client **list, int socket)
     temp->previous = NULL;
     temp->next = NULL;
 
-    free(temp);
+    free(temp); //освобождаем выделенную под клиента память
     temp = NULL;
 
     return 0;
@@ -163,6 +165,16 @@ void clearClientList(Client **list)
     }
 }
 
+void writeToAllClients(Client *list, SocketInfo *info)
+{
+    Client *temp = list;
+    while(temp)
+    {
+        while(write(temp->socket, info, sizeof(*info)) <= 0);
+        temp = temp->next;
+    }
+}
+
 int checkTheLength(char *name)
 {
     if(strlen(name) > 0 && strlen(name) < NAME_LENGTH)
@@ -181,16 +193,6 @@ int checkTheSame(Client *list, char *name)
         temp = temp->next;
     }
     return returnCode;
-}
-
-void writeToAllClients(Client *list, SocketInfo *info)
-{
-    Client *temp = list;
-    while(temp)
-    {
-        while(write(temp->socket, info, sizeof(*info)) <= 0);
-        temp = temp->next;
-    }
 }
 
 void sigHandler(int arg)

@@ -1,10 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <pthread.h>
-#include <fcntl.h>
 #include <sys/epoll.h>
 #include <signal.h>
 
@@ -14,76 +9,57 @@
 
 int main()
 {
-    char ip[16], name[NAME_LENGTH];
+    char ip[16], name[NAME_LENGTH], message[MESSAGE_LENGTH];
 
     printf("Enter the server IP: ");
     fgets(ip, sizeof(ip), stdin);
 
-    printf("Enter your name: ");
-    fgets(name, NAME_LENGTH, stdin);
-    name[strlen(name) - 1] = '\0';
+    do
+    {
+        printf("Enter your name: ");
+        fgets(name, NAME_LENGTH, stdin);
+        name[strlen(name) - 1] = '\0';
+    }
+    while(!strlen(name));
 
     SocketInfo infoToSend, infoToGet;
+    setSocketInfo(&infoToSend, name, "--add", 0); //"--add" - команда, которую мы посылаем серверу с требованием добавить в его список клиентов и зайти в чат
 
-    strcpy(infoToSend.name, name);
-    strcpy(infoToSend.message, "--add");
-    infoToSend.amountOfOnline = 0;
+    struct sockaddr_in peer; //наша структура адресного пространства (для сокета)
+    setAddr((void *)&peer, AF_INET, PORT, ip); //заполняем ее
 
-    int error = 1, clientSocket;
-    struct sockaddr_in peer;
+    int clientSocket;
 
-    peer.sin_family = AF_INET;
-    peer.sin_port = htons(PORT);
-    peer.sin_addr.s_addr = inet_addr(ip);
-
-    while(error)
+    while(1)
     {
-        clientSocket = socket(AF_INET, SOCK_STREAM, 0); //создаем сокет
-        if(clientSocket < 0)
-        {
-            fprintf(stderr, "socket() error.\n");
+        if(setSocket(&clientSocket))
             return 1;
-        }
 
-        if(fcntl(clientSocket, F_SETFL, O_NONBLOCK, 1) == -1) //делаем этот сокет неблокирующим
-        {
-            fprintf(stderr, "Failed to set non-block mode.\n");
-            close(clientSocket);
+        if(connectSocket(&clientSocket, (void *)&peer))
             return 1;
-        }
-
-        for(int i = 0; i < 1000 && error; ++i)
-            error = connect(clientSocket, (struct sockaddr *)&peer, sizeof(peer)); //коннектимся к серверу
-
-        if(error)
-        {
-            fprintf(stderr, "Can't connect.\n");
-            close(clientSocket);
-            return 1;
-        }
-
+//фуункции write и read вводим в цикл while, потому что наш сокет является неблокирующий, а нам нужно наверняка
+//отправить или прочитать сообщение
         while(write(clientSocket, &infoToSend, sizeof(infoToSend)) <= 0); //пишем команду на добавление ("--add")
 
         while(read(clientSocket, &infoToGet, sizeof(infoToGet)) <= 0); //читаем ответ сервера
 
         if(!strcmp(infoToGet.message, "--denied")) //в том случае, когда сервер отказал в доступе
         {
-            printf("Accept denied. Enter another name: ");
-            fgets(name, NAME_LENGTH, stdin);
-            name[strlen(name) - 1] = '\0';
+            printf("Accept denied.\n");
+            do
+            {
+                printf("Enter another name: "); //заново набираем имя
+                fgets(name, NAME_LENGTH, stdin);
+                name[strlen(name) - 1] = '\0';
+            }
+            while(!strlen(name));
             strcpy(infoToSend.name, name);
             close(clientSocket);
-            error = 1;
+            continue; //проходим наш цикл заново
         }
-        else if(!strcmp(infoToGet.message, "--accepted")) //сервер принял
-            error = 0;
+        else if(!strcmp(infoToGet.message, "--accepted")) //если сервер принял запрос
+            break; //выходим из цикла
         else if(!strcmp(infoToGet.message, "--error")) //другая ошибка (неизвестно)
-        {
-            fprintf(stderr, "Failed to access.\n");
-            close(clientSocket);
-            return 1;
-        }
-        else
         {
             fprintf(stderr, "Failed to access.\n");
             close(clientSocket);
@@ -92,45 +68,34 @@ int main()
     }
 
     struct winsize size;
-    ioctl(1, TIOCGWINSZ, (char *) &size);
+    ioctl(1, TIOCGWINSZ, (char *) &size); //заносим в структуру size размеры нашего терминала
 
     WINDOW **wins = NULL;
-    if(setWindows(&wins, size.ws_row, size.ws_col)) //создаем окна
-        return 1;
-
-    refresh();
-    curs_set(0);
-    wprintw(wins[2], "Users online: %d", infoToGet.amountOfOnline);
-    wrefresh(wins[2]);
-    wrefresh(wins[3]);
-    curs_set(1);
-
-    ThreadInfo info;
-    info.listOfWindows = wins;
-    strcpy(info.name, name);
-    info.socket = clientSocket;
-
-    runCode = run;
-    struct sigaction act;
-    sigemptyset(&act.sa_mask);
-    act.sa_handler = &sigHandler;
-    act.sa_flags = 0;
-
-    if(sigaction(SIGHUP, &act, NULL) == -1 || sigaction(SIGINT, &act, NULL) == -1)
+    if(setWindows(&wins, size.ws_row, size.ws_col)) //создаем окна согласно полученным размерам
     {
-        fprintf (stderr, "sigaction() error.\n");
+        close(clientSocket);
+        return 1;
+    }
+
+    ThreadInfo info; //создаем поточную структуру
+    setThrInfo(&info, wins, clientSocket, name); //заполняем ее
+
+    runCode = run; //устанавливаем наш код-индикатор
+
+    struct sigaction act; //создаем структуру по обработке прерываний
+//Будем обрабатывать прерывания для того, чтобы корректно завершить работу с сервером, если приложение-клиент внезапно
+//неправильным (непредвиденным) способом завершило работу.
+    if(setSigAction((void *)&act, sigHandler)) //заполняет структуру
+    {
         close(clientSocket);
         deleteWindows(&wins);
         return 1;
     }
 
-    char message[MESSAGE_LENGTH];
-
     pthread_t thread;
-
     pthread_create(&thread, NULL, &readFromServer, &info); //создаем поток, который будет постоянно находиться в режиме чтения
 
-    while(runCode == run)
+    while(runCode == run) //пока наш код-индикатор находится в стостоянии работы
     {
         wrefresh(wins[3]);
         curs_set(1);
@@ -141,27 +106,26 @@ int main()
 
         while(write(clientSocket, &infoToSend, sizeof(infoToSend)) <= 0);
 
-        if(!strcmp(message, "--exit")) //если мы ввели это сообщение
+        if(!strcmp(message, "--exit")) //если пользователь сам захотел выйти из чата
             runCode = stop;
     }
 
-    pthread_cancel(thread);
+    pthread_cancel(thread); //завершаем поток чтения
 
-    if(runCode == stop)
+    if(runCode == sig) //если же сработало прерывание (работа завершилась неправильно)
     {
-        close(clientSocket); //то закрываем сокет
-        deleteWindows(&wins); //закрываем наши ncurses окна
-        return 0; //и выходим без какой-либо ошибки
-    }
-    else if(runCode == sig)
-    {
-        strcpy(infoToSend.message, "--exit");
+        strcpy(infoToSend.message, "--exit"); //мы посылаем обычное сообщение серверу для окончания работы
         while(write(clientSocket, &infoToSend, sizeof(infoToSend)) <= 0);
         close(clientSocket);
         deleteWindows(&wins);
         fprintf(stderr, "Error occured.\n");
-        return 1;
+        return 1; //выходим с ошибкой
+    }
+    else if(runCode == stop) //если же клиент сам завершил работу должным образом
+    {
+        close(clientSocket);
+        deleteWindows(&wins);
     }
 
-    return 0;
+    return 0; //выходим без ошибки
 }

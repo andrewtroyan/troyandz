@@ -28,7 +28,7 @@ int setWindows(WINDOW ***wins, int rows, int cols)
         return 1;
     }
 
-    scrollok((*wins)[1], true);
+    scrollok((*wins)[1], true); //включаем возможность прокрутки экрана
 
     wbkgd((*wins)[0], A_REVERSE);
     wbkgd((*wins)[2], A_REVERSE);
@@ -76,7 +76,7 @@ void *readFromServer(void *arg)
                 }
                 else
                     wprintw(thrInfo.listOfWindows[1], "\n%s: %s", sockInfo.name, sockInfo.message);
-
+//84 и 85 строки пишем для того, чтобы в нашем окне для набора текста был виден курсор
                 wclear(thrInfo.listOfWindows[2]);
                 wprintw(thrInfo.listOfWindows[2], "Users online: %d", sockInfo.amountOfOnline);
                 wrefresh(thrInfo.listOfWindows[1]);
@@ -84,12 +84,12 @@ void *readFromServer(void *arg)
                 wrefresh(thrInfo.listOfWindows[3]);
                 curs_set(1);
             }
-            else if(!strcmp(sockInfo.message, "--exit"))
+            else if(!strcmp(sockInfo.message, "--exit")) //если сервер нам прислал команду "--exit", то он неожиданно завершил работу
             {
                 close(thrInfo.socket);
                 deleteWindows(&(thrInfo.listOfWindows));
-                fprintf(stderr, "Server is not available.\n");
-                exit(1);
+                fprintf(stderr, "Server is not available.\n"); //выводим сообщение
+                exit(1); //выходим с ошибкой
             }
             else
             {
@@ -110,5 +110,84 @@ void sigHandler(int arg)
 {
     runCode = sig;
 }
+
+int setSigAction(void *arg, void (*func)(int arg))
+{
+    struct sigaction *act = (struct sigaction *)arg;
+    sigemptyset(&(act->sa_mask));
+    act->sa_flags = 0;
+    act->sa_handler = func;
+
+    if(sigaction(SIGHUP, act, NULL) == -1 || sigaction(SIGINT, act, NULL) == -1)
+    {
+        fprintf (stderr, "sigaction() error.\n");
+        return 1;
+    }
+    return 0;
+}
+
+void setSocketInfo(SocketInfo *info, char *name, char *message, int amountOfOnline)
+{
+    strcpy(info->name, name);
+    strcpy(info->message, message);
+    info->amountOfOnline = amountOfOnline;
+}
+
+void setThrInfo(ThreadInfo *info, WINDOW **wins, int socket, char *name)
+{
+    info->listOfWindows = wins;
+    info->socket = socket;
+    strcpy(info->name, name);
+}
+
+void setAddr(void *addrStruct, short sinFamily, int sinPort, char *ip)
+{
+    struct sockaddr_in *temp = (struct sockaddr_in *)addrStruct;
+    temp->sin_family = sinFamily;
+    temp->sin_port = htons(sinPort);
+    temp->sin_addr.s_addr = inet_addr(ip);
+}
+
+int setSocket(int *clientSocket)
+{
+    *clientSocket = socket(AF_INET, SOCK_STREAM, 0); //создаем сокет
+    if(*clientSocket < 0)
+    {
+        fprintf(stderr, "socket() error.\n");
+        return 1;
+    }
+
+    if(fcntl(*clientSocket, F_SETFL, O_NONBLOCK, 1) == -1) //делаем этот сокет неблокирующим
+    {
+        fprintf(stderr, "Failed to set non-block mode.\n");
+        close(*clientSocket);
+        return 1;
+    }
+
+    return 0;
+}
+
+int connectSocket(int *clientSocket, void *peer)
+{
+    int error = 1;
+//коннектимся к серверу
+//так как наш сокет неблокирующий, вводим функцию connect в цикл для того, чтобы мы наверняка подключились
+    for(int i = 0; i < 1000 && error; ++i)
+        error = connect(*clientSocket, (struct sockaddr *)peer, sizeof(struct sockaddr_in));
+
+    if(error)
+    {
+        fprintf(stderr, "Can't connect.\n");
+        close(*clientSocket);
+        return 1;
+    }
+    return 0;
+}
+
+
+
+
+
+
 
 
