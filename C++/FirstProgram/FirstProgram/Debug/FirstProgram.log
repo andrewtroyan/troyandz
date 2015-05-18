@@ -1,0 +1,9 @@
+﻿  Animal.cpp
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  Zoo.cpp
+  Dog.cpp
+  Cat.cpp
+LINK : warning LNK4076: invalid incremental status file 'C:\Users\user.STUDENT38\Desktop\FirstProgram\Debug\FirstProgram.ilk' (which will be deleted); linking nonincrementally
+Animal.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:LBR' specification
+  FirstProgram.vcxproj -> C:\Users\user.STUDENT38\Desktop\FirstProgram\Debug\FirstProgram.exe
