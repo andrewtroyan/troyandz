@@ -7,6 +7,8 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <fcntl.h>
+#include <signal.h>
+#include <sys/epoll.h>
 
 #define MESSAGE_LENGTH 512
 #define NAME_LENGTH 32
@@ -40,5 +42,8 @@ int checkTheLength(char *name);
 int checkTheSame(Client *list, char *name);
 void writeToAllClients(Client *list, SocketInfo *info);
 void sigHandler(int arg);
+int setSigAction(void *arg, void (*func)(int arg));
+void addToEpoll(int epoll, uint32_t events, int descriptor);
+void setSocketInfo(SocketInfo *info, char *name, char *message, int amountOfOnline);
 
 #endif // DETAILS_H_INCLUDED

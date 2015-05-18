@@ -17,10 +17,10 @@ int main()
     char ip[16], name[NAME_LENGTH];
 
     printf("Enter the server IP: ");
-    fgets(ip, 15, stdin);
+    fgets(ip, sizeof(ip), stdin);
 
     printf("Enter your name: ");
-    fgets(name, NAME_LENGTH - 1, stdin);
+    fgets(name, NAME_LENGTH, stdin);
     name[strlen(name) - 1] = '\0';
 
     SocketInfo infoToSend, infoToGet;
@@ -69,7 +69,7 @@ int main()
         if(!strcmp(infoToGet.message, "--denied")) //в том случае, когда сервер отказал в доступе
         {
             printf("Accept denied. Enter another name: ");
-            fgets(name, NAME_LENGTH - 1, stdin);
+            fgets(name, NAME_LENGTH, stdin);
             name[strlen(name) - 1] = '\0';
             strcpy(infoToSend.name, name);
             close(clientSocket);
@@ -134,7 +134,7 @@ int main()
     {
         wrefresh(wins[3]);
         curs_set(1);
-        wgetnstr(wins[3], message, sizeof(message) - 1); //пользователь вводит сообщение
+        wgetnstr(wins[3], message, sizeof(message)); //пользователь вводит сообщение
         wclear(wins[3]);
 
         strcpy(infoToSend.message, message); //копируем наше сообщение в структуру, которую будем передавать по сети

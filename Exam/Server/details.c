@@ -137,7 +137,7 @@ int deleteClient(Client **list, int socket)
 
     memset(temp->name, 0, strlen(temp->name));
     temp->amountOfOnline = 0;
-    temp->socket = -1;
+    close(temp->socket);
     temp->previous = NULL;
     temp->next = NULL;
 
@@ -196,4 +196,34 @@ void writeToAllClients(Client *list, SocketInfo *info)
 void sigHandler(int arg)
 {
     runCode = sig;
+}
+
+int setSigAction(void *arg, void (*func)(int arg))
+{
+    struct sigaction *act = (struct sigaction *)arg;
+    sigemptyset(&(act->sa_mask));
+    act->sa_flags = 0;
+    act->sa_handler = func;
+
+    if(sigaction(SIGHUP, act, NULL) == -1 || sigaction(SIGINT, act, NULL) == -1)
+    {
+        fprintf (stderr, "sigaction() error.\n");
+        return 1;
+    }
+    return 0;
+}
+
+void addToEpoll(int epoll, uint32_t events, int descriptor)
+{
+    struct epoll_event event;
+    event.events = events;
+    event.data.fd = descriptor;
+    epoll_ctl(epoll, EPOLL_CTL_ADD, descriptor, &event);
+}
+
+void setSocketInfo(SocketInfo *info, char *name, char *message, int amountOfOnline)
+{
+    strcpy(info->name, name);
+    strcpy(info->message, message);
+    info->amountOfOnline = amountOfOnline;
 }

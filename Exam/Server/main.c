@@ -1,45 +1,37 @@
-#include <sys/epoll.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <signal.h>
 
 #include "details.h"
 
 int main()
 {
-    int listenSocket;
+    int listenSocket, clientSocket;
     struct sockaddr_in local;
-
     if(setListenSocket(&listenSocket, (void *)&local))
         return 1;
 
     runCode = run;
-    struct sigaction act;
-    sigemptyset(&act.sa_mask);
-    act.sa_flags = 0;
-    act.sa_handler = &sigHandler;
 
-    if(sigaction(SIGHUP, &act, NULL) == -1 || sigaction(SIGINT, &act, NULL) == -1)
+    struct sigaction act;
+    if(setSigAction(&act, sigHandler))
     {
-        fprintf (stderr, "sigaction() error.\n");
         close(listenSocket);
         return 1;
     }
 
     int epollDescriptor = epoll_create(EPOLL_SIZE); //создаем инструмент, с помощью которго будем обрабатывать дескрипторы (сокеты клиентов)
-    struct epoll_event event;
-    struct epoll_event *events;
-
+    struct epoll_event *events = NULL;
     events = (struct epoll_event *)malloc(EPOLL_SIZE * sizeof(struct epoll_event));
+    if(!events)
+    {
+        fprintf(stderr, "Can't create events for epoll.\n");
+        close(listenSocket);
+        return 1;
+    }
 
-    event.events = EPOLLIN | EPOLLPRI | EPOLLERR | EPOLLHUP;
-    event.data.fd = listenSocket;
-    epoll_ctl(epollDescriptor, EPOLL_CTL_ADD, listenSocket, &event);
+    addToEpoll(epollDescriptor, EPOLLIN, listenSocket);
 
-    int amountOfEvents, clientSocket;
-    struct sockaddr_in clientAddress;
-    socklen_t addrSize;
-
+    int amountOfEvents;
     Client *clientList = NULL;
     SocketInfo infoToGet, infoToSend;
 
@@ -57,15 +49,10 @@ int main()
                     clientSocket = -1;
 
                     for(int i = 0; i < 1000 && clientSocket < 0; ++i)
-                        clientSocket = accept(listenSocket, (struct sockaddr *)&clientAddress, &addrSize);
+                        clientSocket = accept(listenSocket, NULL, NULL);
 
                     if(clientSocket < 0)
-                    {
-                        char ip[16];
-                        sprintf(ip, "%d", clientAddress.sin_addr.s_addr);
-                        fprintf(stderr, "Failed to accept a client (IP: %s).\n", ip);
                         continue;
-                    }
 
                     if(fcntl(clientSocket, F_SETFL, O_NONBLOCK, 1) == -1)
                     {
@@ -76,31 +63,24 @@ int main()
 
                     while(read(clientSocket, &infoToGet, sizeof(infoToGet)) <= 0);
 
-                    memset(infoToSend.name, 0, strlen(infoToSend.name));
-                    strcpy(infoToSend.message, "--error");
-                    infoToSend.amountOfOnline = 0;
+                    setSocketInfo(&infoToSend, "\0", "--error", 0);
 
                     if(!strcmp(infoToGet.message, "--add"))
                     {
                         if(!checkTheLength(infoToGet.name) && !checkTheSame(clientList, infoToGet.name))
                         {
                             addClient(&clientList, infoToGet.name, clientSocket);
+                            addToEpoll(epollDescriptor, EPOLLIN | EPOLLOUT, clientSocket);
 
-                            event.events = EPOLLIN | EPOLLOUT | EPOLLHUP;
-                            event.data.fd = clientSocket;
-                            epoll_ctl(epollDescriptor, EPOLL_CTL_ADD, clientSocket, &event);
-
-                            strcpy(infoToSend.message, "--accepted");
-                            infoToSend.amountOfOnline = clientList->amountOfOnline;
+                            setSocketInfo(&infoToSend, "\0", "--accepted", 0);
                         }
                         else
-                            strcpy(infoToSend.message, "--denied");
+                            setSocketInfo(&infoToSend, "\0", "--denied", 0);
                     }
 
                     while(write(clientSocket, &infoToSend, sizeof(infoToSend)) <= 0);
 
-                    memset(infoToSend.name, 0, strlen(infoToSend.name));
-                    memset(infoToSend.message, 0, strlen(infoToSend.message));
+                    setSocketInfo(&infoToSend, "\0", "\0", clientList->amountOfOnline);
                     writeToAllClients(clientList, &infoToSend);
                 }
                 else if((events[i].events & EPOLLIN) == EPOLLIN)
@@ -109,21 +89,16 @@ int main()
                     if(!strcmp(infoToGet.message, "--exit"))
                     {
                         deleteClient(&clientList, events[i].data.fd);
-                        epoll_ctl(epollDescriptor, EPOLL_CTL_DEL, events[i].data.fd, NULL);
-                        close(events[i].data.fd);
 
                         if(clientList)
                         {
-                            memset(infoToSend.name, 0, strlen(infoToSend.name));
-                            memset(infoToSend.message, 0, strlen(infoToSend.message));
-                            --(infoToSend.amountOfOnline);
+                            setSocketInfo(&infoToSend, "\0", "\0", clientList->amountOfOnline);
                             writeToAllClients(clientList, &infoToSend);
                         }
                     }
                     else if(strlen(infoToGet.message))
                     {
-                        int amountOfOnline = clientList->amountOfOnline;
-                        infoToGet.amountOfOnline = amountOfOnline;
+                        infoToGet.amountOfOnline = clientList->amountOfOnline;
 
                         writeToAllClients(clientList, &infoToGet);
                     }
@@ -134,14 +109,12 @@ int main()
 
     if(runCode == sig)
     {
-        memset(infoToSend.name, 0, strlen(infoToSend.name));
-        strcpy(infoToSend.message, "--exit");
-        infoToSend.amountOfOnline = 0;
+        setSocketInfo(&infoToSend, "\0", "--exit", 0);
         writeToAllClients(clientList, &infoToSend);
-        close(listenSocket);
         clearClientList(&clientList);
+        close(listenSocket);
         free(events);
-        fprintf(stderr, "Error occured.\n");
+        fprintf(stderr, "\nError occured.\n");
         return 1;
     }
     else if(runCode == noClients)

@@ -28,6 +28,8 @@ int setWindows(WINDOW ***wins, int rows, int cols)
         return 1;
     }
 
+    scrollok((*wins)[1], true);
+
     wbkgd((*wins)[0], A_REVERSE);
     wbkgd((*wins)[2], A_REVERSE);
 
@@ -56,6 +58,7 @@ void *readFromServer(void *arg)
 {
     ThreadInfo thrInfo = *(ThreadInfo *)arg;
     SocketInfo sockInfo;
+    int firstMessage = 1;
 
     while(1)
     {
@@ -65,8 +68,16 @@ void *readFromServer(void *arg)
             {
                 refresh();
                 curs_set(0);
+
+                if(firstMessage)
+                {
+                    wprintw(thrInfo.listOfWindows[1], "%s: %s", sockInfo.name, sockInfo.message);
+                    firstMessage = 0;
+                }
+                else
+                    wprintw(thrInfo.listOfWindows[1], "\n%s: %s", sockInfo.name, sockInfo.message);
+
                 wclear(thrInfo.listOfWindows[2]);
-                wprintw(thrInfo.listOfWindows[1], "%s: %s\n", sockInfo.name, sockInfo.message);
                 wprintw(thrInfo.listOfWindows[2], "Users online: %d", sockInfo.amountOfOnline);
                 wrefresh(thrInfo.listOfWindows[1]);
                 wrefresh(thrInfo.listOfWindows[2]);
