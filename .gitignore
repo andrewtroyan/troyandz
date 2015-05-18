@@ -7,7 +7,6 @@ obj/
 *.save
 *.depend
 *.layout*
-*.sln
 *.sdf
 *.v12.suo
 *.tlog
