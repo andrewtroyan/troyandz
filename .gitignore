@@ -16,3 +16,4 @@ obj/
 *.vcxproj
 *.vcxproj.filters
 *.pdb
+*.ilk
