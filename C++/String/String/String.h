@@ -15,7 +15,6 @@ public:
 	const char* c_str();
 	const char* find(const char *substr);
 	const char* add(const char *str);
-	char* plus(String& str);
 
 	~String();
 };

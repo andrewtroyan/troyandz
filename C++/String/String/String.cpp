@@ -8,7 +8,7 @@
 
 String::String() {
 	s = (char *)malloc(sizeof(char));
-	*s = '\0'; //или s[0] = '\0';
+	*s = '\0'; //or s[0] = '\0';
 	length = 0;
 }
 
@@ -28,6 +28,7 @@ String::String(char c, size_t n) {
 String::String(const String& orig) {
 	s = (char *)malloc((strlen(orig.s) + 1) * sizeof(char));
 	strcpy(s, orig.s);
+	length = orig.length;
 }
 
 void String::print() {
@@ -49,14 +50,6 @@ const char* String::add(const char *str) {
 		return nullptr;
 	strcat(s, str);
 	return (const char *)s;
-}
-
-char* String::plus(String& str)
-{
-	char *p = (char *)malloc((strlen(this->s) + strlen(str.s) + 1) * sizeof(char));
-	strcpy(p, this->s);
-	strcat(p, str.s);
-	return p;
 }
 
 String::~String() {
