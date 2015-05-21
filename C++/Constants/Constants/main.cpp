@@ -20,6 +20,7 @@ int main() {
 	a = b;
 	a.print();*/
 
+	/*
 	String a = "Hello", b = " world!";
 	String c = a.plus(b);
 	c.print();
@@ -40,7 +41,17 @@ int main() {
 
 	String i = "         Hello!       ";
 	i.deleteSpaces();
-	i.print();
+	i.print();*/
+
+	String a = "Hello", b = ", world!";
+	a += b;
+	a.print();
+
+	String c = a + b;
+	c.print();
+
+	//b *= 2;
+	//b.print();
 
 	getc(stdin);
 	return 0;

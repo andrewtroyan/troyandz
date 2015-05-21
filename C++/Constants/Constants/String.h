@@ -11,7 +11,12 @@ public:
 
 	String(const String& orig); //copy constructor
 
-	void operator=(const String& source); //перегрузка оператора присваивания
+	//operator overloading
+	void operator=(const String& source); 
+	String& operator+=(const String& what);
+	String operator+(const String& what) const;
+	//String& operator*=(const int num);
+	//String operator*(const int num) const;
 
 	void print() const;
 	const char* c_str() const { //inline method (inside class)
@@ -30,6 +35,7 @@ public:
 };
 
 void print(String str);
+//String operator+(const String& a, const String& b);
 
 inline int sqr(int x) { //inline function
 	return x * x;

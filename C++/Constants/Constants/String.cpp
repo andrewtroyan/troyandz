@@ -38,6 +38,36 @@ void String::operator=(const String& source) { //оператор присваивания
 	strcpy(s, source.s);
 }
 
+String& String::operator+=(const String& source) {
+	length += source.length;
+	s = (char *)realloc(s, (length + 1) * sizeof(char));
+	if (!s)
+		return *this;
+	strcat(s, source.s);
+	return *this;
+}
+
+String String::operator+(const String& what) const {
+	String result(*this);
+	return result += what;
+}
+
+/*
+String& String::operator*=(const int num) {
+	length *= num;
+	s = (char *)realloc(s, (length + 1) * sizeof(char));
+	if (!s)
+		return *this;
+	strcat(s, s);
+	return *this;
+}
+
+String String::operator*(const int num) const {
+	String result(*this);
+	result *= num;
+	return result;
+}*/
+
 void String::print() const {
 	std::cout << s << std::endl;
 }
@@ -156,3 +186,10 @@ String::~String() {
 void print(String str) {
 	str.print();
 }
+
+/*
+String operator+(const String& a, const String& b) {
+	String res(a);
+	res += b;
+	return res;
+}*/
